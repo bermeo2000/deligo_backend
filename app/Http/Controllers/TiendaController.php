@@ -118,4 +118,27 @@ class TiendaController extends Controller
 
 
     }
+
+    public function storeTienda($request, $usuario){
+        $validateData=$request->validate([
+            'nombre_tienda'            => 'required|string|max:255',
+            'id_categoria_tienda'      => 'required',
+            'ciudad'                   => 'required|string|max:255',
+            'direccion'                => 'required|string|max:255',
+            'celular'                  => 'required|string|max:255',
+            'id_codigo_pais'           => 'required',
+            'instagram_user'           => 'nullable|string|max:255',
+            'facebook_user'            => 'nullable|string|max:255',
+            'tiktok_user'              => 'nullable|string|max:255',
+            'lat'                      => 'required',
+            'lng'                      => 'required',
+            'is_delivery'              => 'required',
+            'cargo_delivery'           => 'nullabe',
+            'tiempo_delivery_min'      => 'nullable',
+            'puntuacion'               => 'required',
+            'descripcion'              => 'nullable'
+
+        ]);
+
+    }
 }
