@@ -113,31 +113,52 @@ class TiendaController extends Controller
                 ]);
             }
         } 
-       
+       $this->storeTienda($request,$usuario);
         return response()->json("funciono");
 
 
     }
 
     public function storeTienda($request, $usuario){
-        $validateData=$request->validate([
+        $validateDataTienda=$request->validate([
             'nombre_tienda'            => 'required|string|max:255',
             'id_categoria_tienda'      => 'required',
-            'ciudad'                   => 'required|string|max:255',
-            'direccion'                => 'required|string|max:255',
+            'ciudadTienda'             => 'required|string|max:255',
+            'direccion'                => 'nullable|string|max:255',
             'celular'                  => 'required|string|max:255',
-            'id_codigo_pais'           => 'required',
+            'id_codigo_pais_tienda'    => 'required',
             'instagram_user'           => 'nullable|string|max:255',
             'facebook_user'            => 'nullable|string|max:255',
             'tiktok_user'              => 'nullable|string|max:255',
-            'lat'                      => 'required',
-            'lng'                      => 'required',
+            'lat'                      => 'nullable',
+            'lng'                      => 'nullable',
             'is_delivery'              => 'required',
-            'cargo_delivery'           => 'nullabe',
+            'cargo_delivery'           => 'nullable',
             'tiempo_delivery_min'      => 'nullable',
             'puntuacion'               => 'required',
             'descripcion'              => 'nullable'
 
+        ]);
+        
+        $tienda=Tienda::create([
+            'nombre_tienda'            =>$validateDataTienda['nombre_tienda'],
+            'id_propietario'           =>$usuario->id,
+            'id_categoria_tienda'      =>$validateDataTienda['id_categoria_tienda'],
+            'ciudad'                   =>$validateDataTienda['ciudadTienda'],
+            'direccion'                =>$validateDataTienda['direccion'],
+            'celular'                  =>$validateDataTienda['celular'],
+            'id_codigo_pais'           =>$validateDataTienda['id_codigo_pais_tienda'],
+            'instagram_user'           =>$validateDataTienda['instagram_user'],
+            'facebook_user'            =>$validateDataTienda['facebook_user'],
+            'tiktok_user'              =>$validateDataTienda['tiktok_user'],
+            'lat'                      =>$validateDataTienda['lat'],
+            'lng'                      =>$validateDataTienda['lng'],
+            'is_delivery'              =>$validateDataTienda['is_delivery'],
+            'cargo_delivery'           =>$validateDataTienda['cargo_delivery'],
+            'tiempo_delivery_min'      =>$validateDataTienda['tiempo_delivery_min'],
+            'puntuacion'               =>$validateDataTienda['puntuacion'],
+            'descripcion'              =>$validateDataTienda['descripcion'],
+            'estado'=>1,
         ]);
 
     }
