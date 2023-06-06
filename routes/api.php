@@ -42,7 +42,7 @@ use App\Http\Controllers\VentaController;
 //Espacio de desarrollo
 
 //Registro y Login
-
+Route::post('/registro', [UserController::class, 'register']);
 
 //Tipo Usuario
 Route::resource('tipo-usuario', TipoUsuarioController::class);
