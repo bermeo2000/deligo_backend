@@ -58,6 +58,7 @@ Route::resource('categoria-tienda', CategoriaTiendaController::class);
 
 //Tiendas
 Route::resource('tienda', TiendaController::class);
+Route::post('/registroEmprendedor', [TiendaController::class,'storeEmprendedor']);
 
 //Categoria Productos
 Route::resource('categoria-producto', CategoriasProductosController::class);
