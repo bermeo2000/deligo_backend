@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('ciudad'); // no es nullable para poder mostrar mejor en la pagina principal
             $table->string('cedula')->nullable(); //cedula, dni o pasaporte
-            $table->string('foto_perfil')->nullable();
+            $table->string('imagen')->nullable();
             $table->string('telefono')->nullable();
             $table->boolean('estado');
 
