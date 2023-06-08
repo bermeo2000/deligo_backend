@@ -34,14 +34,14 @@ return new class extends Migration
             
             //en caso de tener vainas con delivery
             $table->boolean('is_delivery');
-            $table->decimal('cargo_delivery')->nullable();
-            $table->integer('tiempo_delivery_minutos')->nullable();
+            $table->decimal('cargo_delivery')->nullable()->default(0);
+            $table->integer('tiempo_delivery_min')->nullable()->default(0);
 
             //puntuacion de la tienda basada en las reseñas
             $table->float('puntuacion')->default(0);
 
             //descripcion
-            $table->string('descrpcion')->nullable();
+            $table->string('descripcion')->nullable();
 
 
 
