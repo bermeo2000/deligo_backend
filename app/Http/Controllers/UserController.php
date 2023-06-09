@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\CategoriasUsuario;
 
 class UserController extends Controller
 {
@@ -19,50 +20,7 @@ class UserController extends Controller
         return response()->json($user, 200);
     }
     
-    public function register(Request $request)
-    {
-       //return response()->json($request);
-        $validData = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'apellido' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-            'ciudad'=>'required|string|max:255',
-            'cedula'=>'required|string|max:10',
-            'telefono'=>'required|string',
-            'id_tipo_usuario'=>'required',
-            'is_categorias_selec'=>'required',
-            'id_codigo_pais'=>'required',
-
-           
-            'imagen'=>'required'
-        ]);
-
-        //imagen
-        $img=$request->file('imagen');
-        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-
-        $user = User::create([
-            'nombre' => $validData['nombre'],
-            'apellido' => $validData['apellido'],
-            'email' => $validData['email'],
-            'password' => Hash::make($validData['password']),
-            'ciudad' => $validData['ciudad'],
-            'cedula' => $validData['cedula'],
-            'telefono' => $validData['telefono'],
-          
-            'imagen' => $validData['imagen'],
-            'estado' => 1,
-            'id_tipo_usuario' => $validData['id_tipo_usuario'],
-            'is_categorias_selec' => $validData['is_categorias_selec'],
-            'id_codigo_pais' => $validData['id_codigo_pais'],
-        ]);
-
-
-        $request->file('imagen')->storeAs("public/images/persona/{$user->id}", $validData['imagen']);
-
-        return response()->json(['message' => 'Usuario registrado'], 200);
-    }
+ 
 
     /**
      * Show the form for creating a new resource.
@@ -111,4 +69,64 @@ class UserController extends Controller
     {
         //
     }
+
+    public function register(Request $request)
+    {
+       //return response()->json($request);
+        $validateData = $request->validate([
+            'nombre'            => 'required|string|max:255',
+            'apellido'          => 'required|string|max:255',
+            'email'             => 'required|string|max:255',
+            'password'          => 'required|string|max:255',
+            'ciudad'            => 'required|string|max:255',
+            'cedula'            => 'required|string|max:255',
+            'telefono'          => 'required|string|max:255',
+            'imagen'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'id_codigo_pais'    => 'required',
+            'id_tipo_usuario'   => 'required',
+            'is_categorias_selec'=>'required',
+        ]);
+
+        $type=2;
+        //imagen
+        $img=$request->file('imagen');
+        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+
+        $user = User::create([
+            'nombre'            =>$validateData['nombre'],
+            'apellido'          =>$validateData['apellido'],
+            'email'             =>$validateData['email'],
+            'password'          =>$validateData['password'],
+            'ciudad'            =>$validateData['ciudad'],
+            'cedula'            =>$validateData['cedula'],
+            'telefono'          =>$validateData['telefono'],
+            'imagen'            =>$validateData['imagen'],
+            'id_codigo_pais'    =>$validateData['id_codigo_pais'],
+            'id_tipo_usuario'   =>$validateData['id_tipo_usuario'],
+            'is_categoria_selec'=>$validateData['is_categorias_selec'],
+            'estado'=>1,
+
+          
+        ]);
+        
+        if ($validateData['is_categorias_selec']==1) {
+            $array = explode(",",$request->categorias);
+            for ($i = 0; $i < count($array); $i++) {
+                $aux=$array[$i];
+                CategoriasUsuario::create([
+                    'estado' => 1,
+                    'id_usuario' => $user->id,
+                    'id_categoria_tienda' => $aux,
+                ]);
+            }
+        } 
+
+        $request->file('imagen')->storeAs("public/images/persona/{$user->id}", $validateData['imagen']);
+
+        return response()->json(['message' => 'Usuario registrado'], 200);
+    }
+
+    
+
+  
 }
