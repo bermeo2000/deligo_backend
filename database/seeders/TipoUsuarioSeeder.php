@@ -21,9 +21,9 @@ class TipoUsuarioSeeder extends Seeder
 
         foreach($tipos_usuarios as $tp){
             DB::table('tipo_usuarios')->insert([
-            'tipo' => $tp,
-            'estado' => 1,
-        ]);
+                'tipo' => $tp,
+                'estado' => 1,
+            ]);
         }
 
         
