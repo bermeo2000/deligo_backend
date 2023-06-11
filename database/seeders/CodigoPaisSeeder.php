@@ -7,17 +7,42 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use League\Csv\Reader;
 
 class CodigoPaisSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
+        $csvFile = storage_path('app/CodigoPaises.csv'); // para obtener la ruta completa al archivo CSV.
+        $csvReader = Reader::createFromPath($csvFile, 'r'); //crear la instancia de Reader, league/csv para leer y manipular los datos del archivo CSV
+       $csvReader->setHeaderOffset(0); // Si el archivo CSV tiene encabezados de columna en la primera fila
 
-        $paises = [
+       $rowCount = $csvReader->count(); // Cuenta el número de filas
+       $columnCount = count($csvReader->getHeader()); // Cuenta el número de columnas (asumiendo que el archivo tiene encabezados de columna)
+       echo "Número de filas: " . $rowCount . "\n";
+       echo "Número de columnas: " . $columnCount . "\n";
+
+    foreach ($csvReader as $row) {  //Dentro del bucle foreach, puedes acceder a los valores de cada columna utilizando los encabezados como índices en el array $row.
+       $nombre = $row['nombre'];
+       $name = $row['name'];
+       $iso2 = $row['iso2'];
+       $iso3 = $row['iso3'];
+       $phoneCode = $row['phone_code'];
+       $estado = $row['estado'];
+
+    // Realiza las operaciones necesarias con los datos obtenidos del archivo CSV
+       DB::table('codigo_pais')->insert([
+        'nombre' => $nombre,
+        'name' => $name,
+        'iso2' => $iso2,
+        'iso3' => $iso3,
+        'phone_code' => $phoneCode,
+        'estado' => $estado,
+       ]);
+    }
+
+
+        /* $paises = [
             ['Afganistán','Afghanistan','AF','AFG','93','1'],
             ['Albania','Albania','AL','ALB','355','1'],
             ['Alemania','Germany','DE','DEU','49','1'],
@@ -40,7 +65,7 @@ class CodigoPaisSeeder extends Seeder
             ['Bahrein','Bahrain','BH','BHR','973','1'],
             ['Bangladesh','Bangladesh','BD','BGD','880','1'],
             ['Barbados','Barbados','BB','BRB','1 246','1'],
-            ['Belice','Belize','BZ','BLZ','501','1'],
+            ['Belice','Belize','BZ','BLZ','501','1'], */
             /* [Benín,Benin,BJ,BEN,229,1],
             [Bhután,Bhutan,BT,BTN,975,1],
             [Bielorrusia,Belarus,BY,BLR,375,1],
@@ -268,7 +293,7 @@ class CodigoPaisSeeder extends Seeder
             [Zimbabue,Zimbabwe,ZW,ZWE,263,1], */
 
             
-        ];
+        /* ];
 
         foreach ($paises as $p){
             DB::table('codigo_pais')->insert([
@@ -278,8 +303,9 @@ class CodigoPaisSeeder extends Seeder
                 'iso3' => $p[3],
                 'phone_code' => $p[4],
                 'estado' => $p[5],
+
             ]);
         }
-
+ */
     }
 }
