@@ -25,6 +25,8 @@ use App\Http\Controllers\ToppingsController;
 use App\Http\Controllers\ToppingsProductosController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\LoginController;
+
 
 
 
@@ -42,6 +44,7 @@ use App\Http\Controllers\VentaController;
 //Espacio de desarrollo
 
 //Registro y Login
+Route::post('/login', [UserController::class, 'login']);
 
 
 //Tipo Usuario
