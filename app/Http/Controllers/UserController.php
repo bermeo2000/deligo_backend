@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Tienda;
 use App\Models\User;
 use App\Models\CategoriasUsuario;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -77,35 +78,25 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        return response()->json(['message' => $request], 200);
-       /*  $validateData = $request->validate([
+      /*   return response()->json(['message' => $request], 200); */
+        $validateData = $request->validate([
             'nombre'            => 'required|string|max:255',
             'apellido'          => 'required|string|max:255',
             'email'             => 'required|string|max:255',
             'password'          => 'required|string|max:255',
             'ciudad'            => 'required|string|max:255',
-            'cedula'            => 'required|string|max:255',
-            'telefono'          => 'required|string|max:255',
-            'imagen'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'id_codigo_pais'    => 'required',
             'id_tipo_usuario'   => 'required',
             'is_categorias_selec'=>'required',
         ]);
         
         $type=2;
-        //imagen
-        $img=$request->file('imagen');
-        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-
         $user = User::create([
             'nombre'            =>$validateData['nombre'],
             'apellido'          =>$validateData['apellido'],
             'email'             =>$validateData['email'],
             'password'          =>$validateData['password'],
             'ciudad'            =>$validateData['ciudad'],
-            'cedula'            =>$validateData['cedula'],
-            'telefono'          =>$validateData['telefono'],
-            'imagen'            =>$validateData['imagen'],
             'id_codigo_pais'    =>$validateData['id_codigo_pais'],
             'id_tipo_usuario'   =>$validateData['id_tipo_usuario'],
             'is_categoria_selec'=>$validateData['is_categorias_selec'],
@@ -126,9 +117,7 @@ class UserController extends Controller
             }
         } 
 
-        $request->file('imagen')->storeAs("public/images/persona/{$user->id}", $validateData['imagen']);
-
-        return response()->json(['message' => 'Usuario registrado'], 200); */
+        return response()->json(['message' => 'Usuario registrado'], 200);
     }
 
    
