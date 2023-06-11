@@ -44,7 +44,7 @@ use App\Http\Controllers\LoginController;
 //Espacio de desarrollo
 
 //Registro y Login
-Route::post('/login', [UserController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login']);
 
 
 //Tipo Usuario

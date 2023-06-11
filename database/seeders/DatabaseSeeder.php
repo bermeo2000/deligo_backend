@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
             TipoPesosSeeder::class,
             TipoPagosSeeder::class,
             TipoAdvertenciasSeeder::class,
-            CategoriasTiendasSeeder::class
+            CategoriasTiendasSeeder::class,
+            CodigoPaisSeeder::class
         ]);
     }
 }
