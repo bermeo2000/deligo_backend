@@ -116,6 +116,7 @@ class TiendaController extends Controller
        $this->storeTienda($request,$usuario);
         return response()->json("funciono");
 
+        
 
     }
 

@@ -26,7 +26,7 @@ class User extends Authenticatable
         'password',
         'ciudad',
         'cedula',
-        'foto_perfil',
+        'imagen',
         'telefono',
         'estado',
         'id_tipo_usuario',
