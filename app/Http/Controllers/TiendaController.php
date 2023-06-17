@@ -36,9 +36,13 @@ class TiendaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tienda $tienda)
+    public function show( $id)
     {
-        //
+        $tienda=Tienda::find($id);
+        if (is_null($tienda)) {
+            return response()->json(['mesagge'=>'No se encontro ninguna tienda',400]);
+        }
+        
     }
 
     /**
@@ -54,7 +58,31 @@ class TiendaController extends Controller
      */
     public function update(Request $request, Tienda $tienda)
     {
-        //
+        $validateDataTienda=$request->validate([
+            'nombre_tienda'            => 'required|string|max:255',
+            'ciudadTienda'             => 'required|string|max:255',
+            'direccion'                => 'nullable|string|max:255',
+            'celular'                  => 'required|string|max:255',
+            'instagram_user'           => 'nullable|string|max:255',
+            'facebook_user'            => 'nullable|string|max:255',
+            'tiktok_user'              => 'nullable|string|max:255',
+            'puntuacion'               => 'required',
+            'descripcion'              => 'nullable',
+
+
+        ]);
+        $tienda=Tienda::update([
+            'nombre_tienda'=> $validateDataTienda['nombre_tienda'],
+            'ciudad'=>$validateDataTienda['ciudad'],
+            'direccion'=>$validateDataTienda['direccion'],
+            'celular'=>$validateDataTienda['celular'],
+            'instagram_user'=>$validateDataTienda['instagram_user'],
+            'facebook_user'=>$validateDataTienda['facebook_user'],
+            'tiktok_user'=>$validateDataTienda['tiktok_user'],
+            'puntuacion'=>$validateDataTienda['puntuacion'],
+            'descrpcion'=>$validateDataTienda['descripcion'],
+        ]);
+        return response()->json(['message'=>'Datos de tienda actualizados con exito',200]);
     }
 
     /**
@@ -101,6 +129,7 @@ class TiendaController extends Controller
             'is_categoria_selec'=>$validateData['is_categorias_selec'],
             'estado'=>1,
         ]);
+        //$request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
 
         if ($validateData['is_categorias_selec']==1) {
             $array = explode(",",$request->categorias);
@@ -137,10 +166,16 @@ class TiendaController extends Controller
             'cargo_delivery'           => 'nullable',
             'tiempo_delivery_min'      => 'nullable',
             'puntuacion'               => 'required',
-            'descripcion'              => 'nullable'
+            'descripcion'              => 'nullable',
+            'imagen_tienda'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
 
         ]);
-        
+        if (isset($validatedData['imagen_tienda'])) {
+            $img = $request->file('imagen_tienda');
+            $validatedData['imagen_tienda'] = time() . '.' . $img->getClientOriginalExtension();
+        } else {
+            $validatedData['imagen_tienda'] = null;
+        }
         $tienda=Tienda::create([
             'nombre_tienda'            =>$validateDataTienda['nombre_tienda'],
             'id_propietario'           =>$usuario->id,
@@ -159,8 +194,33 @@ class TiendaController extends Controller
             'tiempo_delivery_min'      =>$validateDataTienda['tiempo_delivery_min'],
             'puntuacion'               =>$validateDataTienda['puntuacion'],
             'descripcion'              =>$validateDataTienda['descripcion'],
+            'imagen'                   =>$validateData['imagen_tienda'],
             'estado'=>1,
         ]);
-
+       // $request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
     }
+
+    public function Updatefototienda(Request $request, $id){
+
+        $tienda=Tienda::find($id);
+        if (is_null($tienda)) {
+            return response()->json(['message'=>'No se encontro ninguna tienda',404]);
+        }
+
+        $validateData=$request->validate(
+            ['imagen'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',]
+        );
+        if (isset($validatedData['imagen'])) {
+            $img = $request->file('imagen');
+            $validatedData['imagen'] = time() . '.' . $img->getClientOriginalExtension();
+        } else {
+            $validatedData['imagen'] = null;
+        }
+        $tienda->imagen = $validatedData['imagen'];
+        $tienda->save();
+        //$request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
+        return response()->json(['message'=>'La foto se actualizo con exito',200]);
+    }
+
+
 }

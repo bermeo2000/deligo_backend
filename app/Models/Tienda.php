@@ -12,6 +12,7 @@ class Tienda extends Model
     protected $fillable = [
         'id_propietario',
         'nombre_tienda',
+        'imagen',
         'ciudad',
         'id_categoria_tienda',
         'direccion',
@@ -27,6 +28,6 @@ class Tienda extends Model
         'cargo_delivery',
         'tiempo_delivery_minutos',
         'puntuacion',
-        'descrpcion',
+        'descripcion',
     ];
 }
