@@ -70,7 +70,8 @@ Route::resource('categoria-producto', CategoriasProductosController::class);
 Route::resource('tipo-peso', TipoPesoController::class);
 
 //Marcas
-Route::resource('marca', MarcaController::class);
+Route::resource('Marca', MarcaController::class);
+Route::post('edit-img-marca/{id}', [MarcaController::class, 'editImagen']);
 
 //Productos
 Route::resource('producto', ProductoController::class);
