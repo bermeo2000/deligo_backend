@@ -13,5 +13,6 @@ class Marca extends Model
         'descripcion',
         'imagen',
         'estado',
+        'id_tienda' ,
     ];
 }

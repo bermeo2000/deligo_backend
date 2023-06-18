@@ -49,8 +49,8 @@ class MarcaController extends Controller
             'estado'=>1,
         ]);
 
-        $request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
-        return response()->json(['message'=>'Marca registrada'], 201);
+        $request->file('imagen')->storeAs("public/imagen/marca/{$marca->id}", $valiData['imagen']);
+        return response()->json(['message'=>'Marca registrada'], 200);
     }
 
     /**
@@ -128,7 +128,7 @@ class MarcaController extends Controller
         $request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $validateData['imagen']);
         $marca->imagen=$validateData['imagen'];
         $marca->save();
-        return response()->json(['message' => 'Foto de marca actualizada'], 201);
+        return response()->json(['message' => 'Imagen de marca actualizada'], 201);
     }
 
 }
