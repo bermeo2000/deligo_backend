@@ -65,6 +65,7 @@ Route::post('/registroEmprendedor', [TiendaController::class,'storeEmprendedor']
 
 //Categoria Productos
 Route::resource('categoria-producto', CategoriasProductosController::class);
+Route::get('/get-cat-prod-by-tienda/{id}', [CategoriasProductosController::class, 'getCatProducByTienda']);
 
 //Tipo Pesos
 Route::resource('tipo-peso', TipoPesoController::class);
