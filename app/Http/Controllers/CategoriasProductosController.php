@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoriasProductos;
 use App\Models\CategoriaTienda;
+use App\Models\Producto;
 use App\Models\Tienda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +36,7 @@ class CategoriasProductosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //probado sin imagen
         $validData = $request->validate([
             'descripcion' => 'required|string|max:255',
             'imagen' => 'nullable',
@@ -51,14 +52,16 @@ class CategoriasProductosController extends Controller
             $validData['imagen'] = null;
         }
 
-        $cat_prod_store = CategoriaTienda::create([
+        $cat_prod_store = CategoriasProductos::create([
             'descripcion' => $validData['descripcion'],
             'imagen' => $validData['imagen'],
             'id_tienda' => $validData['id_tienda'],
             'estado' => 1
         ]);
 
-        $request->file('imagen')->storeAs("public/images/categorias_tienda/{$tienda_guardar->id}/{$cat_prod_store->id}", $validData['imagen']);
+        if($validData['imagen'] != null){
+            $request->file('imagen')->storeAs("public/images/categorias_tienda/{$tienda_guardar->id}/{$cat_prod_store->id}", $validData['imagen']);
+        }
 
         return response()
         ->json([
@@ -71,9 +74,19 @@ class CategoriasProductosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CategoriasProductos $categoriasProductos)
+    public function show($id_tienda)
     {
-        //
+        /* 
+            Con este buscamos las categorias de 
+            tiendas por el ID de la tienda
+        */
+        $data = DB::table('categorias_productos')
+        ->where('id_tienda', $id_tienda)
+        ->where('estado', 1)
+        ->get();
+
+        return response($data, 200);
+        //probado
     }
 
     /**
@@ -89,7 +102,7 @@ class CategoriasProductosController extends Controller
      */
     public function update(Request $request, $id_categoria_producto)
     {
-        //
+        //No está probado
         $validData = $request->validate([
             'descripcion' => 'required|string|max:255',
             'id_tienda' => 'required',
@@ -97,39 +110,37 @@ class CategoriasProductosController extends Controller
 
         $cat_prod_update = CategoriasProductos::find($id_categoria_producto);
 
-        $tienda_guardar = Tienda::find($validData['id_tienda']);
-
-        $cat_tienda = CategoriaTienda::update([
-            'descripcion' => $validData['descripcion'],
-            'id_tienda' => $validData['id_tienda'],
-            'estado' => 1
-        ]);
-
+        $cat_prod_update->descripcion = $validData['descripcion'];
+        $cat_prod_update->id_tienda = $validData['id_tienda'];
 
         return response()
         ->json([
             'message' => 'Categoría de tu tienda actualizada.',
-            'data' => $cat_tienda   
+            'data' => $cat_prod_update   
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CategoriasProductos $categoriasProductos)
+    public function destroy($id_categoria_producto)
     {
-        //
-    }
+        //no está probado
+        $cat_prod_destroy = CategoriasProductos::find($id_categoria_producto);
 
-    /* 
-    Con este buscamos las categorias de tiendas por el ID de la tienda
-    */
-    public function categoriasPorTienda($id_tienda){
-        $data = DB::table('categorias_productos')
-        ->where('id_tienda', $id_tienda)
-        ->where('estado', 1)
+        $productos = Producto::where('id_categoria_productos', $cat_prod_destroy->id)
         ->get();
 
-        return response($data, 200);
+        if($productos == '[]'){ //esto se me hace que es super ilegal pero funciona
+            //aqui falta que haga cosas de verdad
+            return response()->json(['message' => 'Está vació y debería borrar', 'data' => $productos]);
+        }
+
+        return response()->json(['message' => 'No se puede eliminar porque está ligado a un producto', 'data' => $productos]);
+
+
     }
+
+    
+    
 }

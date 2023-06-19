@@ -15,7 +15,7 @@ class Producto extends Model
         'peso',
         'imagen',
         'estado',
-        'id_categoria_tienda',
+        'id_categoria_productos',
         'id_marca',
         'id_tipo_peso',
         'id_tienda',

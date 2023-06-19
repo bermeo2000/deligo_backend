@@ -47,7 +47,7 @@ use App\Http\Controllers\LoginController;
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/registro', [UserController::class, 'register']);
 
-//Tipo Usuariog
+//Tipo Usuario
 Route::resource('tipo-usuario', TipoUsuarioController::class);
 
 //Codigo Pais
