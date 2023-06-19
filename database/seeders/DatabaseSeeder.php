@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             TipoPagosSeeder::class,
             TipoAdvertenciasSeeder::class,
             CategoriasTiendasSeeder::class,
-            CodigoPaisSeeder::class
+            CodigoPaisSeeder::class,
+            UsuarioSeeder::class,
         ]);
     }
 }

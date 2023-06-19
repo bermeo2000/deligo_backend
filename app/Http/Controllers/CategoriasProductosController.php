@@ -38,7 +38,7 @@ class CategoriasProductosController extends Controller
         //
         $validData = $request->validate([
             'descripcion' => 'required|string|max:255',
-            'imagen' => 'null',
+            'imagen' => 'nullable',
             'id_tienda' => 'required',
         ]);
 
@@ -51,19 +51,19 @@ class CategoriasProductosController extends Controller
             $validData['imagen'] = null;
         }
 
-        $cat_tienda = CategoriaTienda::create([
+        $cat_prod_store = CategoriaTienda::create([
             'descripcion' => $validData['descripcion'],
             'imagen' => $validData['imagen'],
             'id_tienda' => $validData['id_tienda'],
             'estado' => 1
         ]);
 
-        $request->file('imagen')->storeAs("public/images/categorias_tienda/{$tienda_guardar->id}/{$cat_tienda->id}", $validData['imagen']);
+        $request->file('imagen')->storeAs("public/images/categorias_tienda/{$tienda_guardar->id}/{$cat_prod_store->id}", $validData['imagen']);
 
         return response()
         ->json([
             'message' => 'Categoría de tu tienda registrada',
-            'data' => $cat_tienda   
+            'data' => $cat_prod_store   
         ], 200);
 
     }
@@ -87,9 +87,30 @@ class CategoriasProductosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CategoriasProductos $categoriasProductos)
+    public function update(Request $request, $id_categoria_producto)
     {
         //
+        $validData = $request->validate([
+            'descripcion' => 'required|string|max:255',
+            'id_tienda' => 'required',
+        ]);
+
+        $cat_prod_update = CategoriasProductos::find($id_categoria_producto);
+
+        $tienda_guardar = Tienda::find($validData['id_tienda']);
+
+        $cat_tienda = CategoriaTienda::update([
+            'descripcion' => $validData['descripcion'],
+            'id_tienda' => $validData['id_tienda'],
+            'estado' => 1
+        ]);
+
+
+        return response()
+        ->json([
+            'message' => 'Categoría de tu tienda actualizada.',
+            'data' => $cat_tienda   
+        ], 200);
     }
 
     /**
