@@ -47,7 +47,6 @@ use App\Http\Controllers\LoginController;
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/registro', [UserController::class, 'register']);
 
-
 //Tipo Usuario
 Route::resource('tipo-usuario', TipoUsuarioController::class);
 
@@ -75,7 +74,8 @@ Route::resource('categoria-producto', CategoriasProductosController::class);
 Route::resource('tipo-peso', TipoPesoController::class);
 
 //Marcas
-Route::resource('marca', MarcaController::class);
+Route::resource('Marca', MarcaController::class);
+Route::post('edit-img-marca/{id}', [MarcaController::class, 'editImagen']);
 
 //Productos
 Route::resource('producto', ProductoController::class);

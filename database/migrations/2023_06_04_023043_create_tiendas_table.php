@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('ciudad');
             $table->foreignId('id_categoria_tienda')->constrained('categoria_tiendas');
             $table->string('direccion')->nullable(); //no siempre tienen
-
+            $table->string('imagen')->nullable();
             $table->string('celular');
             $table->foreignId('id_codigo_pais')->constrained('codigo_pais');
 

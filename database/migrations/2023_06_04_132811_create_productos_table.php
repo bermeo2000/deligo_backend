@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('imagen');
             $table->boolean('estado');
 
-            $table->foreignId('id_categoria_tienda')->constrained('categorias_productos');
+            $table->foreignId('id_categoria_productos')->constrained('categorias_productos');
             $table->foreignId('id_marca')->constrained('marcas');
             $table->foreignId('id_tipo_peso')->constrained('tipo_pesos');
             $table->foreignId('id_tienda')->constrained('tiendas');
