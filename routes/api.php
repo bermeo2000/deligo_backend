@@ -55,6 +55,10 @@ Route::resource('codigo-pais', CodigoPaisController::class);
 
 //Usuario
 Route::resource('usuario', UserController::class);
+Route::post('/usuario-update/{id}', [UserController::class, 'updateUser']);
+Route::post('/updat-User-Email/{id}', [UserController::class, 'updatUserEmail']);
+Route::post('/updat-User-Password/{id}', [UserController::class, 'updateditPassword']);
+Route::post('/updat-User-Image/{id}', [UserController::class, 'updatUserImage']);
 
 //Categoria Tiendas
 Route::resource('categoria-tienda', CategoriaTiendaController::class);
