@@ -120,5 +120,82 @@ class UserController extends Controller
         return response()->json(['message' => 'Usuario registrado'], 200);
     }
 
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::find($id);
+        if (is_null($user)) {
+            return response()->json(['message' => 'Usuario encontrado'], 404);
+        }
+        $validateData = $request->validate([
+            'nombre'   => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'ciudad'   =>'required|string|max:255',
+            'cedula'   =>'required|string|max:255',
+            'telefono' =>'required|string|max:255',
+           // 'imagen'=>'required'
+        ]);
+        $user->nombre=$validateData['nombre'];
+        $user->apellido=$validateData['apellido'];
+        $user->ciudad=$validateData['ciudad'];
+        $user->cedula=$validateData['cedula'];
+        $user->telefono=$validateData['telefono'];
+       
+        $user->save();
+        return response()->json(['message' => 'Usuario actualizado'], 201);
+    }
+
+    public function updatUserEmail(Request $request, $id)
+    {
+        $user = User::find($id);
+        if (is_null($user)) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+        $validateData = $request->validate([
+            'email' => 'required|email|max:50|unique:users',
+        ]);
+        $user->email = $validateData['email'];
+        $user->save();
+        return response()->json(['message' => 'Email actualizado'], 201);
+    }
+
+    public function updateditPassword(Request $request, $id)
+    {
+        $user = User::find($id);
+        if(is_null($user)){
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+        $validateData = $request->validate([
+            'password' => 'required|string|max:50|unique:users',
+        ]);
+        $validateData['password'] = Hash::make($validateData['password']);
+        $user->password = $validateData['password'];
+        $user->save();
+        return response()->json(['message' => 'Contraseña actualizada'], 201);
+    }
+
+
+    public function updatUserImage(Request $request, $id)
+    {
+
+        $user = User::find($id);
+        if (is_null($user)) {
+            return response()->json(['message' => 'Imagen no encontrada.'], 404);
+        }
+        $validData = $request->validate([
+            'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg'
+        ]);
+
+        $img=$request->file('imagen');
+        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        
+        $request->file('imagen')->storeAs("public/images/Usuario/{$user->id}", $validData['imagen']);
+
+        $user->imagen = $validData['imagen'];
+        $user->save();
+        return response()->json(['message' => 'Imagen actualizada'], 201);
+    }
+
+    
    
 }
