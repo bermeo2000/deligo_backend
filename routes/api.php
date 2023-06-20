@@ -76,6 +76,8 @@ Route::post('edit-img-marca/{id}', [MarcaController::class, 'editImagen']);
 
 //Productos
 Route::resource('producto', ProductoController::class);
+Route::get('get-prod-by-tienda', [ProductoController::class, 'getProductoByTienda']);
+
 
 //Categorias Usuarios
 Route::resource('categoria-usuario', CategoriasUsuarioController::class);
