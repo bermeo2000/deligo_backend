@@ -58,31 +58,22 @@ class TiendaController extends Controller
      */
     public function update(Request $request, Tienda $tienda)
     {
+        $tienda=Tienda::find($id);
+        if (is_null($tienda)) {
+            return response()->json(['message'=>'No se encontro ninguna tienda',404]);
+        }
         $validateDataTienda=$request->validate([
             'nombre_tienda'            => 'required|string|max:255',
-            'ciudadTienda'             => 'required|string|max:255',
+            'ciudad'             => 'required|string|max:255',
             'direccion'                => 'nullable|string|max:255',
             'celular'                  => 'required|string|max:255',
-            'instagram_user'           => 'nullable|string|max:255',
-            'facebook_user'            => 'nullable|string|max:255',
-            'tiktok_user'              => 'nullable|string|max:255',
-            'puntuacion'               => 'required',
             'descripcion'              => 'nullable',
-
-
+            'lat'                      =>'nullable',
+            'lng'                      =>'nullable',
         ]);
-        $tienda=Tienda::update([
-            'nombre_tienda'=> $validateDataTienda['nombre_tienda'],
-            'ciudad'=>$validateDataTienda['ciudad'],
-            'direccion'=>$validateDataTienda['direccion'],
-            'celular'=>$validateDataTienda['celular'],
-            'instagram_user'=>$validateDataTienda['instagram_user'],
-            'facebook_user'=>$validateDataTienda['facebook_user'],
-            'tiktok_user'=>$validateDataTienda['tiktok_user'],
-            'puntuacion'=>$validateDataTienda['puntuacion'],
-            'descrpcion'=>$validateDataTienda['descripcion'],
-        ]);
-        return response()->json(['message'=>'Datos de tienda actualizados con exito',200]);
+        $tienda->fill($validateDataTienda);
+        $tienda->save();
+        return response()->json(['message'=>'Datos de tienda actualizados con exito'],200);
     }
 
     /**
@@ -129,7 +120,7 @@ class TiendaController extends Controller
             'is_categoria_selec'=>$validateData['is_categorias_selec'],
             'estado'=>1,
         ]);
-        //$request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
+        $request->file('imagen')->storeAs("public/images/usuario/{$usuario->id}", $validateData['imagen']);
 
         if ($validateData['is_categorias_selec']==1) {
             $array = explode(",",$request->categorias);
@@ -170,11 +161,11 @@ class TiendaController extends Controller
             'imagen_tienda'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
 
         ]);
-        if (isset($validatedData['imagen_tienda'])) {
+        if (isset($validatedDataTienda['imagen_tienda'])) {
             $img = $request->file('imagen_tienda');
-            $validatedData['imagen_tienda'] = time() . '.' . $img->getClientOriginalExtension();
+            $validatedDataTienda['imagen_tienda'] = time() . '.' . $img->getClientOriginalExtension();
         } else {
-            $validatedData['imagen_tienda'] = null;
+            $validatedDataTienda['imagen_tienda'] = null;
         }
         $tienda=Tienda::create([
             'nombre_tienda'            =>$validateDataTienda['nombre_tienda'],
@@ -194,19 +185,17 @@ class TiendaController extends Controller
             'tiempo_delivery_min'      =>$validateDataTienda['tiempo_delivery_min'],
             'puntuacion'               =>$validateDataTienda['puntuacion'],
             'descripcion'              =>$validateDataTienda['descripcion'],
-            'imagen'                   =>$validateData['imagen_tienda'],
+            'imagen'                   =>$validatedDataTienda['imagen_tienda'],
             'estado'=>1,
         ]);
-       // $request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
+       $request->file('imagen')->storeAs("public/images/tienda/{$tienda->id}", $validatedDataTienda['imagen_tienda']);
     }
 
     public function Updatefototienda(Request $request, $id){
-
         $tienda=Tienda::find($id);
         if (is_null($tienda)) {
             return response()->json(['message'=>'No se encontro ninguna tienda',404]);
         }
-
         $validateData=$request->validate(
             ['imagen'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',]
         );
@@ -218,8 +207,38 @@ class TiendaController extends Controller
         }
         $tienda->imagen = $validatedData['imagen'];
         $tienda->save();
-        //$request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
-        return response()->json(['message'=>'La foto se actualizo con exito',200]);
+        $request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
+        return response()->json(['message'=>'La foto se actualizo con exito'],200);
+    }
+
+    public function updateRedes(Request $request, $id){
+        $tienda=Tienda::find($id);
+        if (is_null($tienda)) {
+            return response()->json(['message'=>'No se encontro ninguna tienda'],404);
+        }
+        $validateDataTienda=$request->validate([
+            'instagram_user'           =>'nullable|string|max:255',
+            'facebook_user'            =>'nullable|string|max:255',
+            'tiktok_user'              =>'nullable|string|max:255',
+        ]);
+        $tienda->fill($validateDataTienda);
+        $tienda->save();
+        return response()->json(['message'=>'Las redes sociales se actualizaron de manera exitosa'],200);
+    }
+
+    public function updateDelivery(Request $request, $id){
+        $tienda=Tienda::find($id);
+        if (is_null($tienda)) {
+            return response()->json(['message'=>'No se encontro ninguna tienda'],404);
+        }
+        $validateDataTienda=$request->validate([
+            'is_delivery'              => 'required',
+            'cargo_delivery'           => 'nullable',
+            'tiempo_delivery_min'      => 'nullable',
+        ]);
+        $tienda->fill($validateDataTienda);
+        $tienda->save();
+        return response()->json(['message'=>'Las funciones de delivery se actualizaron de manera exitosa'],200);
     }
 
 

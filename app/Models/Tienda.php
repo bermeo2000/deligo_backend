@@ -26,7 +26,7 @@ class Tienda extends Model
         'estado',
         'is_delivery',
         'cargo_delivery',
-        'tiempo_delivery_minutos',
+        'tiempo_delivery_min',
         'puntuacion',
         'descripcion',
     ];
