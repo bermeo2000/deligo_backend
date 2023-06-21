@@ -28,7 +28,9 @@ class ToppingsProductosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // esto lo voy a hacer para guardar el topping y la conexion con el producto
+        // pero primero voy a esperar a hacer el front end
+        
     }
 
     /**
