@@ -47,7 +47,7 @@ use App\Http\Controllers\LoginController;
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/registro', [UserController::class, 'register']);
 
-//Tipo Usuariog
+//Tipo Usuario
 Route::resource('tipo-usuario', TipoUsuarioController::class);
 
 //Codigo Pais
@@ -55,6 +55,10 @@ Route::resource('codigo-pais', CodigoPaisController::class);
 
 //Usuario
 Route::resource('usuario', UserController::class);
+Route::post('/usuario-update/{id}', [UserController::class, 'updateUser']);
+Route::post('/updat-User-Email/{id}', [UserController::class, 'updatUserEmail']);
+Route::post('/updat-User-Password/{id}', [UserController::class, 'updateditPassword']);
+Route::post('/updat-User-Image/{id}', [UserController::class, 'updatUserImage']);
 
 //Categoria Tiendas
 Route::resource('categoria-tienda', CategoriaTiendaController::class);
@@ -68,15 +72,19 @@ Route::post('/updateDelivery/{id}', [TiendaController::class,'updateDelivery']);
 
 //Categoria Productos
 Route::resource('categoria-producto', CategoriasProductosController::class);
+Route::get('/get-cat-prod-by-tienda/{id}', [CategoriasProductosController::class, 'getCatProducByTienda']);
 
 //Tipo Pesos
 Route::resource('tipo-peso', TipoPesoController::class);
 
 //Marcas
-Route::resource('marca', MarcaController::class);
+Route::resource('Marca', MarcaController::class);
+Route::post('edit-img-marca/{id}', [MarcaController::class, 'editImagen']);
 
 //Productos
 Route::resource('producto', ProductoController::class);
+Route::get('get-prod-by-tienda', [ProductoController::class, 'getProductoByTienda']);
+
 
 //Categorias Usuarios
 Route::resource('categoria-usuario', CategoriasUsuarioController::class);

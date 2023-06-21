@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('descripcion');
             $table->string('imagen')->nullable();
-            $table->foreignId('id_tiendas')->constrained('tiendas');
+            $table->foreignId('id_tienda')->constrained('tiendas');
             $table->boolean('estado');
         });
     }
