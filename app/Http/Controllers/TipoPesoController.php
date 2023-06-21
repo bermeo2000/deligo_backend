@@ -12,7 +12,13 @@ class TipoPesoController extends Controller
      */
     public function index()
     {
-        //
+        //todos los tipos de pesos
+
+        $data = TipoPeso::where('estado', 1)
+        ->get();
+
+        return response()->json($data, 200);
+
     }
 
     /**
