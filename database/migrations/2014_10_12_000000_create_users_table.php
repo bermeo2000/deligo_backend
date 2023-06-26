@@ -24,7 +24,7 @@ return new class extends Migration
             $table->boolean('estado');
 
             $table->foreignId('id_tipo_usuario')->constrained('tipo_usuarios');
-            $table->foreignId('id_codigo_pais')->constrained('codigo_pais');
+            $table->foreignId('id_codigo_pais')->nullable()->constrained('codigo_pais');
 
             /* 
                 por defecto si seleccionó o no irá 0 pero
