@@ -55,6 +55,7 @@ Route::resource('codigo-pais', CodigoPaisController::class);
 
 //Usuario
 Route::resource('usuario', UserController::class);
+Route::get('/user-index', [UserController::class, 'index']);
 Route::post('/usuario-update/{id}', [UserController::class, 'updateUser']);
 Route::post('/updat-User-Email/{id}', [UserController::class, 'updatUserEmail']);
 Route::post('/updat-User-Password/{id}', [UserController::class, 'updateditPassword']);

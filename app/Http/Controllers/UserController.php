@@ -17,7 +17,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $user = User::where('estado',1)->get();
+        return response()->json($user, 200);
+
+        //esto no se usa
     }
 
     /**
@@ -85,7 +88,6 @@ class UserController extends Controller
             'email'             => 'required|string|max:255',
             'password'          => 'required|string|max:255',
             'ciudad'            => 'required|string|max:255',
-            'id_codigo_pais'    => 'required',
             'id_tipo_usuario'   => 'required',
             'is_categorias_selec'=>'required',
         ]);
@@ -97,7 +99,6 @@ class UserController extends Controller
             'email'             =>$validateData['email'],
             'password'          =>$validateData['password'],
             'ciudad'            =>$validateData['ciudad'],
-            'id_codigo_pais'    =>$validateData['id_codigo_pais'],
             'id_tipo_usuario'   =>$validateData['id_tipo_usuario'],
             'is_categoria_selec'=>$validateData['is_categorias_selec'],
             'estado'=>1,
@@ -118,6 +119,7 @@ class UserController extends Controller
         } 
 
         return response()->json(['message' => 'Usuario registrado'], 200);
+        return response()->json($request);
     }
 
 

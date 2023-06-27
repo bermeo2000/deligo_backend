@@ -12,7 +12,10 @@ class CategoriaTiendaController extends Controller
      */
     public function index()
     {
-        //
+        $categoriaTienda = CategoriaTienda::where('estado',1)->get();
+        return response()->json($categoriaTienda, 200);
+
+        //esto no se usa
     }
 
     /**
