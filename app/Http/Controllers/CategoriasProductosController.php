@@ -74,19 +74,9 @@ class CategoriasProductosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id_tienda)
+    public function show($id)
     {
-        /* 
-            Con este buscamos las categorias de 
-            tiendas por el ID de la tienda
-        */
-        $data = DB::table('categorias_productos')
-        ->where('id_tienda', $id_tienda)
-        ->where('estado', 1)
-        ->get();
-
-        return response($data, 200);
-        //probado
+        // no se está usando
     }
 
     /**
@@ -139,6 +129,20 @@ class CategoriasProductosController extends Controller
         return response()->json(['message' => 'No se puede eliminar porque está ligado a un producto', 'data' => $productos]);
 
 
+    }
+
+    public function getCatProducByTienda($id_tienda){
+        /* 
+            Con este buscamos las categorias de 
+            tiendas por el ID de la tienda
+        */
+        $data = DB::table('categorias_productos')
+        ->where('id_tienda', $id_tienda)
+        ->where('estado', 1)
+        ->get();
+
+        return response($data, 200);
+        //probado
     }
 
     

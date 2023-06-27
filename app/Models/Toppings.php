@@ -12,7 +12,8 @@ class Toppings extends Model
     protected $fillable = [
         'descripcion',
         'imagen',
-        'id_tiendas',
+        'precio',
+        'id_tienda',
         'estado',
     ];
 }

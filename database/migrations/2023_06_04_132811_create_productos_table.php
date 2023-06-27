@@ -20,8 +20,8 @@ return new class extends Migration
             $table->boolean('estado');
 
             $table->foreignId('id_categoria_productos')->constrained('categorias_productos');
-            $table->foreignId('id_marca')->constrained('marcas');
-            $table->foreignId('id_tipo_peso')->constrained('tipo_pesos');
+            $table->foreignId('id_marca')->nullable()->constrained('marcas');
+            $table->foreignId('id_tipo_peso')->nullable()->constrained('tipo_pesos');
             $table->foreignId('id_tienda')->constrained('tiendas');
 
             $table->string('descripcion')->nullable();

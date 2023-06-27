@@ -67,9 +67,13 @@ Route::resource('categoria-tienda', CategoriaTiendaController::class);
 //Tiendas
 Route::resource('tienda', TiendaController::class);
 Route::post('/registroEmprendedor', [TiendaController::class,'storeEmprendedor']);
+Route::post('/updatefotoTienda/{id}', [TiendaController::class,'Updatefototienda']);
+Route::post('/updateRedes/{id}', [TiendaController::class,'updateRedes']);
+Route::post('/updateDelivery/{id}', [TiendaController::class,'updateDelivery']);
 
 //Categoria Productos
 Route::resource('categoria-producto', CategoriasProductosController::class);
+Route::get('/get-cat-prod-by-tienda/{id}', [CategoriasProductosController::class, 'getCatProducByTienda']);
 
 //Tipo Pesos
 Route::resource('tipo-peso', TipoPesoController::class);
@@ -80,6 +84,8 @@ Route::post('edit-img-marca/{id}', [MarcaController::class, 'editImagen']);
 
 //Productos
 Route::resource('producto', ProductoController::class);
+Route::get('get-prod-by-tienda', [ProductoController::class, 'getProductoByTienda']);
+
 
 //Categorias Usuarios
 Route::resource('categoria-usuario', CategoriasUsuarioController::class);
