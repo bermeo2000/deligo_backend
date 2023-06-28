@@ -41,7 +41,7 @@ class UsuarioSeeder extends Seeder
                 'emprendedor.png',
                 '0987456123',
                 1,
-                1,
+                2,
                 57,
                 0
             ],
@@ -55,7 +55,7 @@ class UsuarioSeeder extends Seeder
                 'usuario.png',
                 '0987456123',
                 1,
-                1,
+                3,
                 57,
                 0
             ],
