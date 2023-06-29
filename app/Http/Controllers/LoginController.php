@@ -25,20 +25,19 @@ class LoginController extends Controller
             ->where('users.email', $user->email)
             ->get();
           
-             return response()->json(
-                [
-                    'accesToken'=>$token,
-                    'tokenType'=>'Bearer',
-                    'typeUserId'=>$user->id_tipo_usuario,
-                    'id'=>$user->id,
-                    'userName'=>$user->name,
-                    'email'=>$user->email,
-                    'rol'=>$query[0]->tipo,          
-                    'message' => "Credenciales válidas"
-                ],
-                200
-    
-            );
+            return response()
+            ->json([
+
+                'accesToken'=>$token,
+                'tokenType'=>'Bearer',
+                'typeUserId'=>$user->id_tipo_usuario,
+                'id'=>$user->id,
+                'userName'=>$user->nombre.' '.$user->apellido,
+                'email'=>$user->email,
+                'rol'=>$query[0]->tipo,          
+                'message' => "Credenciales válidas"
+
+            ], 200);
         
     }
 }
