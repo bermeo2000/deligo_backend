@@ -12,7 +12,8 @@ class CodigoPaisController extends Controller
      */
     public function index()
     {
-        //
+        $codigoPais=CodigoPais::where('estado', 1)->get();
+        return response()->json($codigoPais,200);
     }
 
     /**
