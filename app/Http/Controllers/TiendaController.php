@@ -42,6 +42,7 @@ class TiendaController extends Controller
         if (is_null($tienda)) {
             return response()->json(['mesagge'=>'No se encontro ninguna tienda',400]);
         }
+        return response()->json($tienda);
         
     }
 
@@ -167,6 +168,7 @@ class TiendaController extends Controller
         } else {
             $validatedDataTienda['imagen_tienda'] = null;
         }
+        
         $tienda=Tienda::create([
             'nombre_tienda'            =>$validateDataTienda['nombre_tienda'],
             'id_propietario'           =>$usuario->id,
@@ -188,6 +190,7 @@ class TiendaController extends Controller
             'imagen'                   =>$validatedDataTienda['imagen_tienda'],
             'estado'=>1,
         ]);
+        
        $request->file('imagen')->storeAs("public/images/tienda/{$tienda->id}", $validatedDataTienda['imagen_tienda']);
     }
 
