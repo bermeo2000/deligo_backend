@@ -85,9 +85,9 @@ class UserController extends Controller
         $validateData = $request->validate([
             'nombre'            => 'required|string|max:255',
             'apellido'          => 'required|string|max:255',
+            'ciudad'            => 'required|string|max:255',
             'email'             => 'required|string|max:255',
             'password'          => 'required|string|max:255',
-            'ciudad'            => 'required|string|max:255',
             'id_tipo_usuario'   => 'required',
             'is_categorias_selec'=>'required',
         ]);
@@ -96,9 +96,9 @@ class UserController extends Controller
         $user = User::create([
             'nombre'            =>$validateData['nombre'],
             'apellido'          =>$validateData['apellido'],
+            'ciudad'            =>$validateData['ciudad'],
             'email'             =>$validateData['email'],
             'password'          =>$validateData['password'],
-            'ciudad'            =>$validateData['ciudad'],
             'id_tipo_usuario'   =>$validateData['id_tipo_usuario'],
             'is_categoria_selec'=>$validateData['is_categorias_selec'],
             'estado'=>1,
