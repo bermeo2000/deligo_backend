@@ -89,7 +89,7 @@ class UserController extends Controller
             'email'             => 'required|string|max:255',
             'password'          => 'required|string|max:255',
             'id_tipo_usuario'   => 'required',
-            'is_categorias_selec'=>'required',
+            'is_categoria_selec'=>'required',
         ]);
         
         $type=2;
@@ -100,13 +100,13 @@ class UserController extends Controller
             'email'             =>$validateData['email'],
             'password'          =>$validateData['password'],
             'id_tipo_usuario'   =>$validateData['id_tipo_usuario'],
-            'is_categoria_selec'=>$validateData['is_categorias_selec'],
+            'is_categoria_selec'=>$validateData['is_categoria_selec'],
             'estado'=>1,
 
           
         ]);
         
-        if ($validateData['is_categorias_selec']==1) {
+        if ($validateData['is_categoria_selec']==1) {
             $array = explode(",",$request->categorias);
             for ($i = 0; $i < count($array); $i++) {
                 $aux=$array[$i];
