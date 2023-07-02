@@ -65,7 +65,7 @@ class TiendaController extends Controller
         }
         $validateDataTienda=$request->validate([
             'nombre_tienda'            => 'required|string|max:255',
-            'ciudad'             => 'required|string|max:255',
+            'ciudad'                    => 'required|string|max:255',
             'direccion'                => 'nullable|string|max:255',
             'celular'                  => 'required|string|max:255',
             'descripcion'              => 'nullable',
@@ -86,6 +86,7 @@ class TiendaController extends Controller
     }
 
     public function storeEmprendedor(Request $request){
+        //return response()->json($request);
         $validateData=$request->validate([
             'nombre'            => 'required|string|max:255',
             'apellido'          => 'required|string|max:255',
@@ -97,13 +98,14 @@ class TiendaController extends Controller
             'imagen'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'id_codigo_pais'    => 'required',
             'id_tipo_usuario'   => 'required',
-            'is_categorias_selec'=>'required',
+            'is_categoria_selec'=>'required',
         ]);
-        if (isset($validatedData['imagen'])) {
+        if (isset($validateData['imagen'])) {
+           // return response()->json('entro');
             $img = $request->file('imagen');
-            $validatedData['imagen'] = time() . '.' . $img->getClientOriginalExtension();
+            $validateData['imagen'] = time() . '.' . $img->getClientOriginalExtension();
         } else {
-            $validatedData['imagen'] = null;
+            $validateData['imagen'] = null;
         }
 
 
@@ -118,22 +120,25 @@ class TiendaController extends Controller
             'imagen'            =>$validateData['imagen'],
             'id_codigo_pais'    =>$validateData['id_codigo_pais'],
             'id_tipo_usuario'   =>$validateData['id_tipo_usuario'],
-            'is_categoria_selec'=>$validateData['is_categorias_selec'],
+            'is_categoria_selec'=>$validateData['is_categoria_selec'],
             'estado'=>1,
         ]);
-        $request->file('imagen')->storeAs("public/images/usuario/{$usuario->id}", $validateData['imagen']);
+        if(isset($usuario->imagen)){
+            $img->storeAs("public/images/usuario/{$usuario->id}", $validateData['imagen']);
+        }
+        
 
-        if ($validateData['is_categorias_selec']==1) {
-            $array = explode(",",$request->categorias);
-            for ($i = 0; $i < count($array); $i++) {
-                $aux=$array[$i];
-                CategoriasUsuario::create([
-                    'estado' => 1,
-                    'id_usuario' => $usuario->id,
-                    'id_categoria_tienda' => $aux,
-                ]);
-            }
-        } 
+        // if ($validateData['is_categorias_selec']==1) {
+        //     $array = explode(",",$request->categorias);
+        //     for ($i = 0; $i < count($array); $i++) {
+        //         $aux=$array[$i];
+        //         CategoriasUsuario::create([
+        //             'estado' => 1,
+        //             'id_usuario' => $usuario->id,
+        //             'id_categoria_tienda' => $aux,
+        //         ]);
+        //     }
+        // } 
        $this->storeTienda($request,$usuario);
         return response()->json("funciono");
 
@@ -148,7 +153,7 @@ class TiendaController extends Controller
             'ciudadTienda'             => 'required|string|max:255',
             'direccion'                => 'nullable|string|max:255',
             'celular'                  => 'required|string|max:255',
-            'id_codigo_pais_tienda'    => 'required',
+            'id_codigo_pais'           => 'required',
             'instagram_user'           => 'nullable|string|max:255',
             'facebook_user'            => 'nullable|string|max:255',
             'tiktok_user'              => 'nullable|string|max:255',
@@ -162,11 +167,11 @@ class TiendaController extends Controller
             'imagen_tienda'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
 
         ]);
-        if (isset($validatedDataTienda['imagen_tienda'])) {
+        if (isset($validateDataTienda['imagen_tienda'])) {
             $img = $request->file('imagen_tienda');
-            $validatedDataTienda['imagen_tienda'] = time() . '.' . $img->getClientOriginalExtension();
+            $validateDataTienda['imagen_tienda'] = time() . '.' . $img->getClientOriginalExtension();
         } else {
-            $validatedDataTienda['imagen_tienda'] = null;
+            $validateDataTienda['imagen_tienda'] = null;
         }
         
         $tienda=Tienda::create([
@@ -176,7 +181,7 @@ class TiendaController extends Controller
             'ciudad'                   =>$validateDataTienda['ciudadTienda'],
             'direccion'                =>$validateDataTienda['direccion'],
             'celular'                  =>$validateDataTienda['celular'],
-            'id_codigo_pais'           =>$validateDataTienda['id_codigo_pais_tienda'],
+            'id_codigo_pais'           =>$validateDataTienda['id_codigo_pais'],
             'instagram_user'           =>$validateDataTienda['instagram_user'],
             'facebook_user'            =>$validateDataTienda['facebook_user'],
             'tiktok_user'              =>$validateDataTienda['tiktok_user'],
@@ -187,11 +192,11 @@ class TiendaController extends Controller
             'tiempo_delivery_min'      =>$validateDataTienda['tiempo_delivery_min'],
             'puntuacion'               =>$validateDataTienda['puntuacion'],
             'descripcion'              =>$validateDataTienda['descripcion'],
-            'imagen'                   =>$validatedDataTienda['imagen_tienda'],
+            'imagen'                   =>$validateDataTienda['imagen_tienda'],
             'estado'=>1,
         ]);
         
-       $request->file('imagen')->storeAs("public/images/tienda/{$tienda->id}", $validatedDataTienda['imagen_tienda']);
+       $img->storeAs("public/images/tienda/{$tienda->id}", $validateDataTienda['imagen_tienda']);
     }
 
     public function Updatefototienda(Request $request, $id){
@@ -202,13 +207,13 @@ class TiendaController extends Controller
         $validateData=$request->validate(
             ['imagen'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',]
         );
-        if (isset($validatedData['imagen'])) {
+        if (isset($validateData['imagen'])) {
             $img = $request->file('imagen');
-            $validatedData['imagen'] = time() . '.' . $img->getClientOriginalExtension();
+            $validateData['imagen'] = time() . '.' . $img->getClientOriginalExtension();
         } else {
-            $validatedData['imagen'] = null;
+            $validateData['imagen'] = null;
         }
-        $tienda->imagen = $validatedData['imagen'];
+        $tienda->imagen = $validateData['imagen'];
         $tienda->save();
         $request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
         return response()->json(['message'=>'La foto se actualizo con exito'],200);
