@@ -12,7 +12,8 @@ class CategoriasUsuarioController extends Controller
      */
     public function index()
     {
-        //
+        $categoriasUsuario = CategoriasUsuario::where('estado',1)->get();
+        return response()->json($categoriasUsuario, 200);
     }
 
     /**

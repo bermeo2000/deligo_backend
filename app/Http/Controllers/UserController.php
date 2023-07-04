@@ -107,7 +107,8 @@ class UserController extends Controller
         ]);
         
         if ($validateData['is_categoria_selec']==1) {
-            $array = explode(",",$request->categorias);
+            $array = explode(",",$request->id_categoria_tienda);
+
             for ($i = 0; $i < count($array); $i++) {
                 $aux=$array[$i];
                 CategoriasUsuario::create([
