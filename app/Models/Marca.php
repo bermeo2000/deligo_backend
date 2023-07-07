@@ -12,7 +12,7 @@ class Marca extends Model
     protected $fillable = [
         'descripcion',
         'imagen',
+        'id_tienda',
         'estado',
-        'id_tienda' ,
     ];
 }
