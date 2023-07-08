@@ -45,7 +45,7 @@ class LoginController extends Controller
         // es un emprendedor o un admin
 
         $tiendas_emp = DB::table('tiendas')
-            ->select('tiendas.id as id_tienda')
+            ->select('tiendas.id as id_tienda', 'tiendas.nombre_tienda')
             ->where('tiendas.id_propietario', $user->id)
             ->where('tiendas.estado', 1)
             ->get();
