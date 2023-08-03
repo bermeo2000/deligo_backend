@@ -128,17 +128,17 @@ class TiendaController extends Controller
         }
         
 
-        // if ($validateData['is_categorias_selec']==1) {
-        //     $array = explode(",",$request->categorias);
-        //     for ($i = 0; $i < count($array); $i++) {
-        //         $aux=$array[$i];
-        //         CategoriasUsuario::create([
-        //             'estado' => 1,
-        //             'id_usuario' => $usuario->id,
-        //             'id_categoria_tienda' => $aux,
-        //         ]);
-        //     }
-        // } 
+        if ($validateData['is_categoria_selec']==1) {
+            $array = explode(",",$request->categorias);
+            for ($i = 0; $i < count($array); $i++) {
+                $aux=$array[$i];
+                CategoriasUsuario::create([
+                    'estado' => 1,
+                    'id_usuario' => $usuario->id,
+                    'id_categoria_tienda' => $aux,
+                ]);
+            }
+        } 
        $this->storeTienda($request,$usuario);
         return response()->json("funciono");
 
