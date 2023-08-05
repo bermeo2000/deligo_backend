@@ -35,6 +35,7 @@ class LoginController extends Controller
                     'id' => $user->id,
                     'userName' => $user->nombre . ' ' . $user->apellido,
                     'email' => $user->email,
+                    'codigo_referido'=>$user->codigo_referido,
                     'rol' => $query[0]->tipo,
                     'message' => "Credenciales válidas"
 
@@ -59,6 +60,7 @@ class LoginController extends Controller
                 'email' => $user->email,
                 'rol' => $query[0]->tipo,
                 'id_tiendas' => $tiendas_emp,
+                'codigo_referido'=>$user->codigo_referido,
                 'message' => "Credenciales válidas"
             ]);
         

@@ -29,7 +29,7 @@ class UsuarioSeeder extends Seeder
                 1,
                 1,
                 57,
-                0
+                0,
             ],
             [
                 'Emprendedor',

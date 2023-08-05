@@ -32,6 +32,7 @@ class User extends Authenticatable
         'id_tipo_usuario',
         'id_codigo_pais',
         'is_categoria_selec',
+        'codigo_referido',
     ];
 
     /**

@@ -6,7 +6,7 @@ use App\Models\Tienda;
 use App\Models\User;
 use App\Models\CategoriasUsuario;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Str;
 class TiendaController extends Controller
 {
     /**
@@ -108,7 +108,10 @@ class TiendaController extends Controller
             $validateData['imagen'] = null;
         }
 
-
+        $codigo=$this->generarCodigo();
+        while (User::where('codigo_referido',$codigo)->exists()) {
+            $codigo=$this->generarCodigo();
+        }
         $usuario=User::create([
             'nombre'            =>$validateData['nombre'],
             'apellido'          =>$validateData['apellido'],
@@ -121,7 +124,8 @@ class TiendaController extends Controller
             'id_codigo_pais'    =>$validateData['id_codigo_pais'],
             'id_tipo_usuario'   =>$validateData['id_tipo_usuario'],
             'is_categoria_selec'=>$validateData['is_categoria_selec'],
-            'estado'=>1,
+            'codigo_referido'   =>$codigo,
+            'estado'            =>1,
         ]);
         if(isset($usuario->imagen)){
             $img->storeAs("public/images/usuario/{$usuario->id}", $validateData['imagen']);
@@ -139,11 +143,19 @@ class TiendaController extends Controller
                 ]);
             }
         } 
+        
+
        $this->storeTienda($request,$usuario);
         return response()->json("funciono");
 
         
 
+    }
+
+    public function generarCodigo(){
+        $longitud=12;
+        return Str::random($longitud);
+         
     }
 
     public function storeTienda($request, $usuario){
