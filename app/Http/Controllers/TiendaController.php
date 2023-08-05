@@ -14,7 +14,9 @@ class TiendaController extends Controller
      */
     public function index()
     {
-        //
+        $tienda = Tienda::where('estado',1)->get();
+        return response()->json($tienda, 200);
+
     }
 
     /**
