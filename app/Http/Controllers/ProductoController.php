@@ -88,9 +88,13 @@ class ProductoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Producto $producto)
+    public function show($id)
     {
-        //
+        $producto = Producto::find($id);
+        if (is_null($producto)) {
+            return response()->json("El producto no existe",404);
+        }
+        return response()->json($producto,200);
     }
 
     /**
