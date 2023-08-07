@@ -90,7 +90,13 @@ class ProductoController extends Controller
      */
     public function show($id)
     {
-        $producto = Producto::find($id);
+        // $producto = Producto::find($id);
+        $producto=DB::table('productos')
+        ->join('categorias_productos','productos.id_categoria_productos','=','categorias_productos.id')
+        ->select('productos.*','categorias_productos.descripcion as categoria')
+        ->where('productos.estado',1)
+        ->where('productos.id',$id)
+        ->get();
         if (is_null($producto)) {
             return response()->json("El producto no existe",404);
         }
