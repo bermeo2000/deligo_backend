@@ -120,7 +120,6 @@ class UserController extends Controller
         } 
 
         return response()->json(['message' => 'Usuario registrado'], 200);
-        return response()->json($request);
     }
 
 
@@ -199,6 +198,9 @@ class UserController extends Controller
         return response()->json(['message' => 'Imagen actualizada'], 201);
     }
 
-    
+    public function getUser($id){
+        $u = User::where('id', $id)->get();
+        return response()->json($u, 200);
+    }
    
 }
