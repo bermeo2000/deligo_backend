@@ -170,9 +170,17 @@ class ProductoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id_producto)
+    public function destroy($id)
     {
-        //NO ESTA PROBADO
+
+        $producto=Producto::find($id);
+        if (is_null($producto)) {
+            return response()->json(['message' => 'producto no encontrada'], 404);
+        }
+        $producto->estado = 0;
+        $producto->save();
+        return response()->json(['message'=>'producto eliminada']);
+/*         //NO ESTA PROBADO
         //promocion producto, reseña producto y  
         //toppings productos se deben tambien eliminar 
         //detalle de ventas no, porque queremos mantener el 
@@ -197,8 +205,11 @@ class ProductoController extends Controller
         }
 
         return response()->json(['message' => 'No se puede eliminar porque está ligada a un muchas cosas jaja']);
-
+ */
     }
+
+
+    
 
     public function getProductoByTienda($id_tienda){
         //Busca todos los productos por la tienda
