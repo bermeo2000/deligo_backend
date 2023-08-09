@@ -219,17 +219,17 @@ class ProductoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id_producto)
     {
 
-        $producto=Producto::find($id);
-        if (is_null($producto)) {
-            return response()->json(['message' => 'producto no encontrada'], 404);
-        }
-        $producto->estado = 0;
-        $producto->save();
-        return response()->json(['message'=>'producto eliminada']);
-/*         //NO ESTA PROBADO
+        // $producto=Producto::find($id);
+        // if (is_null($producto)) {
+        //     return response()->json(['message' => 'producto no encontrada'], 404);
+        // }
+        // $producto->estado = 0;
+        // $producto->save();
+        // return response()->json(['message'=>'producto eliminada']);
+        //NO ESTA PROBADO
         //promocion producto, reseña producto y  
         //toppings productos se deben tambien eliminar 
         //detalle de ventas no, porque queremos mantener el 
@@ -244,14 +244,14 @@ class ProductoController extends Controller
         $toppings_prod_destroy = ToppingsProductos::where('id_producto', $producto_destroy->id)->get();
 
         if($promo_prod_destroy == '[]' || $rese_prod_destroy == '[]' || $toppings_prod_destroy == '[]'){ //esto se me hace que es super ilegal pero funciona
-            //aqui falta que haga cosas de verdad
+            // aqui falta que haga cosas de verdad
             $producto_destroy->estado=0;
             $producto_destroy->save();
             return response()->json("El producto se elimino con exito", 200);
         }
 
         return response()->json(['message' => 'No se puede eliminar porque está ligada a un muchas cosas jaja']);
- */
+
     }
 
 
