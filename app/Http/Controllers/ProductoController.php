@@ -116,7 +116,6 @@ class ProductoController extends Controller
      */
     public function update(Request $request, $id_producto)
     {
-        //
         $validData = $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required',
@@ -166,6 +165,56 @@ class ProductoController extends Controller
         ], 200);        
 
     }
+    public function Actualizar(Request $request, $id_producto){
+        
+        $validData = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'precio' => 'required',
+            'peso' => 'nullable',
+            'imagen' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'id_categoria_productos' => 'required',
+            'id_marca' => 'nullable',
+            'id_tipo_peso' => 'nullable',
+            'id_tienda' => 'required',
+            'descripcion' => 'nullable',
+            'is_topping' => 'required',
+        ]);
+
+        $producto_update = Producto::find($id_producto);
+
+        $tienda_prod_updt = Tienda::find($producto_update->id_tienda);
+
+        if (isset($validData['imagen'])) {
+            $img = $request->file('imagen');
+            $validData['imagen'] = time() . '.' . $img->getClientOriginalExtension();
+        } else {
+            $validData['imagen'] = null;
+        }
+
+        if($validData['imagen'] !=  $producto_update->imagen){  //revisar el funcionamiento de esto
+            $producto_update->imagen = $validData['imagen'];
+
+            $request->file('imagen')->storeAs("public/images/productos/{$tienda_prod_updt->id}/{$producto_update->id}", $validData['imagen']);
+        }
+
+        $producto_update->nombre = $validData['nombre'];
+        $producto_update->precio = $validData['precio'];
+        $producto_update->peso = $validData['peso'];
+        $producto_update->id_categoria_productos = $validData['id_categoria_productos'];
+        $producto_update->id_marca = $validData['id_marca'];
+        $producto_update->id_tipo_peso = $validData['id_tipo_peso'];
+        $producto_update->id_tienda = $validData['id_tienda'];
+        $producto_update->descripcion = $validData['descripcion'];
+        $producto_update->is_topping = $validData['is_topping'];
+
+        $producto_update->save();
+
+        return response()
+        ->json([
+            'message' => 'Producto de tu tienda actualizado',
+            'data' => $producto_update   
+        ], 200);        
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -188,12 +237,9 @@ class ProductoController extends Controller
 
         if($promo_prod_destroy == '[]' || $rese_prod_destroy == '[]' || $toppings_prod_destroy == '[]'){ //esto se me hace que es super ilegal pero funciona
             //aqui falta que haga cosas de verdad
-            return response()->json([
-                'message' => 'Está vació y debería borrar', 
-                'promo_prod_destroy' => $promo_prod_destroy,
-                'rese_prod_destroy' => $rese_prod_destroy,
-                'toppings_prod_destroy' => $toppings_prod_destroy
-            ]);
+            $producto_destroy->estado=0;
+            $producto_destroy->save();
+            return response()->json("El producto se elimino con exito", 200);
         }
 
         return response()->json(['message' => 'No se puede eliminar porque está ligada a un muchas cosas jaja']);
@@ -204,12 +250,23 @@ class ProductoController extends Controller
         //Busca todos los productos por la tienda
 
         $data = DB::table('productos')
-        ->where('id_tienda', $id_tienda)
-        ->where('estado', 1)
+        ->select('productos.*')
+        ->where('productos.id_tienda', $id_tienda)
+        ->where('productos.estado', 1)
         ->get();
 
         return response($data, 200);
         
+    }
+
+    public function getProductosByCategoria($idCategoria){
+        $productos=DB::table('productos')
+        //->join()
+        ->select('productos.*')
+        ->where('productos.id_categoria_productos',$idCategoria)
+        ->where('productos.estado',1)
+        ->get();
+        return response()->json($productos);
     }
     
 
