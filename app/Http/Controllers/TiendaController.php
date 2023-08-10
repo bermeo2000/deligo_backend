@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\CategoriasUsuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 class TiendaController extends Controller
 {
     /**
@@ -14,9 +15,14 @@ class TiendaController extends Controller
      */
     public function index()
     {
-        $tienda = Tienda::where('estado',1)->get();
+        //$tienda = Tienda::where('estado',1)->get();
+        
+        $tienda=DB::table('tiendas')
+        ->join('categoria_tiendas','tiendas.id_categoria_tienda','=','categoria_tiendas.id')
+        ->select('tiendas.*', 'categoria_tiendas.nombre as categoria')
+        ->where('tiendas.estado',1)
+        ->get();
         return response()->json($tienda, 200);
-
     }
 
     /**
