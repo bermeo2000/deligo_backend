@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('categorias_productos', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion'); //nombre
-            $table->string('imagen')->nullable();
+          //  $table->string('imagen')->nullable();
             $table->foreignId('id_tienda')->constrained('tiendas');
             $table->boolean('estado');
         });
