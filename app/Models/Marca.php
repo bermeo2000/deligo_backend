@@ -11,7 +11,6 @@ class Marca extends Model
     public $timestamps = false;
     protected $fillable = [
         'descripcion',
-        'imagen',
         'id_tienda',
         'estado',
     ];
