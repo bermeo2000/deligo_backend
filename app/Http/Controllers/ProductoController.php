@@ -79,8 +79,11 @@ class ProductoController extends Controller
         if($validData['imagen'] != null){
             $request->file('imagen')->storeAs("public/images/productos/{$tienda_guardar->id}/{$producto->id}", $validData['imagen']);
         }
+    if($producto->is_topping==1){
         $this->storeTopping($request,$producto->id,$producto->id_tienda);
 
+    }
+       
         return response()
         ->json([
             'message' => 'Producto de tu tienda registrado',
