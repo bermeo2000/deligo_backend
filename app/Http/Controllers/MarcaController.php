@@ -36,20 +36,14 @@ class MarcaController extends Controller
     {
         $validateData=$request->validate([
             'descripcion'=>'required|string|max:255',
-            'imagen' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'id_tienda' =>'required',
         ]);
-        //imagen
-        $img = $request->file('imagen');
-        $valiData['imagen'] =  time().'.'.$img->getClientOriginalExtension();
         $marca=Marca::create([
             'descripcion'=>$validateData['descripcion'],
-            'imagen'=>$valiData['imagen'],
             'id_tienda'=>$validateData['id_tienda'],
             'estado'=>1,
         ]);
 
-        $request->file('imagen')->storeAs("public/imagen/marca/{$marca->id}", $valiData['imagen']);
         return response()->json(['message'=>'Marca registrada'], 200);
     }
 
@@ -114,7 +108,7 @@ class MarcaController extends Controller
     }
 
 
-    public function editImagen(Request $request, $id ){
+/*     public function editImagen(Request $request, $id ){
 
         $marca = Marca::find($id);
         if (is_null($marca)) {
@@ -129,6 +123,6 @@ class MarcaController extends Controller
         $marca->imagen=$validateData['imagen'];
         $marca->save();
         return response()->json(['message' => 'Imagen de marca actualizada'], 201);
-    }
+    } */
 
 }
