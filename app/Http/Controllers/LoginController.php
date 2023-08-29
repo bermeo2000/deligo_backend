@@ -18,7 +18,7 @@ class LoginController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        /* $token = $user->createToken('auth_token')->plainTextToken; */
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         $query = DB::table('users')
             ->join('tipo_usuarios', 'users.id_tipo_usuario', '=', 'tipo_usuarios.id')
@@ -29,7 +29,7 @@ class LoginController extends Controller
         if ($user->id_tipo_usuario == 3) {
             return response()
                 ->json([
-                    /* 'accesToken' => $token, */
+                    'accesToken' => $token,
                     /* 'tokenType'=>'Bearer', */
                     'typeUserId' => $user->id_tipo_usuario,
                     'id' => $user->id,
@@ -53,7 +53,7 @@ class LoginController extends Controller
 
         return response()
             ->json([
-                /* 'accesToken' => $token, */
+                'accesToken' => $token,
                 'typeUserId' => $user->id_tipo_usuario,
                 'id' => $user->id,
                 'userName' => $user->nombre . ' ' . $user->apellido,
