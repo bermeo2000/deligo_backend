@@ -269,5 +269,14 @@ class TiendaController extends Controller
         return response()->json(['message'=>'Las funciones de delivery se actualizaron de manera exitosa'],200);
     }
 
+    public function getAllTiendasCategoria($id){
+        $tienda=Tienda::where('id_categoria_tienda',$id)
+        ->where('estado',1)
+        ->get();
+        if (is_null($tienda)) {
+            return response()->json(['mesagge'=>'No se encontro ninguna tienda',400]);
+        }
+        return response()->json($tienda);
+    }
 
 }

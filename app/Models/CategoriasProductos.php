@@ -11,7 +11,7 @@ class CategoriasProductos extends Model
     public $timestamps = false;
     protected $fillable = [
         'descripcion',
-        'imagen',
+       /*  'imagen', */
         'id_tienda',
         'estado',
     ];
