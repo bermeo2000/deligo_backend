@@ -76,10 +76,10 @@ class MarcaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_marca)
     {
-        $marca = Marca::find($id);
-        if (is_null($marca)) {
+        $marca = Marca::find($id_marca);
+        if (is_null($id_marca)) {
             return response()->json(['message' => 'marca no encontrado.'], 404);
         }
         $validateData = $request->validate([
@@ -96,15 +96,16 @@ class MarcaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id_marca)
     {
-        $marca=Marca::find($id);
+        $marca=Marca::find($id_marca);
         if (is_null($marca)) {
             return response()->json(['message' => 'Marca no encontrada'], 404);
         }
         $marca->estado = 0;
         $marca->save();
-        return response()->json(['message'=>'Marca eliminada']);
+       /*  return response()->json(['message'=>'Marca eliminada']); */
+       return response()->json("La marcas se elimino con exito", 200);
     }
 
 

@@ -13,10 +13,18 @@ class ToppingsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+   
+
         //la idea de esto es que el emprendedor pueda 
         //ver todos los toppings que tiene asi en general
+    public function index()
+    {
+        
+        $toppings = Toppings::where('estado',1) ->get();
+        if (count($toppings)==0) {
+            return response()-> json('no existen toppings',404);
+        }
+        return response()->json($toppings,200);
     }
 
     /**
@@ -32,75 +40,43 @@ class ToppingsController extends Controller
      */
     public function store(Request $request)
     {
-        //falta probarlo
-        //este siempre va a guardar el nuevo topping 
-        //unido al producto, probablemente esto vaya en un for o algo asi XD
-
-        $validData = $request->validate([
-            'descripcion' => 'required|string|max:255',
-            'precio' => 'required',
-            'id_tienda' => 'required',
-            'imagen' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-            //esto puede ser diferente
-            'id_producto' => 'required'
+        $validateData=$request->validate([
+            'descripcion'=>'required|string|max:255',
+            'imagen' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'precio' =>'required',
+            'id_tienda' =>'required',
+        ]);
+        //imagen
+        $img = $request->file('imagen');
+        $valiData['imagen'] =  time().'.'.$img->getClientOriginalExtension();
+        $toppings=Toppings::create([
+            'descripcion'=>$validateData['descripcion'],
+            'imagen'=>$valiData['imagen'],
+            'precio'=>$validateData['precio'],
+            'id_tienda'=>$validateData['id_tienda'],
+            'estado'=>1,
         ]);
 
-        $p = Producto::find($validData['id_producto']);
-        $t = Tienda::find($validData['id_tienda']);
-
-        if (isset($validData['imagen'])) {
-            $img = $request->file('imagen');
-            $validData['imagen'] = time() . '.' . $img->getClientOriginalExtension();
-        } else {
-            $validData['imagen'] = null;
-        }
-
-        if(isset($p) && isset($t)){
-
-            $topping = Toppings::create([
-                'descripcion' => $validData['descripcion'],
-                'precio' => $validData['precio'],
-                'id_tienda' => $validData['id_tienda'],
-                'imagen' => $validData['imagen'],
-                'estado' => 1
-            ]);
-
-            if($validData['imagen'] != null){
-                $request->file('imagen')->storeAs("public/images/toppings/{$t->id}/{$p->id}/{$topping->id}", $validData['imagen']);
-            }
-
-            $toppings_producto = ToppingsProductos::create([
-                'id_producto' => $validData['id_producto'],
-                'id_toppings' => $topping->id,
-                'estado' => 1
-            ]);
-
-
-            return response()
-            ->json([
-                'message' => 'Categoría de tu tienda registrada',
-                'topping' => $topping,
-                'toppings_producto' => $toppings_producto  
-            ], 200);
-
-
-
-        } else {
-            return response()
-            ->json([
-                'message' => 'El producto o la tienda no existen.',
-                /* 'data' => '', */
-            ], 400);
-        }
-
+        $request->file('imagen')->storeAs("public/imagen/toppings/{$toppings->id}", $valiData['imagen']);
+        return response()->json(['message'=>'toppings registrada'], 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Toppings $toppings)
+    public function show($id)
     {
-        //
+        $toppings=DB::table('toppings')
+        ->join('tiendas','toppings.id_tienda','=','tiendas.id')
+        ->select('toppings.*')
+        ->where('toppings.estado',1)
+        ->where('toppings.id_tienda',$id)
+        ->orWhere('toppings.id_tienda',1)
+        ->get();
+        if (count($toppings)== 0) {
+            return response()->json(['message' => 'toppings no encontrado'], 404);
+        }
+        return response()->json($toppings);
     }
 
     /**
@@ -114,16 +90,53 @@ class ToppingsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Toppings $toppings)
+    public function update(Request $request, $id)
     {
-        //a faltan cosas
+        $toppings = Toppings::find($id);
+        if (is_null($toppings)) {
+            return response()->json(['message' => 'toppings no encontrado.'], 404);
+        }
+        $validateData = $request->validate([
+            'descripcion'=>'required|string|max:255',
+            'id_tienda' =>'required',
+            'precio' =>'required',
+        ]);
+        $toppings->descripcion = $validateData['descripcion'];
+        $toppings->id_tienda = $validateData['id_tienda'];
+        $toppings->precio = $validateData['precio'];
+        $toppings->save();
+        return response()->json(['message' => 'toppings actualizado'], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Toppings $toppings)
+    public function destroy($id)
     {
-        //
+        $toppings=Toppings::find($id);
+        if (is_null($toppings)) {
+            return response()->json(['message' => 'toppings no encontrada'], 404);
+        }
+        $toppings->estado = 0;
+        $toppings->save();
+        return response()->json(['message'=>'toppings eliminada']);
     }
+
+
+    public function editImagen(Request $request, $id ){
+        $toppings = Toppings::find($id);
+        if (is_null($toppings)) {
+            return response()->json(['message' => 'toppings no encontrada.'], 404);
+        }
+        $validateData = $request->validate([
+            'imagen' => 'required|mimes:jpeg,bmp,png',
+        ]);
+        $img=$request->file('imagen');
+        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        $request->file('imagen')->storeAs("public/images/toppings/{$toppings->id}", $validateData['imagen']);
+        $toppings->imagen=$validateData['imagen'];
+        $toppings->save();
+        return response()->json(['message' => 'Foto de toppings actualizada'], 201);
+    }
+
 }
