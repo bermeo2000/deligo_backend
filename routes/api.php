@@ -44,7 +44,7 @@ use App\Http\Controllers\LoginController;
 //Espacio de desarrollo
 
 //Registro y Login
-
+Route::post('/login', [LoginController::class, 'login']);
 Route::post('/registro', [UserController::class, 'register']);
 
 //Tipo Usuario
@@ -134,5 +134,5 @@ Route::resource('amon-tiendas', AmonestacionTiendaController::class);
 Route::middleware('auth:sanctum')->group( function () {
 
     //Rutas con TOKEN
-    Route::post('/login', [LoginController::class, 'login']);
+
 });
