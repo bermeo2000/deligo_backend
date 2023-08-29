@@ -97,17 +97,33 @@ class ProductoController extends Controller
      */
     public function show($id)
     {
-        // $producto = Producto::find($id);
+        $dataProd=Array();
+        $producto = Producto::find($id);
         $producto=DB::table('productos')
         ->join('categorias_productos','productos.id_categoria_productos','=','categorias_productos.id')
+        // ->join('toppings_productos','productos.id','=','toppings_productos.id_producto')
+        // ->join('toppings','toppings_productos.id_toppings','=','toppings.id')
+        ->select('productos.*','categorias_productos.descripcion as categoria')
         ->select('productos.*','categorias_productos.descripcion as categoria')
         ->where('productos.estado',1)
         ->where('productos.id',$id)
+        // ->where('toppings_productos.estado',1)
         ->get();
-        if (is_null($producto)) {
+        if ($producto->isEmpty()) {
             return response()->json("El producto no existe",404);
         }
-        return response()->json($producto,200);
+       $toppings=DB::table('toppings_productos')
+       ->join('productos','toppings_productos.id_producto','=','productos.id')
+       ->join('toppings','toppings_productos.id_toppings','=','toppings.id')
+       ->select('toppings.*')
+       ->where('toppings_productos.id_producto',$id)
+       ->where('toppings_productos.estado',1)
+       ->get();
+       if ($toppings->isEmpty()) {
+       $toppings="sin toppings";
+        }
+    array_push($dataProd,['Producto'=>$producto,'Toppings'=>$toppings]);
+        return response()->json($dataProd,200);
     }
 
     /**
@@ -338,5 +354,7 @@ class ProductoController extends Controller
             }
         }       
     }
+
+
 
 }

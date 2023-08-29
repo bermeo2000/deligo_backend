@@ -71,9 +71,11 @@ Route::post('/registroEmprendedor', [TiendaController::class,'storeEmprendedor']
 Route::post('/updatefotoTienda/{id}', [TiendaController::class,'Updatefototienda']);
 Route::post('/updateRedes/{id}', [TiendaController::class,'updateRedes']);
 Route::post('/updateDelivery/{id}', [TiendaController::class,'updateDelivery']);
+Route::get('/get-tienda-by-cat/{id}', [TiendaController::class, 'getAllTiendasCategoria']);
 //Categoria Productos
 Route::resource('categoria-producto', CategoriasProductosController::class);
 Route::get('/get-cat-prod-by-tienda/{id}', [CategoriasProductosController::class, 'getCatProducByTienda']);
+
 
 //Tipo Pesos
 Route::resource('tipo-peso', TipoPesoController::class);
