@@ -52,9 +52,36 @@ class ToppingsController extends Controller
             'id_tienda'=>$validateData['id_tienda'],
             'estado'=>1,
         ]);
+        if($toppings->is_topping==1){
+            $this->storeTopping($request,$toppings->id,$toppings->id_tienda);
+    
+        }
 
         return response()->json(['message'=>'toppings registrada'], 200);
     }
+
+
+    
+    public function storeTopping($request)
+    {
+        $toppings=json_decode($request->toppings,true);
+        $aux= count($toppings);
+        for ($i=0; $i < $aux ; $i++) 
+        { 
+            $aux2=$toppings[$i]; 
+            {
+                 return response()
+                        ->json([
+                        'message' => 'El producto o la tienda no existen.',
+                        /* 'data' => '', */
+                         ], 400);
+            }
+        }       
+    }
+
+
+
+
 
     /**
      * Display the specified resource.
