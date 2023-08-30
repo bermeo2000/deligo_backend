@@ -61,14 +61,8 @@ class ToppingsController extends Controller
      */
     public function show($id)
     {
-        $toppings=DB::table('toppings')
-        ->join('tiendas','toppings.id_tienda','=','tiendas.id')
-        ->select('toppings.*')
-        ->where('toppings.estado',1)
-        ->where('toppings.id_tienda',$id)
-        ->orWhere('toppings.id_tienda',1)
-        ->get();
-        if (count($toppings)== 0) {
+        $toppings=Toppings::find($id);
+        if (is_null($toppings)) {
             return response()->json(['message' => 'toppings no encontrado'], 404);
         }
         return response()->json($toppings);
