@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->decimal('precio');
             $table->integer('cantidad');
-            
-
+            $table->string('anotes')->nullable();
             $table->foreignId('id_producto')->nullable()->constrained('productos');
             $table->foreignId('id_promocion_producto')->nullable()->constrained('promocion_productos');
 
