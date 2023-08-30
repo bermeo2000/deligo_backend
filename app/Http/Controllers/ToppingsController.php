@@ -42,22 +42,17 @@ class ToppingsController extends Controller
     {
         $validateData=$request->validate([
             'descripcion'=>'required|string|max:255',
-            'imagen' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'precio' =>'required',
             'id_tienda' =>'required',
         ]);
-        //imagen
-        $img = $request->file('imagen');
-        $valiData['imagen'] =  time().'.'.$img->getClientOriginalExtension();
+
         $toppings=Toppings::create([
             'descripcion'=>$validateData['descripcion'],
-            'imagen'=>$valiData['imagen'],
             'precio'=>$validateData['precio'],
             'id_tienda'=>$validateData['id_tienda'],
             'estado'=>1,
         ]);
 
-        $request->file('imagen')->storeAs("public/imagen/toppings/{$toppings->id}", $valiData['imagen']);
         return response()->json(['message'=>'toppings registrada'], 200);
     }
 
@@ -111,15 +106,15 @@ class ToppingsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id_toppings)
     {
-        $toppings=Toppings::find($id);
+        $toppings=Toppings::find($id_toppings);
         if (is_null($toppings)) {
             return response()->json(['message' => 'toppings no encontrada'], 404);
         }
         $toppings->estado = 0;
         $toppings->save();
-        return response()->json(['message'=>'toppings eliminada']);
+        return response()->json("el toppings se elimino con exito", 200);
     }
 
 
