@@ -52,14 +52,8 @@ class MarcaController extends Controller
      */
     public function show($id)
     {
-        $marca=DB::table('marcas')
-        ->join('tiendas','marcas.id_tienda','=','tiendas.id')
-        ->select('marcas.*')
-        ->where('marcas.estado',1)
-        ->where('marcas.id_tienda',$id)
-        ->orWhere('marcas.id_tienda',1)
-        ->get();
-        if (count($marca)== 0) {
+        $marca=Marca::find($id);
+        if (is_null($marca)) {
             return response()->json(['message' => 'marca no encontrado'], 404);
         }
         return response()->json($marca);
