@@ -34,15 +34,19 @@ class MarcaController extends Controller
      */
     public function store(Request $request)
     {
-        $validateData=$request->validate([
-            'descripcion'=>'required|string|max:255',
-            'id_tienda' =>'required',
-        ]);
-        $marca=Marca::create([
-            'descripcion'=>$validateData['descripcion'],
-            'id_tienda'=>$validateData['id_tienda'],
-            'estado'=>1,
-        ]);
+
+        $idTienda=$request->id_tienda;
+        $marcas=json_decode($request->marcas,true);
+        $aux= count($marcas);
+        for ($i=0; $i < $aux ; $i++) 
+        { 
+            $aux2=$marcas[$i];
+            $marca=Marca::create([
+                'descripcion' => $aux2['descripcion'],
+                'id_tienda' => $idTienda,
+                'estado' => 1
+                ]);
+        }       
 
         return response()->json(['message'=>'Marca registrada'], 200);
     }
