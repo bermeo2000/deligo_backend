@@ -35,8 +35,10 @@ class LoginController extends Controller
                     'id' => $user->id,
                     'userName' => $user->nombre . ' ' . $user->apellido,
                     'email' => $user->email,
-                    'codigo_referido'=>$user->codigo_referido,
+                    //se quita porque en caso de un usuario normal no va a tener nunca
+                    /* 'codigo_referido'=>$user->codigo_referido, */
                     'rol' => $query[0]->tipo,
+                    'codigo_referido_usuario' => $user->codigo_referido_usuario,
                     'message' => "Credenciales válidas"
 
                 ], 200);
@@ -63,12 +65,6 @@ class LoginController extends Controller
                 'codigo_referido'=>$user->codigo_referido,
                 'message' => "Credenciales válidas"
             ]);
-        
-        //tener en cuenta que puede tener mas de una tienda y pensar en como se va a manejar eso
-        //TODO
-        /* 
-            hacer un seeder de tienda
-            ver que funcione con mas de una tienda para el mismo usuario y agregar un pantala adicional
-        */
+
     }
 }
