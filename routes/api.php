@@ -62,6 +62,8 @@ Route::post('/updat-User-Password/{id}', [UserController::class, 'updateditPassw
 Route::post('/updat-User-Image/{id}', [UserController::class, 'updatUserImage']);
 Route::get('/get-user/{id}', [UserController::class, 'getUser']);
 
+Route::post('/save-referido-user', [UserController::class, 'saveReferidoUsuario']);
+
 //Categoria Tiendas
 Route::resource('categoria-tienda', CategoriaTiendaController::class);
 

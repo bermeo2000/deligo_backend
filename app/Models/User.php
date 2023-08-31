@@ -33,7 +33,9 @@ class User extends Authenticatable
         'id_codigo_pais',
         'is_categoria_selec',
         'codigo_referido',
+        'codigo_referido_usuario'
     ];
+    
 
     /**
      * The attributes that should be hidden for serialization.
