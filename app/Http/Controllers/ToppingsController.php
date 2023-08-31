@@ -40,44 +40,25 @@ class ToppingsController extends Controller
      */
     public function store(Request $request)
     {
-        $validateData=$request->validate([
-            'descripcion'=>'required|string|max:255',
-            'precio' =>'required',
-            'id_tienda' =>'required',
-        ]);
-
-        $toppings=Toppings::create([
-            'descripcion'=>$validateData['descripcion'],
-            'precio'=>$validateData['precio'],
-            'id_tienda'=>$validateData['id_tienda'],
-            'estado'=>1,
-        ]);
-        if($toppings->is_topping==1){
-            $this->storeTopping($request,$toppings->id,$toppings->id_tienda);
-    
-        }
+        $idTienda=$request->id_tienda;
+        $toppings=json_decode($request->toppings,true);
+        $aux= count($toppings);
+        for ($i=0; $i < $aux ; $i++) 
+        { 
+            $aux2=$toppings[$i];
+            $topping = Toppings::create([
+                'descripcion' => $aux2['descripcion'],
+                'precio' => $aux2['precio'],
+                'id_tienda' => $idTienda,
+                'estado' => 1
+                ]);
+        }       
 
         return response()->json(['message'=>'toppings registrada'], 200);
     }
 
 
     
-    public function storeTopping($request)
-    {
-        $toppings=json_decode($request->toppings,true);
-        $aux= count($toppings);
-        for ($i=0; $i < $aux ; $i++) 
-        { 
-            $aux2=$toppings[$i]; 
-            {
-                 return response()
-                        ->json([
-                        'message' => 'El producto o la tienda no existen.',
-                        /* 'data' => '', */
-                         ], 400);
-            }
-        }       
-    }
 
 
 
@@ -153,6 +134,17 @@ class ToppingsController extends Controller
         $toppings->imagen=$validateData['imagen'];
         $toppings->save();
         return response()->json(['message' => 'Foto de toppings actualizada'], 201);
+    }
+
+
+    public function getToppingsTienda($id){
+        $toppings = Toppings::where('id_tienda',$id)
+        ->where('estado',1) 
+        ->get();
+        if (count($toppings)==0) {
+            return response()-> json('no existen toppings',404);
+        }
+        return response()->json($toppings,200);
     }
 
 }

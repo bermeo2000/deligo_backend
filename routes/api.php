@@ -101,7 +101,7 @@ Route::resource('promo-productos', PromocionProductoController::class);
 
 //Toppings
 Route::resource('toppings', ToppingsController::class);
-
+Route::get('get-topping-by-tienda/{id}', [ToppingsController::class, 'getToppingsTienda']);
 //Toppings Productos
 Route::resource('toppings-productos', ToppingsProductosController::class);
 
