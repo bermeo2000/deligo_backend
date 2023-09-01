@@ -45,6 +45,36 @@ class UsuarioSeeder extends Seeder
                 57,
                 0
             ],
+            //Emprendedores para probar el video de la beta
+            [
+                'Josselyn',
+                'Mendoza',
+                'joss_men@emp.com',
+                '12345678',
+                'Calceta',
+                '1234567890',
+                'Mujer1',
+                '0987456123',
+                1,
+                2,
+                57,
+                0
+            ],
+            [
+                'Luis',
+                'Macías Bermeo',
+                'bermeo2000@emp.com',
+                '12345678',
+                'Calceta',
+                '1234567890',
+                'Hombre1.jpg',
+                '0987456123',
+                1,
+                2,
+                57,
+                0
+            ],
+            //USUARIOS
             [
                 'Usuario',
                 'Inicial',
@@ -53,6 +83,20 @@ class UsuarioSeeder extends Seeder
                 'Calceta',
                 '1234567890',
                 'usuario.png',
+                '0987456123',
+                1,
+                3,
+                57,
+                0
+            ],
+            [
+                'Andres',
+                'Zambrano',
+                'zambrasda17@gmail.com',
+                '12345678',
+                'Calceta',
+                '1234567890',
+                'Hombre2.jpg',
                 '0987456123',
                 1,
                 3,
