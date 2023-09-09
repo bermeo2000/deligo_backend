@@ -38,25 +38,20 @@ class CategoriasProductosController extends Controller
      */
     public function store(Request $request)
     {
-        //probado sin imagen
-        $validData = $request->validate([
-            'descripcion' => 'required|string|max:255',
-            'id_tienda' => 'required',
-        ]);
+        $idTienda=$request->id_tienda;
+        $categoria_productos=json_decode($request->categoria_productos,true);
+        $aux= count($categoria_productos);
+        for ($i=0; $i < $aux ; $i++) 
+        { 
+            $aux2=$categoria_productos[$i];
+            $categoriaproductos=CategoriasProductos::create([
+                'descripcion' => $aux2['descripcion'],
+                'id_tienda' => $idTienda,
+                'estado' => 1
+                ]);
+        }       
 
-
-        $cat_prod_store = CategoriasProductos::create([
-            'descripcion' => $validData['descripcion'],
-            'id_tienda' => $validData['id_tienda'],
-            'estado' => 1
-        ]);
-
-        return response()
-        ->json([
-            'message' => 'Categoría de tu tienda registrada',
-            'data' => $cat_prod_store   
-        ], 200);
-
+        return response()->json(['message'=>'Marca registrada'], 200);
     }
 
     /**
@@ -64,7 +59,11 @@ class CategoriasProductosController extends Controller
      */
     public function show($id)
     {
-        // no se está usando
+        $categoria_productos=CategoriasProductos::find($id);
+        if (is_null($categoria_productos)) {
+            return response()->json(['message' => 'categoria_productos no encontrado'], 404);
+        }
+        return response()->json($categoria_productos);
     }
 
     /**
@@ -80,8 +79,8 @@ class CategoriasProductosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $categorias_productos = CategoriasProductos::find($id);
-        if (is_null($categorias_productos)) {
+        $categoria_productos = CategoriasProductos::find($id);
+        if (is_null($id)) {
             return response()->json(['message' => 'categorias_productos no encontrado.'], 404);
         }
         $validateData = $request->validate([
@@ -89,9 +88,9 @@ class CategoriasProductosController extends Controller
             'id_tienda' =>'required',
             
         ]);
-        $categorias_productos->descripcion = $validateData['descripcion'];
-        $categorias_productos->id_tienda = $validateData['id_tienda'];
-        $categorias_productos->save();
+        $categoria_productos->descripcion = $validateData['descripcion'];
+        $categoria_productos->id_tienda = $validateData['id_tienda'];
+        $categoria_productos->save();
         return response()->json(['message' => 'categorias_productos actualizado'], 200);
     }
 
@@ -121,12 +120,12 @@ class CategoriasProductosController extends Controller
 
      public function destroy($id)
      {
-         $categorias_productos=CategoriasProductos::find($id);
-         if (is_null($categorias_productos)) {
+         $categoria_productos=CategoriasProductos::find($id);
+         if (is_null($categoria_productos)) {
              return response()->json(['message' => 'categorias_productos no encontrada'], 404);
          }
-         $categorias_productos->estado = 0;
-         $categorias_productos->save();
+         $categoria_productos->estado = 0;
+         $categoria_productos->save();
          return response()->json(['message'=>'categorias_productos eliminada']);
      }
      
@@ -145,19 +144,16 @@ class CategoriasProductosController extends Controller
         return response()->json(['message' => 'se ha eliminado el producto' ]);
     }
 
-    public function getCatProducByTienda($id_tienda){
-        /* 
-            Con este buscamos las categorias de 
-            tiendas por el ID de la tienda
-        */
+/*     public function getCatProducByTienda($id_tienda){
+
         $data = DB::table('categorias_productos')
         ->where('id_tienda', $id_tienda)
         ->where('estado', 1)
         ->get();
 
         return response($data, 200);
-        //probado
-    }
+
+    } */
 
     
     

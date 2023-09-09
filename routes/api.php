@@ -74,6 +74,7 @@ Route::post('/updatefotoTienda/{id}', [TiendaController::class,'Updatefototienda
 Route::post('/updateRedes/{id}', [TiendaController::class,'updateRedes']);
 Route::post('/updateDelivery/{id}', [TiendaController::class,'updateDelivery']);
 Route::get('/get-tienda-by-cat/{id}', [TiendaController::class, 'getAllTiendasCategoria']);
+Route::get('/get-tienda/{id}', [TiendaController::class, 'getTienda']);
 //Categoria Productos
 Route::resource('categoria-producto', CategoriasProductosController::class);
 Route::get('/get-cat-prod-by-tienda/{id}', [CategoriasProductosController::class, 'getCatProducByTienda']);

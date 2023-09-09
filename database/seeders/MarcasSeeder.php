@@ -17,37 +17,36 @@ class MarcasSeeder extends Seeder
         $marcas = [
             [
                 'MarcaT1',
-                'marcat1.png',
-                1,
                 1
             ],
             [
                 'MarcaT2',
-                'marcat2.png',
-                1,
-                1
+                2
             ],
             [
-                'MarcaT1',
-                'marcat1.png',
-                2,
-                1
+                'MarcaT3',
+                3
             ],
             [
-                'MarcaT2',
-                'marcat2.png',
-                2,
-                1
-            ]
+                'MarcaT4',
+                4
+            ],
+            [
+                'MarcaT5',
+                5
+            ],
+            [
+                'MarcaT6',
+                6
+            ],
 
         ];
 
         foreach ($marcas as $m) {
             DB::table('marcas')->insert([
                 'descripcion' => $m[0],
-                'imagen' => $m[1],
-                'id_tienda' => $m[2],
-                'estado' => $m[3],
+                'id_tienda' => $m[1],
+                'estado' => 1,
             ]);
         }
 

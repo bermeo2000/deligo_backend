@@ -27,6 +27,11 @@ class LoginController extends Controller
             ->get();
 
         if ($user->id_tipo_usuario == 3) {
+
+            if($user->codigo_referido_usuario == null){
+                $user->codigo_referido_usuario = '';
+            }
+
             return response()
                 ->json([
                     'accesToken' => $token,

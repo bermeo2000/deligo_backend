@@ -279,4 +279,9 @@ class TiendaController extends Controller
         return response()->json($tienda);
     }
 
+    public function getTienda($id){
+        $u = Tienda::where('id', $id)->get();
+        return response()->json($u, 200);
+    }
+
 }
