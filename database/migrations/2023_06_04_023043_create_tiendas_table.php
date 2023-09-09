@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('instagram_user')->nullable();
             $table->string('facebook_user')->nullable();
             $table->string('tiktok_user')->nullable();
-
+            $table->integer('ventas')->default(100);
             //geolocalizacion
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('id_promocion_producto')->nullable()->constrained('promocion_productos');
 
             $table->foreignId('id_venta')->constrained('ventas');
-
+            $table->integer('id_tienda');
             $table->boolean('estado');
 
             /* 
