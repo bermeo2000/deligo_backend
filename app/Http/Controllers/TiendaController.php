@@ -16,7 +16,7 @@ class TiendaController extends Controller
     public function index()
     {
         //$tienda = Tienda::where('estado',1)->get();
-        
+        // ya no se usa
         $tienda=DB::table('tiendas')
         ->join('categoria_tiendas','tiendas.id_categoria_tienda','=','categoria_tiendas.id')
         ->select('tiendas.*', 'categoria_tiendas.nombre as categoria')
