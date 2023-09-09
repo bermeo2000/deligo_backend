@@ -65,7 +65,7 @@ class TiendaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tienda $tienda)
+    public function update(Request $request, $id)
     {
         $tienda=Tienda::find($id);
         if (is_null($tienda)) {
