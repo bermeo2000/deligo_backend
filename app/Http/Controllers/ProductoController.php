@@ -18,10 +18,12 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $producto = Producto::where('estado',1)->get();
-        return response()->json($producto, 200);
+        $producto = Producto::where('estado',1) ->get();
+        if (count($producto)==0) {
+            return response()-> json('no existen categoria producto',404);
+        }
+        return response()->json($producto,200);
 
-        //esto no se usa
     }
 
     /**
@@ -37,8 +39,6 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        
-        
         //probado con imagen y todo y funciona
         $validData = $request->validate([
             'nombre' => 'required|string|max:255',
@@ -86,8 +86,8 @@ class ProductoController extends Controller
        
         return response()
         ->json([
-            'message' => 'Producto de tu tienda registrado',
-            'data' => $producto   
+            'message' => 'Producto de tu tienda registrado'
+          /*   ,'data' => $producto    */
         ], 200);
 
     }
