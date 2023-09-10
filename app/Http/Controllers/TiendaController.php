@@ -16,7 +16,7 @@ class TiendaController extends Controller
     public function index()
     {
         //$tienda = Tienda::where('estado',1)->get();
-        
+        // ya no se usa
         $tienda=DB::table('tiendas')
         ->join('categoria_tiendas','tiendas.id_categoria_tienda','=','categoria_tiendas.id')
         ->select('tiendas.*', 'categoria_tiendas.nombre as categoria')
@@ -65,7 +65,7 @@ class TiendaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tienda $tienda)
+    public function update(Request $request, $id)
     {
         $tienda=Tienda::find($id);
         if (is_null($tienda)) {
@@ -277,6 +277,11 @@ class TiendaController extends Controller
             return response()->json(['mesagge'=>'No se encontro ninguna tienda',400]);
         }
         return response()->json($tienda);
+    }
+
+    public function getTienda($id){
+        $u = Tienda::where('id', $id)->get();
+        return response()->json($u, 200);
     }
 
 }
