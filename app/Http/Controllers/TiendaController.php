@@ -65,13 +65,13 @@ class TiendaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tienda $tienda)
+    public function update(Request $request, $id_tienda)
     {
-        $tienda=Tienda::find($id);
-        if (is_null($tienda)) {
+        $tienda=Tienda::find($id_tienda);
+        if (is_null($id_tienda)) {
             return response()->json(['message'=>'No se encontro ninguna tienda',404]);
         }
-        $validateDataTienda=$request->validate([
+        $validateDataTienda = $request->validate([
             'nombre_tienda'            => 'required|string|max:255',
             'ciudad'                    => 'required|string|max:255',
             'direccion'                => 'nullable|string|max:255',
@@ -80,7 +80,14 @@ class TiendaController extends Controller
             'lat'                      =>'nullable',
             'lng'                      =>'nullable',
         ]);
-        $tienda->fill($validateDataTienda);
+        $tienda-> fill($validateDataTienda);
+        $tienda-> nombre_tienda = $validateData['nombre_tienda'];
+        $tienda-> ciudad        = $validateData['ciudad'];
+        $tienda-> direccion     = $validateData['direccion'];
+        $tienda-> celular       = $validateData['celular'];
+        $tienda-> descripcion   = $validateData['descripcion'];
+        $tienda-> lat           = $validateData['lat'];
+        $tienda-> lng           = $validateData['lng'];
         $tienda->save();
         return response()->json(['message'=>'Datos de tienda actualizados con exito'],200);
     }
