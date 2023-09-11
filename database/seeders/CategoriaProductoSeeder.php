@@ -19,7 +19,7 @@ class CategoriaProductoSeeder extends Seeder
                 'CatProdT1',
                 1
             ],
-            [
+            /* [
                 'CatProdT2',
                 2
             ],
@@ -38,7 +38,7 @@ class CategoriaProductoSeeder extends Seeder
             [
                 'CatProdT2',
                 6
-            ],
+            ], */
 
         ];
 

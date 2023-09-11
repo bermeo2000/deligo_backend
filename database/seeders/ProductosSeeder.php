@@ -124,7 +124,7 @@ class ProductosSeeder extends Seeder
                     //is_topping
                     0, 
                 ],
-            ],
+            ],/* 
             [
                 //tienda 2
                 [
@@ -235,8 +235,8 @@ class ProductosSeeder extends Seeder
                     //is_topping
                     0, 
                 ],
-            ],
-            [
+            ], */
+            /* [
                 //tienda 3
             ],
             [
@@ -247,7 +247,7 @@ class ProductosSeeder extends Seeder
             ],
             [
                 //tienda 6
-            ],
+            ], */
         ];
 
         foreach ($productos_t as $productos) {
