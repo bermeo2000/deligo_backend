@@ -17,12 +17,17 @@ class TiendaController extends Controller
     {
         //$tienda = Tienda::where('estado',1)->get();
         // ya no se usa
-        $tienda=DB::table('tiendas')
+      /*   $tienda=DB::table('tiendas')
         ->join('categoria_tiendas','tiendas.id_categoria_tienda','=','categoria_tiendas.id')
         ->select('tiendas.*', 'categoria_tiendas.nombre as categoria')
         ->where('tiendas.estado',1)
         ->get();
-        return response()->json($tienda, 200);
+        return response()->json($tienda, 200); */
+        $tienda = Tienda::where('estado',1) ->get();
+        if (count($tienda)==0) {
+            return response()-> json('no existen tienda',404);
+        }
+        return response()->json($tienda,200);
     }
 
     /**
@@ -65,13 +70,14 @@ class TiendaController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, $id)
     {
-        $tienda=Tienda::find($id_tienda);
-        if (is_null($id_tienda)) {
-            return response()->json(['message'=>'No se encontro ninguna tienda',404]);
+        $tienda = Tienda::find($id);
+        if (is_null($id)) {
+            return response()->json(['message' => 'tienda no encontrado.'], 404);
         }
-        $validateDataTienda = $request->validate([
+        $validateData = $request->validate([
             'nombre_tienda'            => 'required|string|max:255',
             'ciudad'                    => 'required|string|max:255',
             'direccion'                => 'nullable|string|max:255',
@@ -79,8 +85,8 @@ class TiendaController extends Controller
             'descripcion'              => 'nullable',
             'lat'                      =>'nullable',
             'lng'                      =>'nullable',
+            
         ]);
-        $tienda-> fill($validateDataTienda);
         $tienda-> nombre_tienda = $validateData['nombre_tienda'];
         $tienda-> ciudad        = $validateData['ciudad'];
         $tienda-> direccion     = $validateData['direccion'];
@@ -89,7 +95,7 @@ class TiendaController extends Controller
         $tienda-> lat           = $validateData['lat'];
         $tienda-> lng           = $validateData['lng'];
         $tienda->save();
-        return response()->json(['message'=>'Datos de tienda actualizados con exito'],200);
+        return response()->json(['message' => 'tienda actualizado'], 200);
     }
 
     /**
