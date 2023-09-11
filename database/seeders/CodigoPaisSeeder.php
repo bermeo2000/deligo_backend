@@ -18,8 +18,8 @@ class CodigoPaisSeeder extends Seeder
 
         $rowCount = $csvReader->count(); 
         $columnCount = count($csvReader->getHeader()); 
-        echo "Número de filas: " . $rowCount . "\n";
-        echo "Número de columnas: " . $columnCount . "\n";
+        /* echo "Número de filas: " . $rowCount . "\n";
+        echo "Número de columnas: " . $columnCount . "\n"; */
 
         foreach ($csvReader as $row) { 
             $nombre = $row['nombre'];

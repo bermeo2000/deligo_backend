@@ -19,7 +19,7 @@ class MarcasSeeder extends Seeder
                 'MarcaT1',
                 1
             ],
-            [
+            /* [
                 'MarcaT2',
                 2
             ],
@@ -38,7 +38,7 @@ class MarcasSeeder extends Seeder
             [
                 'MarcaT6',
                 6
-            ],
+            ], */
 
         ];
 
