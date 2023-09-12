@@ -48,9 +48,25 @@ class HomeController extends Controller
         if (is_null($user_ref)) {
             return response()->json(['message' => 'Usuario encontrado'], 404);
         }
-        $user_ref->codigo_referido_usuario = $validData['codigo_referido_usuario'];
-        $user_ref->save();
-        return response()->json(['message' => 'Referido de usuario guardado correctamente'], 200);
+        if ($this->validacionCodigo( $validData['codigo_referido_usuario'])) {
+            $user_ref->codigo_referido_usuario = $validData['codigo_referido_usuario'];
+            $user_ref->save();
+            return response()->json(['message' => 'Referido de usuario guardado correctamente'], 200);
+        } else {
+            return response()->json(['message' => 'El codigo ingresado no existe'], 400);
+        }
+        
+      
+    }
+    private function validacionCodigo($codigo){
+        $user= User::where('estado',1)
+        ->where('codigo_referido',$codigo)
+        ->get();
+        if ($user->isEmpty()) {
+            return false;
+        }
+        return true;
+
     }
 
     private function getTiendaFav($id_user){
