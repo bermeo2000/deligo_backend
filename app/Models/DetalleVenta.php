@@ -10,9 +10,11 @@ class DetalleVenta extends Model
     use HasFactory;
     public $timestamps = false;
     public $fillable = [
+        'anotes',
         'precio',
         'cantidad',
         'id_producto',
+        'id_tienda',
         'id_promocion_producto',
         'id_venta',
         'estado',

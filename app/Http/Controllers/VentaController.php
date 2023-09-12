@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Venta;
+use App\Models\DetalleVenta;
+use App\Models\Tienda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +33,9 @@ class VentaController extends Controller
      */
     public function store(Request $request)
     {
+        $aux=json_decode($request->detalles);
+        $tiendas= collect($aux)->pluck('id_tienda')->unique()->toArray();
+        //return response()->json($tiendas);
         $ValidateData = $request->validate([
             'total'                    => 'required',
             'fecha'                    => 'required',
@@ -47,6 +52,13 @@ class VentaController extends Controller
             'codigo_comprobante'=>$cod,
             'estado'=>1
             ]);
+          
+            $this->storeDetalleVenta($ventas->id, $aux);
+            $numTienda=count($tiendas);
+            for ($i=0; $i <$numTienda ; $i++) { 
+                $this->restarVentas($tiendas[$i]);
+            }
+           
         return response()->json(['message' => 'Compra existosa'], 200);
 
     }
@@ -91,11 +103,42 @@ class VentaController extends Controller
          
     }
 
-    public function restarVentas(){
-        $longitud=8;
-        $aux =Str::random($longitud);
-        $cod="DG-".$aux;
-        return  $cod;
-        
+    public function storeDetalleVenta($idVenta,$detalles){
+
+       for ($i=0; $i < count($detalles); $i++) 
+       { 
+        $aux=$detalles[$i];
+        if ($aux->id_promocion_producto=="null") {
+            $aux->id_promocion_producto=NULL;
+        }
+        if (count($aux->array_toppings_selec) ==0) {
+            $aux->array_toppings_selec=NULL;
+        }
+        $detalle=DetalleVenta::create([
+            'anotes'=>$aux->anote,
+            'id_producto'=>$aux->idProducto,
+            'id_tienda'=>$aux->id_tienda,
+            'precio'=>$aux->precioProducto,
+            'cantidad'=>$aux->cantidad_compra,
+            'id_promocion_producto'=>$aux->id_promocion_producto,
+            'array_toppings_selec'=>json_encode($aux->array_toppings_selec),
+            'id_venta'=>$idVenta,
+            'estado'=>1
+        ]);
+       
+       } 
+      
+
     }
+
+    public function restarVentas($id_tienda)
+    {
+        
+            $tienda=Tienda::find($id_tienda);
+            $ventas=$tienda->ventas;
+            $tienda->ventas=$ventas-1;
+            $tienda->save();
+    }
+
+
 }

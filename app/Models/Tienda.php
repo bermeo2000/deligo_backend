@@ -29,5 +29,6 @@ class Tienda extends Model
         'tiempo_delivery_min',
         'puntuacion',
         'descripcion',
+        'ventas'
     ];
 }
