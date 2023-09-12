@@ -203,20 +203,5 @@ class UserController extends Controller
         return response()->json($u, 200);
     }
 
-    public function saveReferidoUsuario(Request $request){
-        $validData = $request->validate([
-            'id_user' => 'required',
-            'codigo_referido_usuario' => 'required'
-        ]);
-
-        $user_ref = User::find($validData['id_user']);
-        if (is_null($user_ref)) {
-            return response()->json(['message' => 'Usuario encontrado'], 404);
-        }
-        $user_ref->codigo_referido_usuario = $validData['codigo_referido_usuario'];
-        $user_ref->save();
-        return response()->json(['message' => 'Referido de usuario guardado correctamente'], 200);
-    }
-
    
 }

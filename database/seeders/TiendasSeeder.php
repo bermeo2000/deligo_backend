@@ -34,7 +34,7 @@ class TiendasSeeder extends Seeder
                 20,
                 'Tienda de venta de productos para tus mascotas',
             ],
-            [
+            /* [
                 'Farmacia Herbal',
                 'farmacia_herbal.png',
                 'Calceta',
@@ -118,7 +118,7 @@ class TiendasSeeder extends Seeder
                 2.00,
                 50,
                 'Tienda de ropa importada de las peores marcas chinas pero es ropa barata',
-            ],
+            ], */
 
         ];
         

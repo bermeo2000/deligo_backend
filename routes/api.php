@@ -26,6 +26,7 @@ use App\Http\Controllers\ToppingsProductosController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\HomeController;
 
 
 
@@ -62,7 +63,6 @@ Route::post('/updat-User-Password/{id}', [UserController::class, 'updateditPassw
 Route::post('/updat-User-Image/{id}', [UserController::class, 'updatUserImage']);
 Route::get('/get-user/{id}', [UserController::class, 'getUser']);
 
-Route::post('/save-referido-user', [UserController::class, 'saveReferidoUsuario']);
 
 //Categoria Tiendas
 Route::resource('categoria-tienda', CategoriaTiendaController::class);
@@ -132,6 +132,10 @@ Route::resource('tipo-adv', TipoAdvertenciaController::class);
 
 // Amonestacion tiendas
 Route::resource('amon-tiendas', AmonestacionTiendaController::class);
+
+// Home (usuario)
+Route::post('/save-referido-user', [HomeController::class, 'saveReferidoUsuario']);
+Route::get('/get-home/{id}', [HomeController::class, 'getHome']);
 
 
 Route::middleware('auth:sanctum')->group( function () {
