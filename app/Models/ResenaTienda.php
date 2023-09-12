@@ -14,5 +14,6 @@ class ResenaTienda extends Model
         'id_user',
         'texto',
         'puntuacion_estrellas',
+        'estado'
     ];
 }

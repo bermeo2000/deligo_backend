@@ -81,7 +81,6 @@ class ProductoController extends Controller
         }
     if($producto->is_topping==1){
         $this->storeTopping($request,$producto->id,$producto->id_tienda);
-
     }
        
         return response()
@@ -89,7 +88,35 @@ class ProductoController extends Controller
             'message' => 'Producto de tu tienda registrado'
           /*   ,'data' => $producto    */
         ], 200);
+    }
 
+    
+    public function storeTopping($request,$idProducto,$idTienda  )
+    {
+        $toppings=json_decode($request->toppings,true);
+        $aux= count($toppings);
+        for ($i=0; $i < $aux ; $i++) 
+        { 
+            $aux2=$toppings[$i];
+             $p = Producto::find($idProducto);
+            $t = Tienda::find($idTienda);
+
+            if(isset($p) && isset($t))
+            {
+                $toppings_producto = ToppingsProductos::create([
+                'id_producto' => $idProducto,
+                'id_toppings' => $topping->id,
+                'estado' => 1
+                ]);
+            } 
+            else 
+            {
+                 return response()
+                        ->json([
+                        'message' => 'El producto o la tienda no existen.',
+                         ], 400);
+            }
+        }       
     }
 
     /**
@@ -304,56 +331,7 @@ class ProductoController extends Controller
     }
     
 
-    public function storeTopping($request,$idProducto,$idTienda  )
-    {
-        
-
-        $toppings=json_decode($request->toppings,true);
-        $aux= count($toppings);
-        for ($i=0; $i < $aux ; $i++) 
-        { 
-            $aux2=$toppings[$i];
-            //return response()->json($aux2);
-             $p = Producto::find($idProducto);
-            $t = Tienda::find($idTienda);
-             // if (isset($validData['imagen'])) {
-                //     $img = $request->file('imagen');
-                //     $validData['imagen'] = time() . '.' . $img->getClientOriginalExtension();
-                // } else {
-                 //     $validData['imagen'] = null;
-                 // }
-
-            if(isset($p) && isset($t))
-            {
-
-             $topping = Toppings::create([
-                'descripcion' => $aux2['descripcion_topping'],
-                'precio' => $aux2['precio'],
-                'id_tienda' => $idTienda,
-                'imagen' => $aux2['imagen_topping'],
-                'estado' => 1
-                ]);
-
-                // if($validData['imagen'] != null){
-                //     $request->file('imagen')->storeAs("public/images/toppings/{$t->id}/{$p->id}/{$topping->id}", $validData['imagen']);
-                // }
-
-                $toppings_producto = ToppingsProductos::create([
-                'id_producto' => $idProducto,
-                'id_toppings' => $topping->id,
-                'estado' => 1
-                ]);
-            } 
-            else 
-            {
-                 return response()
-                        ->json([
-                        'message' => 'El producto o la tienda no existen.',
-                        /* 'data' => '', */
-                         ], 400);
-            }
-        }       
-    }
+   
 
 
 
