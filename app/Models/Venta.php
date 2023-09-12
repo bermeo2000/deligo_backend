@@ -10,16 +10,16 @@ class Venta extends Model
     use HasFactory;
     public $timestamps = false;
     protected $fillable = [
-        'subtotal',
+        //'subtotal',
         'total',
         'fecha',
         'id_cliente',
         'id_tipo_pago',
-        'id_estado_venta',
+        //'id_estado_venta',
         'imagen_transferencia',
-        'referencia',
-        'lat',
-        'lng',
+        //'referencia',
+        //'lat',
+        //'lng',
         'codigo_comprobante',
         'estado',
     ];
