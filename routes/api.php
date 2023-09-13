@@ -123,6 +123,10 @@ Route::resource('reclamo', ReclamoController::class);
 
 //Reseña Tienda
 Route::resource('rese-tienda', ResenaTiendaController::class);
+Route::get('get-rese-tienda-usuario/{id}', [ResenaTiendaController::class, 'getReseTiendaByUsuario']);
+Route::get('get-rese-tienda-tienda/{id}', [ResenaTiendaController::class, 'getReseTiendaByTienda']);
+//Ruta de prueba
+//Route::get('actualizar-puntuacion-tienda/{id}', [ResenaTiendaController::class, 'savePuntuacionTienda']);
 
 //Reseña Productos
 Route::resource('rese-producto', ResenaProductoController::class);
