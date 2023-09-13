@@ -102,10 +102,19 @@ class TiendaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tienda $tienda)
+    public function destroy($id)
     {
-        //
+        $tienda=Tienda::find($id);
+        if (is_null($tienda)) {
+            return response()->json(['message' => 'tienda no encontrada'], 404);
+        }
+        $tienda->estado = 0;
+        $tienda->save();
+       /*  return response()->json(['message'=>'Marca eliminada']); */
+       return response()->json("La tienda se elimino con exito", 200);
     }
+
+    
 
     public function storeEmprendedor(Request $request){
         //return response()->json($request);
@@ -264,7 +273,7 @@ class TiendaController extends Controller
     {
 
         $tienda = Tienda::find($id);
-        if (is_null($id)) {
+        if (is_null($tienda)) {
             return response()->json(['message' => 'Imagen no encontrada.'], 404);
         }
         $validData = $request->validate([
