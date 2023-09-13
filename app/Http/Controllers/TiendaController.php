@@ -49,15 +49,16 @@ class TiendaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show( $id)
+    public function show( $id_tienda)
     {
-        $tienda=Tienda::find($id);
+        $tienda=Tienda::find($id_tienda);
         if (is_null($tienda)) {
             return response()->json(['mesagge'=>'No se encontro ninguna tienda',400]);
         }
         return response()->json($tienda);
         
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -71,7 +72,7 @@ class TiendaController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function update(Request $request, $id)
+    public function updateTienda(Request $request, $id)
     {
         $tienda = Tienda::find($id);
         if (is_null($id)) {
@@ -83,8 +84,8 @@ class TiendaController extends Controller
             'direccion'                => 'nullable|string|max:255',
             'celular'                  => 'required|string|max:255',
             'descripcion'              => 'nullable',
-            'lat'                      =>'nullable',
-            'lng'                      =>'nullable',
+            /* 'lat'                      =>'nullable',
+            'lng'                      =>'nullable', */
             
         ]);
         $tienda-> nombre_tienda = $validateData['nombre_tienda'];
@@ -92,8 +93,8 @@ class TiendaController extends Controller
         $tienda-> direccion     = $validateData['direccion'];
         $tienda-> celular       = $validateData['celular'];
         $tienda-> descripcion   = $validateData['descripcion'];
-        $tienda-> lat           = $validateData['lat'];
-        $tienda-> lng           = $validateData['lng'];
+   /*      $tienda-> lat           = $validateData['lat'];
+        $tienda-> lng           = $validateData['lng']; */
         $tienda->save();
         return response()->json(['message' => 'tienda actualizado'], 200);
     }
@@ -238,7 +239,7 @@ class TiendaController extends Controller
        $img->storeAs("public/images/tienda/{$tienda->id}", $validateDataTienda['imagen_tienda']);
     }
 
-    public function Updatefototienda(Request $request, $id){
+   /*  public function Updatefototienda(Request $request, $id){
         $tienda=Tienda::find($id);
         if (is_null($tienda)) {
             return response()->json(['message'=>'No se encontro ninguna tienda',404]);
@@ -256,6 +257,31 @@ class TiendaController extends Controller
         $tienda->save();
         $request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
         return response()->json(['message'=>'La foto se actualizo con exito'],200);
+    }
+ */
+
+    public function Updatefototienda(Request $request, $id)
+    {
+
+        $tienda = Tienda::find($id);
+        if (is_null($id)) {
+            return response()->json(['message' => 'Imagen no encontrada.'], 404);
+        }
+        $validData = $request->validate([
+            'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg'
+        ]);
+
+        $img=$request->file('imagen');
+        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        
+        $request->file('imagen')->storeAs("public/images/persona/{$tienda->id}", $validData['imagen']);
+
+        /*  if ($person->image != '') {
+            unlink(storage_path("app/public/images/persons/{$person->userId}/" . $person->image));
+        } */
+        $tienda->imagen = $validData['imagen'];
+        $tienda->save();
+        return response()->json(['message' => 'Imagen actualizada'], 201);
     }
 
     public function updateRedes(Request $request, $id){
