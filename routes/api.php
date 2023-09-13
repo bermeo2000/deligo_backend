@@ -125,9 +125,17 @@ Route::resource('reclamo', ReclamoController::class);
 
 //Reseña Tienda
 Route::resource('rese-tienda', ResenaTiendaController::class);
+Route::get('get-rese-tienda-usuario/{id}', [ResenaTiendaController::class, 'getReseTiendaByUsuario']);
+Route::get('get-rese-tienda-tienda/{id}', [ResenaTiendaController::class, 'getReseTiendaByTienda']);
+//Ruta de prueba
+//Route::get('actualizar-puntuacion-tienda/{id}', [ResenaTiendaController::class, 'savePuntuacionTienda']);
 
 //Reseña Productos
 Route::resource('rese-producto', ResenaProductoController::class);
+Route::get('get-rese-producto-usuario/{id}', [ResenaProductoController::class, 'getReseProductoByUsuario']);
+Route::get('get-rese-producto-tienda/{id}', [ResenaProductoController::class, 'getReseProductoByProducto']);
+//Ruta de prueba
+//Route::get('actualizar-puntuacion-producto/{id}', [ResenaProductoController::class, 'savePuntuacionProducto']);
 
 //Tipo Advertencias
 Route::resource('tipo-adv', TipoAdvertenciaController::class);
