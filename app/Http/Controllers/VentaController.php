@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Venta;
+use App\Models\User;
 use App\Models\DetalleVenta;
 use App\Models\Tienda;
 use Illuminate\Http\Request;
@@ -135,9 +136,14 @@ class VentaController extends Controller
     {
         
             $tienda=Tienda::find($id_tienda);
-            $ventas=$tienda->ventas;
-            $tienda->ventas=$ventas-1;
-            $tienda->save();
+            $user=User::find($tienda->id_propietario);
+            if($user->is_plus==0)
+            {
+                $ventas=$tienda->ventas;
+                $tienda->ventas=$ventas-1;
+                $tienda->save();
+            }
+           
     }
 
 

@@ -130,7 +130,7 @@ class TiendaController extends Controller
             $validateData['imagen'] = null;
         }
 
-        $codigo=$this->generarCodigo();
+        $codigo=$this->generarCodigo($validateData['nombre']);
         while (User::where('codigo_referido',$codigo)->exists()) {
             $codigo=$this->generarCodigo();
         }
@@ -147,12 +147,14 @@ class TiendaController extends Controller
             'id_tipo_usuario'   =>$validateData['id_tipo_usuario'],
             'is_categoria_selec'=>$validateData['is_categoria_selec'],
             'codigo_referido'   =>$codigo,
+            'codigo_referido_usuario'=>$codigo,
             'estado'            =>1,
         ]);
         if(isset($usuario->imagen)){
             $img->storeAs("public/images/usuario/{$usuario->id}", $validateData['imagen']);
         }
         
+
 
         if ($validateData['is_categoria_selec']==1) {
             $array = explode(",",$request->categorias);
@@ -174,9 +176,13 @@ class TiendaController extends Controller
 
     }
 
-    public function generarCodigo(){
-        $longitud=12;
-        return Str::random($longitud);
+    public function generarCodigo( $nombre)
+    {
+       
+        $primerosDigitosNombre=substr($nombre,0,3);
+        $numAleatorios=str_pad(mt_rand(0,9999),4,'0',STR_PAD_LEFT);
+        $codigo="DG-" . $primerosDigitosNombre . $numAleatorios;
+        return $codigo;
          
     }
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('id_user')->constrained('users');
             $table->string('texto', 500);
             $table->integer('puntuacion_estrellas');
+            $table->boolean('estado');
         });
     }
 
