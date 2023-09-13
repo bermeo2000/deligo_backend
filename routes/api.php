@@ -132,6 +132,10 @@ Route::get('get-rese-tienda-tienda/{id}', [ResenaTiendaController::class, 'getRe
 
 //Reseña Productos
 Route::resource('rese-producto', ResenaProductoController::class);
+Route::get('get-rese-producto-usuario/{id}', [ResenaProductoController::class, 'getReseProductoByUsuario']);
+Route::get('get-rese-producto-tienda/{id}', [ResenaProductoController::class, 'getReseProductoByProducto']);
+//Ruta de prueba
+//Route::get('actualizar-puntuacion-producto/{id}', [ResenaProductoController::class, 'savePuntuacionProducto']);
 
 //Tipo Advertencias
 Route::resource('tipo-adv', TipoAdvertenciaController::class);

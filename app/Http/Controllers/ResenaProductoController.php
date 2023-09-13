@@ -148,7 +148,7 @@ class ResenaProductoController extends Controller
         return $rese_producto_producto;
     }
 
-    private function savePuntuacionTienda($id_producto)
+    private function savePuntuacionProducto($id_producto)
     {
         // Esta función calcula la puntuación final de la tienda (promedio)
         // lo hace consultando las reseñas sumando las puntuaciones y dividiendo para el total
