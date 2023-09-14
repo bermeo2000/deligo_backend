@@ -49,15 +49,16 @@ class TiendaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show( $id)
+    public function show( $id_tienda)
     {
-        $tienda=Tienda::find($id);
+        $tienda=Tienda::find($id_tienda);
         if (is_null($tienda)) {
             return response()->json(['mesagge'=>'No se encontro ninguna tienda',400]);
         }
         return response()->json($tienda);
         
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -71,7 +72,7 @@ class TiendaController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function update(Request $request, $id)
+    public function updateTienda(Request $request, $id)
     {
         $tienda = Tienda::find($id);
         if (is_null($id)) {
@@ -83,8 +84,8 @@ class TiendaController extends Controller
             'direccion'                => 'nullable|string|max:255',
             'celular'                  => 'required|string|max:255',
             'descripcion'              => 'nullable',
-            'lat'                      =>'nullable',
-            'lng'                      =>'nullable',
+            /* 'lat'                      =>'nullable',
+            'lng'                      =>'nullable', */
             
         ]);
         $tienda-> nombre_tienda = $validateData['nombre_tienda'];
@@ -92,8 +93,8 @@ class TiendaController extends Controller
         $tienda-> direccion     = $validateData['direccion'];
         $tienda-> celular       = $validateData['celular'];
         $tienda-> descripcion   = $validateData['descripcion'];
-        $tienda-> lat           = $validateData['lat'];
-        $tienda-> lng           = $validateData['lng'];
+   /*      $tienda-> lat           = $validateData['lat'];
+        $tienda-> lng           = $validateData['lng']; */
         $tienda->save();
         return response()->json(['message' => 'tienda actualizado'], 200);
     }
@@ -101,10 +102,19 @@ class TiendaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tienda $tienda)
+    public function destroy($id)
     {
-        //
+        $tienda=Tienda::find($id);
+        if (is_null($tienda)) {
+            return response()->json(['message' => 'tienda no encontrada'], 404);
+        }
+        $tienda->estado = 0;
+        $tienda->save();
+       /*  return response()->json(['message'=>'Marca eliminada']); */
+       return response()->json("La tienda se elimino con exito", 200);
     }
+
+
 
     public function storeEmprendedor(Request $request){
         //return response()->json($request);
@@ -129,7 +139,7 @@ class TiendaController extends Controller
             $validateData['imagen'] = null;
         }
 
-        $codigo=$this->generarCodigo();
+        $codigo=$this->generarCodigo($validateData['nombre']);
         while (User::where('codigo_referido',$codigo)->exists()) {
             $codigo=$this->generarCodigo();
         }
@@ -146,12 +156,14 @@ class TiendaController extends Controller
             'id_tipo_usuario'   =>$validateData['id_tipo_usuario'],
             'is_categoria_selec'=>$validateData['is_categoria_selec'],
             'codigo_referido'   =>$codigo,
+            'codigo_referido_usuario'=>$codigo,
             'estado'            =>1,
         ]);
         if(isset($usuario->imagen)){
             $img->storeAs("public/images/usuario/{$usuario->id}", $validateData['imagen']);
         }
         
+
 
         if ($validateData['is_categoria_selec']==1) {
             $array = explode(",",$request->categorias);
@@ -173,9 +185,13 @@ class TiendaController extends Controller
 
     }
 
-    public function generarCodigo(){
-        $longitud=12;
-        return Str::random($longitud);
+    public function generarCodigo( $nombre)
+    {
+       
+        $primerosDigitosNombre=substr($nombre,0,3);
+        $numAleatorios=str_pad(mt_rand(0,9999),4,'0',STR_PAD_LEFT);
+        $codigo="DG-" . $primerosDigitosNombre . $numAleatorios;
+        return $codigo;
          
     }
 
@@ -232,7 +248,7 @@ class TiendaController extends Controller
        $img->storeAs("public/images/tienda/{$tienda->id}", $validateDataTienda['imagen_tienda']);
     }
 
-    public function Updatefototienda(Request $request, $id){
+   /*  public function Updatefototienda(Request $request, $id){
         $tienda=Tienda::find($id);
         if (is_null($tienda)) {
             return response()->json(['message'=>'No se encontro ninguna tienda',404]);
@@ -250,6 +266,31 @@ class TiendaController extends Controller
         $tienda->save();
         $request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
         return response()->json(['message'=>'La foto se actualizo con exito'],200);
+    }
+ */
+
+    public function Updatefototienda(Request $request, $id)
+    {
+
+        $tienda = Tienda::find($id);
+        if (is_null($tienda)) {
+            return response()->json(['message' => 'Imagen no encontrada.'], 404);
+        }
+        $validData = $request->validate([
+            'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg'
+        ]);
+
+        $img=$request->file('imagen');
+        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        
+        $request->file('imagen')->storeAs("public/images/persona/{$tienda->id}", $validData['imagen']);
+
+        /*  if ($person->image != '') {
+            unlink(storage_path("app/public/images/persons/{$person->userId}/" . $person->image));
+        } */
+        $tienda->imagen = $validData['imagen'];
+        $tienda->save();
+        return response()->json(['message' => 'Imagen actualizada'], 201);
     }
 
     public function updateRedes(Request $request, $id){
@@ -297,4 +338,62 @@ class TiendaController extends Controller
         return response()->json($u, 200);
     }
 
+
+    
+    public function getCategotiaTiendas($id_tienda){
+        //Busca todos los productos por la tienda
+        $categoria = DB::table('categorias_productos')
+        ->select('categorias_productos.*')
+        ->where('categorias_productos.id_tienda', $id_tienda)
+        ->where('categorias_productos.estado', 1)
+        ->get();
+
+        return response($categoria, 200);
+        
+    }
+
+    
+    public function getProductoCategorias($id_categoria_productos){
+        $productos=DB::table('productos')
+        //->join()
+        ->select('productos.*')
+        ->where('productos.id_categoria_productos',$id_categoria_productos)
+        ->where('productos.estado',1)
+        ->get();
+        return response()->json($productos);
+    }
+
+
+
+    public function showCaregoria(){
+
+        $detPromo = Array();
+        $data = Array();
+
+        $categoria = DB::table('categorias_productos')
+        ->select('categorias_productos.*')
+        ->where('categorias_productos.estado', 1)
+        ->get();
+
+        array_push($data, $categoria);
+
+        foreach($categoria as $key => $p){
+
+            $productos = DB::table('productos')
+            ->select('productos.*')
+            ->where('id_categoria_productos', $p->id)
+            ->get();
+
+            /* array_push($detPromo, ['promocion' => $p,'detPromo' => $kits]); */
+            array_push($data, $productos);
+            /* array_push($data, [ $detPromo]); */
+
+            $detPromo = Array();
+
+        }
+        return response()->json($data, 200);
+
+        /* return response()->json($promocion); */
+    }
+        
 }

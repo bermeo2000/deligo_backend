@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('imagen')->nullable();
             $table->string('telefono')->nullable();
             $table->boolean('estado');
-
+            $table->boolean('is_plus')->default(0);
             $table->foreignId('id_tipo_usuario')->constrained('tipo_usuarios');
             $table->foreignId('id_codigo_pais')->nullable()->constrained('codigo_pais');
             $table->string('codigo_referido')->nullable();

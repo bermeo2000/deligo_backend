@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CategoriaTienda;
 use App\Models\Producto;
 use App\Models\User;
+use App\Models\Tienda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -48,10 +49,51 @@ class HomeController extends Controller
         if (is_null($user_ref)) {
             return response()->json(['message' => 'Usuario encontrado'], 404);
         }
-        $user_ref->codigo_referido_usuario = $validData['codigo_referido_usuario'];
-        $user_ref->save();
-        return response()->json(['message' => 'Referido de usuario guardado correctamente'], 200);
+        if ($this->validacionCodigo( $validData['codigo_referido_usuario'])) 
+        {
+            $this->aumentarVentas($validData['codigo_referido_usuario']);
+            $user_ref->codigo_referido_usuario = $validData['codigo_referido_usuario'];
+            $user_ref->save();
+            
+            return response()->json(['message' => 'Referido de usuario guardado correctamente'], 200);
+        } 
+        else 
+        {
+            return response()->json(['message' => 'El codigo ingresado no existe'], 400);
+        }
+        
+      
     }
+    private function validacionCodigo($codigo){
+        $user= User::where('estado',1)
+        ->where('codigo_referido',$codigo)
+        ->get();
+        if ($user->isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    private function aumentarVentas($codigo){
+        $user= User::where('estado',1)
+        ->where('codigo_referido',$codigo)
+        ->get();
+        
+        $tienda = Tienda::where('estado',1)
+        ->where('id_propietario',$user[0]->id)
+        ->get();
+        if(count($tienda)>1)
+        {
+            //se debe definir si las ventas se aumentaran a la tienda original o se aumentaran a todas 
+        }
+        else
+        {
+            $tienda[0]->ventas=$tienda[0]->ventas+3;
+            $tienda[0]->save();
+        }
+    }
+
+
 
     private function getTiendaFav($id_user){
         // Como funcionan los errores aquí
