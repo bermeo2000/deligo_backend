@@ -123,10 +123,10 @@ Route::resource('estado-venta', EstadoVentaController::class);
 
 //Ventas
 Route::resource('venta', VentaController::class);
-
+Route::get('get-ventas-by-usuario/{id}', [VentaController::class, 'getVentasByUsuario']);
 //Detalle Ventas
 Route::resource('detalle-venta', DetalleVentaController::class);
-
+Route::get('detalle-by-venta/{id}', [DetalleVentaController::class,'showDetallesByVentas']);
 //Reclamos
 Route::resource('reclamo', ReclamoController::class);
 
