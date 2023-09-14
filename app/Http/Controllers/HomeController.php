@@ -47,10 +47,10 @@ class HomeController extends Controller
 
         $user_ref = User::find($validData['id_user']);
         if (is_null($user_ref)) {
-            return response()->json(['message' => 'Usuario encontrado'], 404);
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
-        if ($this->validacionCodigo( $validData['codigo_referido_usuario'])) 
-        {
+        if ($this->validacionCodigo( $validData['codigo_referido_usuario'])){
+
             $this->aumentarVentas($validData['codigo_referido_usuario']);
             $user_ref->codigo_referido_usuario = $validData['codigo_referido_usuario'];
             $user_ref->save();
@@ -59,16 +59,21 @@ class HomeController extends Controller
         } 
         else 
         {
-            return response()->json(['message' => 'El codigo ingresado no existe'], 400);
+            return response()->json(['message' => 'El codigo ingresado no existe. Vuelve a intentarlo.'], 404);
         }
         
       
     }
     private function validacionCodigo($codigo){
+        /* 
+        Esta función valida que el codigo que el usuario ha ingresado exista
+        es decir que sea el mismo de un emprendedor, para así asignarlo 
+        y mostrar la tienda como fav
+        */
         $user= User::where('estado',1)
-        ->where('codigo_referido',$codigo)
+        ->where('codigo_referido', $codigo)
         ->get();
-        if ($user->isEmpty()) {
+        if ($user->isEmpty()){
             return false;
         }
         return true;
