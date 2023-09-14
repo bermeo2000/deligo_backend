@@ -144,7 +144,7 @@ class CategoriasProductosController extends Controller
         return response()->json(['message' => 'se ha eliminado el producto' ]);
     }
 
-/*     public function getCatProducByTienda($id_tienda){
+    public function getCatProducByTienda($id_tienda){
 
         $data = DB::table('categorias_productos')
         ->where('id_tienda', $id_tienda)
@@ -153,7 +153,7 @@ class CategoriasProductosController extends Controller
 
         return response($data, 200);
 
-    } */
+    }
 
     
     
