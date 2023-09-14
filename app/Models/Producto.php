@@ -21,5 +21,6 @@ class Producto extends Model
         'id_tienda',
         'descripcion',
         'is_topping',
+        'puntuacion'
     ];
 }

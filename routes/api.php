@@ -75,6 +75,13 @@ Route::post('/updateRedes/{id}', [TiendaController::class,'updateRedes']);
 Route::post('/updateDelivery/{id}', [TiendaController::class,'updateDelivery']);
 Route::get('/get-tienda-by-cat/{id}', [TiendaController::class, 'getAllTiendasCategoria']);
 Route::get('/get-tienda/{id}', [TiendaController::class, 'getTienda']);
+Route::get('/show/{id}', [TiendaController::class, 'show']);
+Route::post('/updatetienda/{id}', [TiendaController::class, 'updateTienda']);
+Route::get('/getcategotiatiendas/{id}', [TiendaController::class, 'getCategotiaTiendas']);
+Route::get('/getproductocategorias/{id}', [TiendaController::class, 'getProductoCategorias']);
+Route::get('/getproductotiendass/{id}', [TiendaController::class, 'getProductoTiendass']);
+Route::get('/showCaregoria', [TiendaController::class,'showCaregoria']);
+
 //Categoria Productos
 Route::resource('categoria-producto', CategoriasProductosController::class);
 Route::get('/get-cat-prod-by-tienda/{id}', [CategoriasProductosController::class, 'getCatProducByTienda']);
@@ -86,6 +93,7 @@ Route::resource('tipo-peso', TipoPesoController::class);
 //Marcas
 Route::resource('Marca', MarcaController::class);
 Route::post('edit-img-marca/{id}', [MarcaController::class, 'editImagen']);
+Route::get('get-marca-by-tienda/{id}', [MarcaController::class, 'getMarcaTienda']);
 
 //Productos
 Route::resource('producto', ProductoController::class);
@@ -99,6 +107,7 @@ Route::resource('categoria-usuario', CategoriasUsuarioController::class);
 
 //Promocion Productos
 Route::resource('promo-productos', PromocionProductoController::class);
+Route::get('get-promo-productos-by-tienda/{id}', [PromocionProductoController::class, 'getPromocionProductoByTienda']);
 
 //Toppings
 Route::resource('toppings', ToppingsController::class);
@@ -123,9 +132,17 @@ Route::resource('reclamo', ReclamoController::class);
 
 //Reseña Tienda
 Route::resource('rese-tienda', ResenaTiendaController::class);
+Route::get('get-rese-tienda-usuario/{id}', [ResenaTiendaController::class, 'getReseTiendaByUsuario']);
+Route::get('get-rese-tienda-tienda/{id}', [ResenaTiendaController::class, 'getReseTiendaByTienda']);
+//Ruta de prueba
+//Route::get('actualizar-puntuacion-tienda/{id}', [ResenaTiendaController::class, 'savePuntuacionTienda']);
 
 //Reseña Productos
 Route::resource('rese-producto', ResenaProductoController::class);
+Route::get('get-rese-producto-usuario/{id}', [ResenaProductoController::class, 'getReseProductoByUsuario']);
+Route::get('get-rese-producto-tienda/{id}', [ResenaProductoController::class, 'getReseProductoByProducto']);
+//Ruta de prueba
+//Route::get('actualizar-puntuacion-producto/{id}', [ResenaProductoController::class, 'savePuntuacionProducto']);
 
 //Tipo Advertencias
 Route::resource('tipo-adv', TipoAdvertenciaController::class);

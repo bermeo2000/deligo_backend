@@ -26,6 +26,9 @@ return new class extends Migration
 
             $table->string('descripcion')->nullable();
 
+            //puntuacion del producto basado en las reseñas
+            $table->float('puntuacion')->default(0);
+
             /* 
                 is_topping: en el caso de que sea verdadero indica que el producto 
                 lleva topping y se genera registro mediante una tabla intermedia
