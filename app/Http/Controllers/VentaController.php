@@ -146,5 +146,18 @@ class VentaController extends Controller
            
     }
 
+    public function getVentasByUsuario($id){
+            $ventas= DB::table('ventas')
+            ->join('tipo_pagos','ventas.id_tipo_pago','=','tipo_pagos.id')
+            ->select('ventas.*', 'tipo_pagos.descripcion as metodoPago')
+            ->where('ventas.estado',1)
+            ->where('ventas.id_cliente',$id)
+            ->get();
+            if ($ventas->isEmpty()) {
+               return response()->json("No ha realizado ningun pedido hast ahora",404);
+            }
+            return response()->json($ventas,200);
+    }
+
 
 }
