@@ -114,7 +114,7 @@ class TiendaController extends Controller
        return response()->json("La tienda se elimino con exito", 200);
     }
 
-    
+
 
     public function storeEmprendedor(Request $request){
         //return response()->json($request);
@@ -338,4 +338,62 @@ class TiendaController extends Controller
         return response()->json($u, 200);
     }
 
+
+    
+    public function getCategotiaTiendas($id_tienda){
+        //Busca todos los productos por la tienda
+        $categoria = DB::table('categorias_productos')
+        ->select('categorias_productos.*')
+        ->where('categorias_productos.id_tienda', $id_tienda)
+        ->where('categorias_productos.estado', 1)
+        ->get();
+
+        return response($categoria, 200);
+        
+    }
+
+    
+    public function getProductoCategorias($id_categoria_productos){
+        $productos=DB::table('productos')
+        //->join()
+        ->select('productos.*')
+        ->where('productos.id_categoria_productos',$id_categoria_productos)
+        ->where('productos.estado',1)
+        ->get();
+        return response()->json($productos);
+    }
+
+
+
+    public function showCaregoria(){
+
+        $detPromo = Array();
+        $data = Array();
+
+        $categoria = DB::table('categorias_productos')
+        ->select('categorias_productos.*')
+        ->where('categorias_productos.estado', 1)
+        ->get();
+
+        array_push($data, $categoria);
+
+        foreach($categoria as $key => $p){
+
+            $productos = DB::table('productos')
+            ->select('productos.*')
+            ->where('id_categoria_productos', $p->id)
+            ->get();
+
+            /* array_push($detPromo, ['promocion' => $p,'detPromo' => $kits]); */
+            array_push($data, $productos);
+            /* array_push($data, [ $detPromo]); */
+
+            $detPromo = Array();
+
+        }
+        return response()->json($data, 200);
+
+        /* return response()->json($promocion); */
+    }
+        
 }
