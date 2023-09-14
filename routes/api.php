@@ -86,6 +86,7 @@ Route::resource('tipo-peso', TipoPesoController::class);
 //Marcas
 Route::resource('Marca', MarcaController::class);
 Route::post('edit-img-marca/{id}', [MarcaController::class, 'editImagen']);
+Route::get('get-marca-by-tienda/{id}', [MarcaController::class, 'getMarcaTienda']);
 
 //Productos
 Route::resource('producto', ProductoController::class);
@@ -99,6 +100,7 @@ Route::resource('categoria-usuario', CategoriasUsuarioController::class);
 
 //Promocion Productos
 Route::resource('promo-productos', PromocionProductoController::class);
+Route::get('get-promo-productos-by-tienda/{id}', [PromocionProductoController::class, 'getPromocionProductoByTienda']);
 
 //Toppings
 Route::resource('toppings', ToppingsController::class);
