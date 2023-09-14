@@ -15,7 +15,7 @@ class HomeController extends Controller
     // con el fin de optimizar y hacer una sola petición
     
     public function getHome($id){
-        $tienda_fav = $this->getTiendaFav($id);
+        $tienda_fav = $this->getTiendaFav_DB($id);
 
         $home = Array();
 
@@ -78,7 +78,6 @@ class HomeController extends Controller
         }
         return true;
     }
-
     private function aumentarVentas($codigo){
         $user= User::where('estado',1)
         ->where('codigo_referido',$codigo)
@@ -98,9 +97,7 @@ class HomeController extends Controller
         }
     }
 
-
-
-    private function getTiendaFav($id_user){
+    private function getTiendaFav_DB($id_user){
         // Como funcionan los errores aquí
         /* 
             Para manejarlo en frontend:
@@ -132,8 +129,13 @@ class HomeController extends Controller
             $tienda_fav = 1;
             return $tienda_fav;
         }
-
         return $tienda_fav;
+    }
+
+    public function getTiendaFav($id)
+    {
+        $tienda_fav = $this->getTiendaFav_DB($id);
+        return response()->json($tienda_fav, 200);
     }
 
 }
