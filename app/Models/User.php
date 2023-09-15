@@ -33,7 +33,8 @@ class User extends Authenticatable
         'id_codigo_pais',
         'is_categoria_selec',
         'codigo_referido',
-        'codigo_referido_usuario'
+        'codigo_referido_usuario',
+        'puntos_go'
     ];
     
 
