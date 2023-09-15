@@ -26,6 +26,17 @@ class ProductoController extends Controller
 
     }
 
+
+    public function getProductoTienda($id){
+        $producto = Producto::where('id_tienda',$id)
+        ->where('estado',1) 
+        ->get();
+        if (count($producto)==0) {
+            return response()-> json('no existen Producto',404);
+        }
+        return response()->json($producto,200);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
