@@ -28,6 +28,9 @@ return new class extends Migration
             $table->string('codigo_referido')->nullable();
             $table->string('codigo_referido_usuario')->nullable();
 
+            //PuntosGO
+            $table->integer('puntos_go')->default(0);
+
             /* 
                 por defecto si seleccionó o no irá 0 pero
                 se cambiará cuando sea necesario, por eso tener en cuenta que 
