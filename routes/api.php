@@ -153,6 +153,7 @@ Route::resource('amon-tiendas', AmonestacionTiendaController::class);
 // Home (usuario)
 Route::post('/save-referido-user', [HomeController::class, 'saveReferidoUsuario']);
 Route::get('/get-home/{id}', [HomeController::class, 'getHome']);
+Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 
 
 Route::middleware('auth:sanctum')->group( function () {
