@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DetalleVenta;
 use App\Models\Producto;
 use App\Models\PromocionProducto;
+use App\Models\Toppings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class DetalleVentaController extends Controller
@@ -71,11 +72,7 @@ class DetalleVentaController extends Controller
         $detalleVenta=Array();
         $detalleProducto=null;
         $detallePromocion=null;
-        // $detalles=DB::table('detalle_ventas')
-        // ->leftJoin('productos','detalle_ventas.id_producto','=','productos.id')
-        // ->leftJoin('promocion_productos','detalle_ventas.id_promocion_productos','=','promocion_productos.id')
-        // ->select()
-        // ->get();
+        $toppingsDetalle=null;
         $detalles=DetalleVenta::where('id_venta',$idVenta)
         ->where('estado',1)
         ->get();
@@ -129,12 +126,24 @@ class DetalleVentaController extends Controller
 
             if($det->array_toppings_selec!="null")
             {
-                
+                $toppingsDetalle=$this->obtenerDataToppings($det->array_toppings_selec);
             }
-
-            array_push($detalleVenta,['Producto'=>$detalleProducto,'productoPromocion'=>$detallePromocion]);
+            array_push($detalleVenta,['Producto'=>$detalleProducto,'productoPromocion'=>$detallePromocion,'Toppings'=>$toppingsDetalle]);
         }
         return response()->json($detalleVenta);
+    }
+
+    public function obtenerDataToppings($toppings)
+    {
+        $toppingsData=Array();
+        $auxTop = str_replace(['[', ']', ' '], '', $toppings);
+        $elementos = explode(',', $auxTop);
+        $toppings = array_map('intval', $elementos);
+        foreach ($toppings as $key => $value) {
+            $topping=Toppings::find($value);
+            array_push($toppingsData,$topping);
+        }
+        return $toppingsData;
     }
 
 }
