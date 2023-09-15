@@ -49,15 +49,6 @@ class TiendaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show( $id_tienda)
-    {
-        $tienda=Tienda::find($id_tienda);
-        if (is_null($tienda)) {
-            return response()->json(['mesagge'=>'No se encontro ninguna tienda',400]);
-        }
-        return response()->json($tienda);
-        
-    }
 
 
     /**
@@ -364,18 +355,27 @@ class TiendaController extends Controller
     }
 
 
+    public function show( $id_tienda)
+    {
+        $tienda=Tienda::find($id_tienda);
+        if (is_null($tienda)) {
+            return response()->json(['mesagge'=>'No se encontro ninguna tienda',400]);
+        }
+        return response()->json($tienda);
+        
+    }
 
-    public function showCaregoria(){
 
-        $detPromo = Array();
+
+
+    public function showCateProducto(){
+
+      /*   $detPromo = Array(); */
         $data = Array();
-
         $categoria = DB::table('categorias_productos')
         ->select('categorias_productos.*')
         ->where('categorias_productos.estado', 1)
         ->get();
-
-        array_push($data, $categoria);
 
         foreach($categoria as $key => $p){
 
@@ -384,8 +384,9 @@ class TiendaController extends Controller
             ->where('id_categoria_productos', $p->id)
             ->get();
 
-            /* array_push($detPromo, ['promocion' => $p,'detPromo' => $kits]); */
-            array_push($data, $productos);
+            array_push($data, ['categoria' => $p,'data' => $productos]);
+            /* array_push($data, $categoria);
+            array_push($data, $productos); */
             /* array_push($data, [ $detPromo]); */
 
             $detPromo = Array();
@@ -395,5 +396,5 @@ class TiendaController extends Controller
 
         /* return response()->json($promocion); */
     }
-        
+
 }
