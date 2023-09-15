@@ -92,6 +92,7 @@ Route::resource('tipo-peso', TipoPesoController::class);
 //Marcas
 Route::resource('Marca', MarcaController::class);
 Route::post('edit-img-marca/{id}', [MarcaController::class, 'editImagen']);
+Route::get('get-marca-by-tienda/{id}', [MarcaController::class, 'getMarcaTienda']);
 
 //Productos
 Route::resource('producto', ProductoController::class);
@@ -105,6 +106,7 @@ Route::resource('categoria-usuario', CategoriasUsuarioController::class);
 
 //Promocion Productos
 Route::resource('promo-productos', PromocionProductoController::class);
+Route::get('get-promo-productos-by-tienda/{id}', [PromocionProductoController::class, 'getPromocionProductoByTienda']);
 
 //Toppings
 Route::resource('toppings', ToppingsController::class);
@@ -120,10 +122,10 @@ Route::resource('estado-venta', EstadoVentaController::class);
 
 //Ventas
 Route::resource('venta', VentaController::class);
-
+Route::get('get-ventas-by-usuario/{id}', [VentaController::class, 'getVentasByUsuario']);
 //Detalle Ventas
 Route::resource('detalle-venta', DetalleVentaController::class);
-
+Route::get('detalle-by-venta/{id}', [DetalleVentaController::class,'showDetallesByVentas']);
 //Reclamos
 Route::resource('reclamo', ReclamoController::class);
 
@@ -150,6 +152,7 @@ Route::resource('amon-tiendas', AmonestacionTiendaController::class);
 // Home (usuario)
 Route::post('/save-referido-user', [HomeController::class, 'saveReferidoUsuario']);
 Route::get('/get-home/{id}', [HomeController::class, 'getHome']);
+Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 
 
 Route::middleware('auth:sanctum')->group( function () {

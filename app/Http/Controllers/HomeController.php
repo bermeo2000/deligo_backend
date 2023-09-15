@@ -15,7 +15,7 @@ class HomeController extends Controller
     // con el fin de optimizar y hacer una sola petición
     
     public function getHome($id){
-        $tienda_fav = $this->getTiendaFav($id);
+        $tienda_fav = $this->getTiendaFav_DB($id);
 
         $home = Array();
 
@@ -47,10 +47,10 @@ class HomeController extends Controller
 
         $user_ref = User::find($validData['id_user']);
         if (is_null($user_ref)) {
-            return response()->json(['message' => 'Usuario encontrado'], 404);
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
-        if ($this->validacionCodigo( $validData['codigo_referido_usuario'])) 
-        {
+        if ($this->validacionCodigo( $validData['codigo_referido_usuario'])){
+
             $this->aumentarVentas($validData['codigo_referido_usuario']);
             $user_ref->codigo_referido_usuario = $validData['codigo_referido_usuario'];
             $user_ref->save();
@@ -59,21 +59,25 @@ class HomeController extends Controller
         } 
         else 
         {
-            return response()->json(['message' => 'El codigo ingresado no existe'], 400);
+            return response()->json(['message' => 'El codigo ingresado no existe. Vuelve a intentarlo.'], 404);
         }
         
       
     }
     private function validacionCodigo($codigo){
+        /* 
+        Esta función valida que el codigo que el usuario ha ingresado exista
+        es decir que sea el mismo de un emprendedor, para así asignarlo 
+        y mostrar la tienda como fav
+        */
         $user= User::where('estado',1)
-        ->where('codigo_referido',$codigo)
+        ->where('codigo_referido', $codigo)
         ->get();
-        if ($user->isEmpty()) {
+        if ($user->isEmpty()){
             return false;
         }
         return true;
     }
-
     private function aumentarVentas($codigo){
         $user= User::where('estado',1)
         ->where('codigo_referido',$codigo)
@@ -93,9 +97,7 @@ class HomeController extends Controller
         }
     }
 
-
-
-    private function getTiendaFav($id_user){
+    private function getTiendaFav_DB($id_user){
         // Como funcionan los errores aquí
         /* 
             Para manejarlo en frontend:
@@ -127,8 +129,13 @@ class HomeController extends Controller
             $tienda_fav = 1;
             return $tienda_fav;
         }
-
         return $tienda_fav;
+    }
+
+    public function getTiendaFav($id)
+    {
+        $tienda_fav = $this->getTiendaFav_DB($id);
+        return response()->json($tienda_fav, 200);
     }
 
 }

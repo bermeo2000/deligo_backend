@@ -106,6 +106,16 @@ class MarcaController extends Controller
        return response()->json("La marcas se elimino con exito", 200);
     }
 
+    public function getMarcaTienda($id){
+        $marca = Marca::where('id_tienda',$id)
+        ->where('estado',1) 
+        ->get();
+        if (count($marca)==0) {
+            return response()-> json('no existen marca',404);
+        }
+        return response()->json($marca,200);
+    }
+
 
 /*     public function editImagen(Request $request, $id ){
 
