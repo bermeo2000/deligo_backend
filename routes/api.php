@@ -76,9 +76,10 @@ Route::post('/updateDelivery/{id}', [TiendaController::class,'updateDelivery']);
 Route::get('/get-tienda-by-cat/{id}', [TiendaController::class, 'getAllTiendasCategoria']);
 Route::get('/get-tienda/{id}', [TiendaController::class, 'getTienda']);
 Route::get('/show/{id}', [TiendaController::class, 'show']);
+/* Route::get('/getshowTienda/{id}', [TiendaController::class, 'getshowTienda']); */
 Route::post('/updatetienda/{id}', [TiendaController::class, 'updateTienda']);
-Route::get('/getcategotiatiendas/{id}', [TiendaController::class, 'getCategotiaTiendas']);
-Route::get('/getproductocategorias/{id}', [TiendaController::class, 'getProductoCategorias']);
+/* Route::get('/getcategotiatiendas/{id}', [TiendaController::class, 'getCategotiaTiendas']);
+Route::get('/getproductocategorias/{id}', [TiendaController::class, 'getProductoCategorias']); */
 Route::get('/showCateProducto', [TiendaController::class,'showCateProducto']);
 
 //Categoria Productos

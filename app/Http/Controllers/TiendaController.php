@@ -46,27 +46,10 @@ class TiendaController extends Controller
         
     }
 
-    /**
-     * Display the specified resource.
-     */
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tienda $tienda)
+    public function update(Request $request, $id_tienda)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-
-    public function updateTienda(Request $request, $id)
-    {
-        $tienda = Tienda::find($id);
-        if (is_null($id)) {
+        $tienda = Tienda::find($id_tienda);
+        if (is_null($id_tienda)) {
             return response()->json(['message' => 'tienda no encontrado.'], 404);
         }
         $validateData = $request->validate([
@@ -89,6 +72,24 @@ class TiendaController extends Controller
         $tienda->save();
         return response()->json(['message' => 'tienda actualizado'], 200);
     }
+
+    /**
+     * Display the specified resource.
+     */
+
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Tienda $tienda)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+
 
     /**
      * Remove the specified resource from storage.
@@ -239,26 +240,6 @@ class TiendaController extends Controller
        $img->storeAs("public/images/tienda/{$tienda->id}", $validateDataTienda['imagen_tienda']);
     }
 
-   /*  public function Updatefototienda(Request $request, $id){
-        $tienda=Tienda::find($id);
-        if (is_null($tienda)) {
-            return response()->json(['message'=>'No se encontro ninguna tienda',404]);
-        }
-        $validateData=$request->validate(
-            ['imagen'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',]
-        );
-        if (isset($validateData['imagen'])) {
-            $img = $request->file('imagen');
-            $validateData['imagen'] = time() . '.' . $img->getClientOriginalExtension();
-        } else {
-            $validateData['imagen'] = null;
-        }
-        $tienda->imagen = $validateData['imagen'];
-        $tienda->save();
-        $request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
-        return response()->json(['message'=>'La foto se actualizo con exito'],200);
-    }
- */
 
     public function Updatefototienda(Request $request, $id)
     {
@@ -274,7 +255,7 @@ class TiendaController extends Controller
         $img=$request->file('imagen');
         $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
         
-        $request->file('imagen')->storeAs("public/images/persona/{$tienda->id}", $validData['imagen']);
+        $request->file('imagen')->storeAs("public/images/tienda/{$tienda->id}", $validData['imagen']);
 
         /*  if ($person->image != '') {
             unlink(storage_path("app/public/images/persons/{$person->userId}/" . $person->image));
@@ -283,6 +264,8 @@ class TiendaController extends Controller
         $tienda->save();
         return response()->json(['message' => 'Imagen actualizada'], 201);
     }
+
+
 
     public function updateRedes(Request $request, $id){
         $tienda=Tienda::find($id);
@@ -331,7 +314,7 @@ class TiendaController extends Controller
 
 
     
-    public function getCategotiaTiendas($id_tienda){
+   /*  public function getCategotiaTiendas($id_tienda){
         //Busca todos los productos por la tienda
         $categoria = DB::table('categorias_productos')
         ->select('categorias_productos.*')
@@ -352,7 +335,7 @@ class TiendaController extends Controller
         ->where('productos.estado',1)
         ->get();
         return response()->json($productos);
-    }
+    } */
 
 
     public function show( $id_tienda)
@@ -364,9 +347,6 @@ class TiendaController extends Controller
         return response()->json($tienda);
         
     }
-
-
-
 
     public function showCateProducto(){
 
