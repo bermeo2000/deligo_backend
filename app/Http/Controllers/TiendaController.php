@@ -346,7 +346,7 @@ class TiendaController extends Controller
     
     public function getProductoCategorias($id_categoria_productos){
         $productos=DB::table('productos')
-        //->join()
+        
         ->select('productos.*')
         ->where('productos.id_categoria_productos',$id_categoria_productos)
         ->where('productos.estado',1)
