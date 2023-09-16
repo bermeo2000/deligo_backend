@@ -21,6 +21,16 @@ class TipoPesoController extends Controller
 
     }
 
+/*     public function getTipoPesoTienda($id){
+        $tipoPeso = TipoPeso::where('id_tienda',$id)
+        ->where('estado',1) 
+        ->get();
+        if (count($tipoPeso)==0) {
+            return response()-> json('no existen tipoPeso',404);
+        }
+        return response()->json($tipoPeso,200);
+    } */
+
     /**
      * Show the form for creating a new resource.
      */

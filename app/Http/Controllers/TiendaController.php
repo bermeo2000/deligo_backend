@@ -369,7 +369,7 @@ class TiendaController extends Controller
             array_push($data, $productos); */
             /* array_push($data, [ $detPromo]); */
 
-            $detPromo = Array();
+            /* $detPromo = Array(); */
 
         }
         return response()->json($data, 200);

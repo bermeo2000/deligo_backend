@@ -16,8 +16,10 @@ class ProductoController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
+        //no se toma en cuenta esta funcion
         $producto = Producto::where('estado',1) ->get();
         if (count($producto)==0) {
             return response()-> json('no existen categoria producto',404);
@@ -35,6 +37,33 @@ class ProductoController extends Controller
             return response()-> json('no existen Producto',404);
         }
         return response()->json($producto,200);
+    }
+
+
+    public function showCateProducto($id) {
+        $data = Array();
+        
+        // Buscar la categoría de productos por su ID
+        $categoria = DB::table('categorias_productos')
+            ->select('categorias_productos.*')
+            ->where('categorias_productos.estado', 1)
+            ->where('categorias_productos.id', $id) // Filtrar por ID
+            ->first(); // Utilizar first() en lugar de get() para obtener una sola categoría
+        
+        if ($categoria) {
+            // Si se encontró la categoría, buscar los productos relacionados
+            $productos = DB::table('productos')
+                ->select('productos.*')
+                ->where('id_categoria_productos', $categoria->id)
+                ->get();
+    
+            $data = ['categoria' => $categoria, 'data' => $productos];
+        } else {
+            // Manejar el caso en que no se encuentre la categoría por el ID
+            return response()->json(['message' => 'Categoría de productos no encontrada'], 404);
+        }
+    
+        return response()->json($data, 200);
     }
 
     /**

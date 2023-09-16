@@ -83,12 +83,14 @@ Route::get('/getproductocategorias/{id}', [TiendaController::class, 'getProducto
 Route::get('/showCateProducto', [TiendaController::class,'showCateProducto']);
 
 //Categoria Productos
+
 Route::resource('categoria-producto', CategoriasProductosController::class);
 Route::get('/get-cat-prod-by-tienda/{id}', [CategoriasProductosController::class, 'getCatProducByTienda']);
-
+Route::get('/getCategProductTienda/{id}', [CategoriasProductosController::class, 'getCategProductTienda']);
 
 //Tipo Pesos
 Route::resource('tipo-peso', TipoPesoController::class);
+/* Route::get('/getTipoPesoTienda/{id}', [TipoPesoController::class, 'getTipoPesoTienda']); */
 
 //Marcas
 Route::resource('Marca', MarcaController::class);
@@ -101,6 +103,7 @@ Route::get('get-prod-by-tienda/{id}', [ProductoController::class, 'getProductoBy
 Route::get('get-prod-by-categoria/{id}', [ProductoController::class, 'getProductosByCategoria']);
 Route::post('prod-update/{id}', [ProductoController::class, 'Actualizar']);
 Route::get('productos/{id}', [ProductoController::class, 'getProductoTienda']);
+Route::get('showCateProducto/{id}', [ProductoController::class, 'showCateProducto']);
 
 
 //Categorias Usuarios
