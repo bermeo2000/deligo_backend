@@ -53,6 +53,11 @@ class HomeController extends Controller
 
             $this->aumentarVentas($validData['codigo_referido_usuario']);
             $user_ref->codigo_referido_usuario = $validData['codigo_referido_usuario'];
+            /* 
+                Suma de PuntosGO
+                Actualmente se suman 100 pero esto cambiaría dependiendo de lo que se defina 16/9/23
+            */
+            $user_ref->puntos_go = 100;
             $user_ref->save();
             
             return response()->json(['message' => 'Referido de usuario guardado correctamente'], 200);
