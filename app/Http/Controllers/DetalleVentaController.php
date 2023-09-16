@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DetalleVenta;
+use App\Models\DetalleVentaTopping;
 use App\Models\Producto;
 use App\Models\PromocionProducto;
 use App\Models\Toppings;
@@ -143,8 +144,15 @@ class DetalleVentaController extends Controller
         //     $topping=Toppings::find($value);
         //     array_push($toppingsData,$topping);
         // }
-        $auxdetalle= DetalleVenta::find($id);
-        $toppingsData=$auxdetalle->toppings;
+        // $auxdetalle= DetalleVenta::find($id);
+        $toppingsData=DB::table('detalle_venta_toppings')
+        ->join('detalle_ventas','detalle_venta_toppings.id_detalle_venta','=','detalle_ventas.id')
+        ->join('toppings','detalle_venta_toppings.id_topping','=','toppings.id')
+        ->select('toppings.descripcion as nombreTopping', 'toppings.precio', 'detalle_venta_toppings.cantidad', 'detalle_venta_toppings.total_toppings as totalToppings')
+        ->where('detalle_venta_toppings.estado',1)
+        ->where('detalle_venta_toppings.id_detalle_venta',$id)
+        //->where()
+        ->get();
         return $toppingsData;
     }
 
