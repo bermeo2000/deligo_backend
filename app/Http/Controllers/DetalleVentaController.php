@@ -124,25 +124,27 @@ class DetalleVentaController extends Controller
                 $detalle=PromocionProducto::find($det->id_promocion_producto);
             }
 
-            if($det->array_toppings_selec!="null")
+            if($det->toppings!="null")
             {
-                $toppingsDetalle=$this->obtenerDataToppings($det->array_toppings_selec);
+                $toppingsDetalle=$this->obtenerDataToppings($det->id);
             }
             array_push($detalleVenta,['Producto'=>$detalleProducto,'productoPromocion'=>$detallePromocion,'Toppings'=>$toppingsDetalle]);
         }
         return response()->json($detalleVenta);
     }
 
-    public function obtenerDataToppings($toppings)
+    public function obtenerDataToppings($id)
     {
-        $toppingsData=Array();
-        $auxTop = str_replace(['[', ']', ' '], '', $toppings);
-        $elementos = explode(',', $auxTop);
-        $toppings = array_map('intval', $elementos);
-        foreach ($toppings as $key => $value) {
-            $topping=Toppings::find($value);
-            array_push($toppingsData,$topping);
-        }
+        // $toppingsData=Array();
+        // $auxTop = str_replace(['[', ']', ' '], '', $toppings);
+        // $elementos = explode(',', $auxTop);
+        // $toppings = array_map('intval', $elementos);
+        // foreach ($toppings as $key => $value) {
+        //     $topping=Toppings::find($value);
+        //     array_push($toppingsData,$topping);
+        // }
+        $auxdetalle= DetalleVenta::find($id);
+        $toppingsData=$auxdetalle->toppings;
         return $toppingsData;
     }
 

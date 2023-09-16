@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\DetalleVentaTopping;
+use App\Models\Toppings;
 
 class DetalleVenta extends Model
 {
@@ -18,6 +20,16 @@ class DetalleVenta extends Model
         'id_promocion_producto',
         'id_venta',
         'estado',
-        'array_toppings_selec',
     ];
+
+    public function detalleVentaToppings()
+    {
+        return $this->hasMany(DetalleVentaTopping::class,'id_detalle_venta');
+    }
+    
+    public function toppings()
+    {
+        return $this->hasManyThrough(Toppings::class, DetalleVentaTopping::class,'id_detalle_venta', 'id');
+        
+    }
 }

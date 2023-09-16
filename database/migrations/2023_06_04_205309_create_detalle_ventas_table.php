@@ -30,7 +30,7 @@ return new class extends Migration
             es un poco mas compleja, pero aun asi manejable
             */
 
-            $table->string('array_toppings_selec')->nullable();
+            //$table->string('array_toppings_selec')->nullable();
         });
     }
 
