@@ -148,14 +148,45 @@ class PromocionProductoController extends Controller
         }
         return response()->json($promocionProducto,200);
     } */
-    public function getPromoProductoTienda($id){
 
-        $promocionproducto=DB::table('promocionproducto')
-        ->join('productos','promocionproducto.id_producto','=','productos.id')
+    public function getProductoByTienda($id_tienda){
+        //Busca todos los productos por la tienda
+
+        $data = DB::table('productos')
+        ->select('productos.*')
+        ->where('productos.id_tienda', $id_tienda)
+        ->where('productos.estado', 1)
+        ->get();
+
+        return response($data, 200);
+        
+    }
+
+
+
+    public function getPromoByTienda($id_tienda){
+        //Busca todos los productos por la tienda
+
+        $data = DB::table('productos')
+        ->select('productos.*')
+        ->where('productos.id_tienda', $id_tienda)
+        ->where('productos.estado', 1)
+        ->get();
+
+        return response($data, 200);
+        
+    }
+
+
+
+    public function getPromoProductoTienda($id_tienda){
+
+        $promocionproducto=DB::table('productos')
         ->join('tiendas','productos.id_tienda','=','tiendas.id')
-        ->select('promocionproducto.*','productos.nombre')
-        ->where('promocionproducto.estado',1)
-        ->where('productos.id_tienda',$id)
+        ->join('productos','promocionproductos.id_producto','=','productos.id')
+        ->select('promocionproductos.*','productos.nombre')
+        ->where('tiendas.id',$id_tienda)
+        ->where('tiendas.estado',1)
         ->get();
         if (count($promocionproducto)== 0) {
             return response()->json(['message' => 'promocion producto no encontrado'], 404);
