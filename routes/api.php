@@ -76,19 +76,21 @@ Route::post('/updateDelivery/{id}', [TiendaController::class,'updateDelivery']);
 Route::get('/get-tienda-by-cat/{id}', [TiendaController::class, 'getAllTiendasCategoria']);
 Route::get('/get-tienda/{id}', [TiendaController::class, 'getTienda']);
 Route::get('/show/{id}', [TiendaController::class, 'show']);
+/* Route::get('/getshowTienda/{id}', [TiendaController::class, 'getshowTienda']); */
 Route::post('/updatetienda/{id}', [TiendaController::class, 'updateTienda']);
-Route::get('/getcategotiatiendas/{id}', [TiendaController::class, 'getCategotiaTiendas']);
-Route::get('/getproductocategorias/{id}', [TiendaController::class, 'getProductoCategorias']);
-Route::get('/getproductotiendass/{id}', [TiendaController::class, 'getProductoTiendass']);
-Route::get('/showCaregoria', [TiendaController::class,'showCaregoria']);
+/* Route::get('/getcategotiatiendas/{id}', [TiendaController::class, 'getCategotiaTiendas']);
+Route::get('/getproductocategorias/{id}', [TiendaController::class, 'getProductoCategorias']); */
+Route::get('/showCateProducto', [TiendaController::class,'showCateProducto']);
 
 //Categoria Productos
+
 Route::resource('categoria-producto', CategoriasProductosController::class);
 Route::get('/get-cat-prod-by-tienda/{id}', [CategoriasProductosController::class, 'getCatProducByTienda']);
-
+Route::get('/getCategProductTienda/{id}', [CategoriasProductosController::class, 'getCategProductTienda']);
 
 //Tipo Pesos
 Route::resource('tipo-peso', TipoPesoController::class);
+/* Route::get('/getTipoPesoTienda/{id}', [TipoPesoController::class, 'getTipoPesoTienda']); */
 
 //Marcas
 Route::resource('Marca', MarcaController::class);
@@ -100,6 +102,8 @@ Route::resource('producto', ProductoController::class);
 Route::get('get-prod-by-tienda/{id}', [ProductoController::class, 'getProductoByTienda']);
 Route::get('get-prod-by-categoria/{id}', [ProductoController::class, 'getProductosByCategoria']);
 Route::post('prod-update/{id}', [ProductoController::class, 'Actualizar']);
+Route::get('productos/{id}', [ProductoController::class, 'getProductoTienda']);
+Route::get('showCateProducto/{id}', [ProductoController::class, 'showCateProducto']);
 
 
 //Categorias Usuarios
@@ -124,10 +128,10 @@ Route::resource('estado-venta', EstadoVentaController::class);
 
 //Ventas
 Route::resource('venta', VentaController::class);
-
+Route::get('get-ventas-by-usuario/{id}', [VentaController::class, 'getVentasByUsuario']);
 //Detalle Ventas
 Route::resource('detalle-venta', DetalleVentaController::class);
-
+Route::get('detalle-by-venta/{id}', [DetalleVentaController::class,'showDetallesByVentas']);
 //Reclamos
 Route::resource('reclamo', ReclamoController::class);
 
@@ -154,6 +158,7 @@ Route::resource('amon-tiendas', AmonestacionTiendaController::class);
 // Home (usuario)
 Route::post('/save-referido-user', [HomeController::class, 'saveReferidoUsuario']);
 Route::get('/get-home/{id}', [HomeController::class, 'getHome']);
+Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 
 
 Route::middleware('auth:sanctum')->group( function () {

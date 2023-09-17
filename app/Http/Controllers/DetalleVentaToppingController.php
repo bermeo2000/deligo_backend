@@ -2,34 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TipoPeso;
+use App\Models\DetalleVentaTopping;
 use Illuminate\Http\Request;
 
-class TipoPesoController extends Controller
+class DetalleVentaToppingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //todos los tipos de pesos
-
-        $data = TipoPeso::where('estado', 1)
-        ->get();
-
-        return response()->json($data, 200);
-
+        //
     }
-
-/*     public function getTipoPesoTienda($id){
-        $tipoPeso = TipoPeso::where('id_tienda',$id)
-        ->where('estado',1) 
-        ->get();
-        if (count($tipoPeso)==0) {
-            return response()-> json('no existen tipoPeso',404);
-        }
-        return response()->json($tipoPeso,200);
-    } */
 
     /**
      * Show the form for creating a new resource.
@@ -50,7 +34,7 @@ class TipoPesoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TipoPeso $tipoPeso)
+    public function show(DetalleVentaTopping $detalleVentaTopping)
     {
         //
     }
@@ -58,7 +42,7 @@ class TipoPesoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TipoPeso $tipoPeso)
+    public function edit(DetalleVentaTopping $detalleVentaTopping)
     {
         //
     }
@@ -66,7 +50,7 @@ class TipoPesoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TipoPeso $tipoPeso)
+    public function update(Request $request, DetalleVentaTopping $detalleVentaTopping)
     {
         //
     }
@@ -74,7 +58,7 @@ class TipoPesoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TipoPeso $tipoPeso)
+    public function destroy(DetalleVentaTopping $detalleVentaTopping)
     {
         //
     }

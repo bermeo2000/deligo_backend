@@ -66,6 +66,17 @@ class CategoriasProductosController extends Controller
         return response()->json($categoria_productos);
     }
 
+
+    public function getCategProductTienda($id){
+        $categoria_productos = CategoriasProductos::where('id_tienda',$id)
+        ->where('estado',1) 
+        ->get();
+        if (count($categoria_productos)==0) {
+            return response()-> json('no existen categoria_productos',404);
+        }
+        return response()->json($categoria_productos,200);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
