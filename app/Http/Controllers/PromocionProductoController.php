@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Producto;
 use App\Models\PromocionProducto;
+
 use DB;
 use Illuminate\Http\Request;
 
@@ -31,7 +33,81 @@ class PromocionProductoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    public function storess(Request $request)
+    {
+        // Obtener el id de la tienda desde la solicitud
+        $idTienda = $request->id_tienda;
+    
+        // Realizar una consulta para encontrar el id del producto relacionado con la tienda
+        $producto = Producto::where('id_tienda', $idTienda)->first();
+    
+        if (!$producto) {
+            return response()->json(['message' => 'No se encontró un producto para esta tienda'], 404);
+        }
+    
+        $jsonString = $request->getContent();
+        $promocionproductos = json_decode($jsonString, true);
+
+        $promocionproductos = $request->promocionproductos;
+
+        // Ahora que tienes el id del producto, puedes crear las promociones de productos
+        $promocionproductos = json_decode($request->promocionproductos, true);
+    
+        foreach ($promocionproductos as $aux2) {
+            $promocionproducto = PromocionProducto::create([
+                'id_producto' => $producto->id,
+                'descuento' => $aux2['descuento'],
+                'fecha_inicio' => $aux2['fecha_inicio'],
+                'fecha_fin' => $aux2['fecha_fin'],
+                'estado' => 1
+            ]);
+        }
+    
+        return response()->json(['message' => 'Promoción de producto registrada'], 200);
+    }
+    
+    public function stor(Request $request)
+    {
+
+        $promocionproductos=json_decode($request->promocionproductos,true);
+        $aux= count($promocionproductos);
+        for ($i=0; $i < $aux ; $i++) 
+        { 
+            $aux2=$promocionproductos[$i];
+            $promocionproducto=PromocionProducto::create([
+                'id_producto' =>  $aux2['id_producto'],
+                'descuento' => $aux2['descuento'],
+                'fecha_inicio' => $aux2['fecha_inicio'],
+                'fecha_fin' => $aux2['fecha_fin'],
+                'estado' => 1
+                ]);
+        }       
+
+        return response()->json(['message'=>'promocion producto registrada'], 200); 
+    }
+
     public function store(Request $request)
+{
+    $promocionproductos = $request->promocionproductos; // No necesitas json_decode
+
+    $aux = count($promocionproductos);
+    for ($i = 0; $i < $aux; $i++) { 
+        $aux2 = $promocionproductos[$i];
+        $promocionproducto = PromocionProducto::create([
+            'id_producto' => $aux2['id_producto'],
+            'descuento' => $aux2['descuento'],
+            'fecha_inicio' => $aux2['fecha_inicio'],
+            'fecha_fin' => $aux2['fecha_fin'],
+            'estado' => 1
+        ]);
+    }
+
+    return response()->json(['message' => 'promoción producto registrada'], 200); 
+}
+
+    
+
+    public function storesss(Request $request)
     {
 /*         $validateData=$request->validate([
             'id_producto' =>'required',
@@ -49,16 +125,21 @@ class PromocionProductoController extends Controller
         ]);
 
         return response()->json(['message' => 'promocionproducto registrada correctamente'], 200);
- */
+        */
+        $idTienda = $request->id_tienda;
+            
+        // Realizar una consulta para encontrar el id del producto relacionado con la tienda
+        $producto = Producto::where('id_tienda', $idTienda)->first();
+
         
-        $idProducto=$request->id_producto;
+       // $idProducto=$request->id_producto;
         $promocionproductos=json_decode($request->promocionproductos,true);
         $aux= count($promocionproductos);
         for ($i=0; $i < $aux ; $i++) 
         { 
             $aux2=$promocionproductos[$i];
             $promocionproducto=PromocionProducto::create([
-                'id_producto' => $idProducto,
+                'id_producto' => $aux2['descuento'],// $producto->id,//$idProducto,
                 'descuento' => $aux2['descuento'],
                 'fecha_inicio' => $aux2['fecha_inicio'],
                 'fecha_fin' => $aux2['fecha_fin'],
