@@ -87,19 +87,11 @@ class HomeController extends Controller
         $user= User::where('estado',1)
         ->where('codigo_referido',$codigo)
         ->get();
-        
-        $tienda = Tienda::where('estado',1)
-        ->where('id_propietario',$user[0]->id)
-        ->get();
-        if(count($tienda)>1)
-        {
-            //se debe definir si las ventas se aumentaran a la tienda original o se aumentaran a todas 
+        if ($user->isEmpty()) {
+            return repsonse()->json("El codigo de referido no existe",404);
         }
-        else
-        {
-            $tienda[0]->ventas=$tienda[0]->ventas+3;
-            $tienda[0]->save();
-        }
+        $user[0]->ventas=$user[0]->ventas+3;
+        $user[0]->save();  
     }
 
     private function getTiendaFav_DB($id_user){
