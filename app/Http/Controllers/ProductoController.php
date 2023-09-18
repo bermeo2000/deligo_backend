@@ -29,6 +29,42 @@ class ProductoController extends Controller
     }
 
 
+    public function showCateProductos($id) {
+        $data = [];
+    
+        // Obtén la tienda por su ID
+        $tienda = DB::table('tiendas')->find($id);
+    
+        if (!$tienda) {
+            return response()->json(['error' => 'Tienda no encontrada'], 404);
+        }
+    
+        // Obtén las categorías relacionadas con la tienda
+        $categoria = DB::table('categorias_productos')
+            ->select('categorias_productos.*')
+            ->where('categorias_productos.estado', 1)
+            ->where('categorias_productos.id', $id) // Filtrar por ID
+            ->get();
+    
+        foreach ($categoria as $categoria) {
+            // Obtén los productos relacionados con la categoría
+            $productos = DB::table('productos')
+            ->select('productos.*')
+            ->where('id_categoria_productos', $categoria->id)
+            ->get();
+    
+            $data[] = [
+                'cantidad_categoria' => count($categoria),
+                'categoria' => $categoria,
+                'cantidad_productos' => count($productos),
+                'productos' => $productos,
+            ];
+        }
+    
+        return response()->json(['tienda' => $tienda, 'categorias' => $data], 200);
+    }
+
+
     public function getProductoTienda($id){
         $producto = Producto::where('id_tienda',$id)
         ->where('estado',1) 
@@ -41,6 +77,11 @@ class ProductoController extends Controller
 
 
     public function showCateProducto($id) {
+        $tienda = DB::table('tiendas')->find($id);
+    
+        if (!$tienda) {
+            return response()->json(['error' => 'Tienda no encontrada'], 404);
+        }
         $data = Array();
         
         // Buscar la categoría de productos por su ID
@@ -63,7 +104,8 @@ class ProductoController extends Controller
             return response()->json(['message' => 'Categoría de productos no encontrada'], 404);
         }
     
-        return response()->json($data, 200);
+        /* return response()->json($data, 200); */
+        return response()->json(['tienda' => $tienda, 'categorias' => $data], 200);
     }
 
     /**

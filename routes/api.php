@@ -132,6 +132,8 @@ Route::get('get-ventas-by-usuario/{id}', [VentaController::class, 'getVentasByUs
 //Detalle Ventas
 Route::resource('detalle-venta', DetalleVentaController::class);
 Route::get('detalle-by-venta/{id}', [DetalleVentaController::class,'showDetallesByVentas']);
+Route::get('producto-mas-vendido/{id}', [DetalleVentaController::class,'productosMasVendidos']);
+
 //Reclamos
 Route::resource('reclamo', ReclamoController::class);
 
