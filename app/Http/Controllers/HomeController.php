@@ -88,7 +88,7 @@ class HomeController extends Controller
         ->where('codigo_referido',$codigo)
         ->get();
         if ($user->isEmpty()) {
-            return repsonse()->json("El codigo de referido no existe",404);
+            return response()->json("El codigo de referido no existe", 404);
         }
         $user[0]->ventas=$user[0]->ventas+3;
         $user[0]->save();  
