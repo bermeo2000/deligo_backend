@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\DetalleVenta;
+use App\Models\DetalleVentaTopping;
 class Toppings extends Model
 {
     use HasFactory;
@@ -16,4 +17,14 @@ class Toppings extends Model
         'id_tienda',
         'estado',
     ];
+
+    public function detalleVentaTopping()
+    {
+        return $this->hasMany(DetalleVentaTopping::class);
+    }
+
+    public function detalles()
+    {
+        return $this->hasManyThrough(DetalleVenta::class, DetalleVentaTopping::class, 'id_topping', 'id_detalle_venta');
+    }
 }

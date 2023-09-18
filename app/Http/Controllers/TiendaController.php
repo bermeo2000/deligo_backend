@@ -149,6 +149,7 @@ class TiendaController extends Controller
             'is_categoria_selec'=>$validateData['is_categoria_selec'],
             'codigo_referido'   =>$codigo,
             'codigo_referido_usuario'=>$codigo,
+            'ventas'                =>100,
             'estado'            =>1,
         ]);
         if(isset($usuario->imagen)){

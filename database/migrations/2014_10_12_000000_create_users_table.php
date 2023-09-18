@@ -27,6 +27,7 @@ return new class extends Migration
             $table->foreignId('id_codigo_pais')->nullable()->constrained('codigo_pais');
             $table->string('codigo_referido')->nullable();
             $table->string('codigo_referido_usuario')->nullable();
+            $table->integer('ventas')->nullable();
 
             //PuntosGO
             $table->integer('puntos_go')->default(0);

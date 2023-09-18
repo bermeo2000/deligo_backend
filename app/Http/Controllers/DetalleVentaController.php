@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DetalleVenta;
+use App\Models\DetalleVentaTopping;
 use App\Models\Producto;
 use App\Models\PromocionProducto;
 use App\Models\Toppings;
@@ -99,6 +100,7 @@ class DetalleVentaController extends Controller
                  'tiendas.nombre_tienda as tienda')
                  ->where('detalle_ventas.id_producto',$det->id_producto)
                  ->where('detalle_ventas.id_venta',$det->id_venta)
+                 ->where('detalle_ventas.id',$det->id)
                  ->get();
     
             }
@@ -120,30 +122,50 @@ class DetalleVentaController extends Controller
                  'tiendas.nombre_tienda as tienda')
                  ->where('detalle_ventas.id_producto',$det->id_producto)
                  ->where('detalle_ventas.id_venta',$det->id_venta)
+                 ->where('detalle_ventas.id',$det->id)
                  ->get();
                 $detalle=PromocionProducto::find($det->id_promocion_producto);
             }
 
-            if($det->array_toppings_selec!="null")
+            if($det->toppings!="null")
             {
-                $toppingsDetalle=$this->obtenerDataToppings($det->array_toppings_selec);
+                $toppingsDetalle=$this->obtenerDataToppings($det->id);
             }
             array_push($detalleVenta,['Producto'=>$detalleProducto,'productoPromocion'=>$detallePromocion,'Toppings'=>$toppingsDetalle]);
         }
         return response()->json($detalleVenta);
     }
 
-    public function obtenerDataToppings($toppings)
+    public function obtenerDataToppings($id)
     {
-        $toppingsData=Array();
-        $auxTop = str_replace(['[', ']', ' '], '', $toppings);
-        $elementos = explode(',', $auxTop);
-        $toppings = array_map('intval', $elementos);
-        foreach ($toppings as $key => $value) {
-            $topping=Toppings::find($value);
-            array_push($toppingsData,$topping);
-        }
+        $toppingsData=DB::table('detalle_venta_toppings')
+        ->join('detalle_ventas','detalle_venta_toppings.id_detalle_venta','=','detalle_ventas.id')
+        ->join('toppings','detalle_venta_toppings.id_topping','=','toppings.id')
+        ->select('toppings.descripcion as nombreTopping', 'toppings.precio', 'detalle_venta_toppings.cantidad', 'detalle_venta_toppings.total_toppings as totalToppings')
+        ->where('detalle_venta_toppings.estado',1)
+        ->where('detalle_venta_toppings.id_detalle_venta',$id)
+        //->where()
+        ->get();
         return $toppingsData;
+    }
+
+    public function productosMasVendidos($idTienda){
+        $detalles=DB::table( 'detalle_ventas')
+                 ->join('productos','detalle_ventas.id_producto','=','productos.id')
+                 ->join('categorias_productos','productos.id_categoria_productos','=','categorias_productos.id')
+                 ->leftJoin('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
+                 ->leftJoin('marcas','productos.id_marca','=','marcas.id')
+                 ->select('productos.nombre','productos.precio','productos.imagen', DB::raw('COUNT(*) as cantidad'))
+        ->where('detalle_ventas.id_tienda',$idTienda)
+        ->where('detalle_ventas.estado',1)
+        ->groupBy('productos.id', 'productos.nombre', 'productos.precio', 'productos.imagen')
+        ->orderByDesc('cantidad')
+        ->take(10)
+        ->get();
+        return response()->json($detalles);
+
+
+
     }
 
 }

@@ -34,7 +34,8 @@ class User extends Authenticatable
         'is_categoria_selec',
         'codigo_referido',
         'codigo_referido_usuario',
-        'puntos_go'
+        'puntos_go',
+        'ventas'
     ];
     
 
