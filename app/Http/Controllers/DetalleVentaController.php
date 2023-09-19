@@ -155,7 +155,7 @@ class DetalleVentaController extends Controller
                  ->join('categorias_productos','productos.id_categoria_productos','=','categorias_productos.id')
                  ->leftJoin('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
                  ->leftJoin('marcas','productos.id_marca','=','marcas.id')
-                 ->select('productos.nombre','productos.precio','productos.imagen', DB::raw('COUNT(*) as cantidad'))
+                 ->select('productos.id','productos.nombre','productos.precio','productos.imagen', DB::raw('COUNT(*) as cantidad'))
         ->where('detalle_ventas.id_tienda',$idTienda)
         ->where('detalle_ventas.estado',1)
         ->groupBy('productos.id', 'productos.nombre', 'productos.precio', 'productos.imagen')

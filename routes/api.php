@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProductoServicioController;
+use App\Http\Controllers\ResenaServicioController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -160,6 +162,13 @@ Route::resource('amon-tiendas', AmonestacionTiendaController::class);
 Route::post('/save-referido-user', [HomeController::class, 'saveReferidoUsuario']);
 Route::get('/get-home/{id}', [HomeController::class, 'getHome']);
 Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
+
+// Producto servicio
+Route::resource('producto-servicio', ProductoServicioController::class);
+
+// Producto servicio
+Route::resource('rese-servicio', ResenaServicioController::class);
+
 
 
 Route::middleware('auth:sanctum')->group( function () {
