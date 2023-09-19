@@ -29,6 +29,9 @@ class Tienda extends Model
         'tiempo_delivery_min',
         'puntuacion',
         'descripcion',
+        'hora_apertura',
+        'hora_cierre',
+        'llegada_previa',
         
     ];
 }
