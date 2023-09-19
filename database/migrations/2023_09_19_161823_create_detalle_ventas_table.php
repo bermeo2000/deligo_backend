@@ -23,6 +23,12 @@ return new class extends Migration
             $table->integer('id_tienda');
             $table->boolean('estado');
 
+            //para servicios
+            $table->foreignId('id_producto_servicio')->nullable()->constrained('producto_servicios');
+            $table->date('fecha_cita')->nullable();
+            $table->time('hora_cita')->nullable();
+
+
             /* 
             array_toppings_selec: este array guardaria los ids de los topping seleccionados 
             para ese producto en ese venta, es una solución que creemos que es viable 
