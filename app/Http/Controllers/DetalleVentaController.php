@@ -141,7 +141,8 @@ class DetalleVentaController extends Controller
         $toppingsData=DB::table('detalle_venta_toppings')
         ->join('detalle_ventas','detalle_venta_toppings.id_detalle_venta','=','detalle_ventas.id')
         ->join('toppings','detalle_venta_toppings.id_topping','=','toppings.id')
-        ->select('toppings.descripcion as nombreTopping', 'toppings.precio', 'detalle_venta_toppings.cantidad', 'detalle_venta_toppings.total_toppings as totalToppings')
+        ->select('toppings.descripcion as nombreTopping', 'toppings.precio',
+         'detalle_venta_toppings.cantidad','detalle_venta_toppings.total_toppings as totalToppings')
         ->where('detalle_venta_toppings.estado',1)
         ->where('detalle_venta_toppings.id_detalle_venta',$id)
         //->where()
