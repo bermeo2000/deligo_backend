@@ -315,7 +315,8 @@ class TiendaController extends Controller
 
 
     
-   /*  public function getCategotiaTiendas($id_tienda){
+   /*  public function getCategotiaTiendas($id_tienda)
+   {
         //Busca todos los productos por la tienda
         $categoria = DB::table('categorias_productos')
         ->select('categorias_productos.*')
@@ -349,9 +350,10 @@ class TiendaController extends Controller
         
     }
 
+
+
     public function showCateProducto(){
 
-      /*   $detPromo = Array(); */
         $data = Array();
         $categoria = DB::table('categorias_productos')
         ->select('categorias_productos.*')
@@ -366,16 +368,9 @@ class TiendaController extends Controller
             ->get();
 
             array_push($data, ['categoria' => $p,'data' => $productos]);
-            /* array_push($data, $categoria);
-            array_push($data, $productos); */
-            /* array_push($data, [ $detPromo]); */
-
-            /* $detPromo = Array(); */
 
         }
         return response()->json($data, 200);
-
-        /* return response()->json($promocion); */
     }
 
 }
