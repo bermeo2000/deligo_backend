@@ -49,7 +49,7 @@ class CategoriasTiendasSeeder extends Seeder
                 1
             ],
             [
-                'Hogar',
+                'Servicios',
                 'https://minecraftaso.com/wp-content/uploads/2023/08/Hogar.png',
                 1
             ],
