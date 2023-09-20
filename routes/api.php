@@ -170,8 +170,6 @@ Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 // Producto servicio
 Route::resource('producto-servicio', ProductoServicioController::class);
 
-// Producto servicio
-Route::resource('rese-servicio', ResenaServicioController::class);
 
 
 
