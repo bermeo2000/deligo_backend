@@ -108,6 +108,7 @@ class ResenaTiendaController extends Controller
             return response()->json(['message' => 'Reseña de la tienda no existe'], 404);
         }
         $rese_tienda_des->estado = 0;
+        $rese_tienda_des->save();
 
         return response()->json(['message' => 'Reseña de la tienda eliminada'], 200);
     }
