@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ProductoServicioController;
-use App\Http\Controllers\ResenaServicioController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,8 +28,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\HomeController;
-
-
+use App\Http\Controllers\ResenaServicioController;
 
 
 /*
@@ -151,6 +149,12 @@ Route::get('get-rese-producto-usuario/{id}', [ResenaProductoController::class, '
 Route::get('get-rese-producto-tienda/{id}', [ResenaProductoController::class, 'getReseProductoByProducto']);
 //Ruta de prueba
 //Route::get('actualizar-puntuacion-producto/{id}', [ResenaProductoController::class, 'savePuntuacionProducto']);
+
+//Reseña Servicios
+Route::resource('rese-servicio', ResenaServicioController::class);
+Route::get('get-rese-servicios-usuario/{id}', [ResenaServicioController::class, 'getReseServicioByUsuario']);
+Route::get('get-rese-servicios-tienda/{id}', [ResenaServicioController::class, 'getReseServicioByServicio']);
+
 
 //Tipo Advertencias
 Route::resource('tipo-adv', TipoAdvertenciaController::class);
