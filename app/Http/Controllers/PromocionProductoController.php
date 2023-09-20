@@ -17,7 +17,7 @@ class PromocionProductoController extends Controller
     {
         $promocionproducto = PromocionProducto::where('estado',1) ->get();
         if (count($promocionproducto)==0) {
-            return response()-> json('no existen marca promoción producto',404);
+            return response()-> json('no existen promoción producto',404);
         }
         return response()->json($promocionproducto,200);
     }
@@ -33,122 +33,51 @@ class PromocionProductoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function storess(Request $request)
-    {
-        // Obtener el id de la tienda desde la solicitud
-        $idTienda = $request->id_tienda;
-    
-        // Realizar una consulta para encontrar el id del producto relacionado con la tienda
-        $producto = Producto::where('id_tienda', $idTienda)->first();
-    
-        if (!$producto) {
-            return response()->json(['message' => 'No se encontró un producto para esta tienda'], 404);
-        }
-    
-        $jsonString = $request->getContent();
-        $promocionproductos = json_decode($jsonString, true);
 
-        $promocionproductos = $request->promocionproductos;
+     public function store(Request $request)
+     {
+         $validData = $request->validate([
+         'id_producto' => 'required',
+         'descuento' => 'required',
+         'fecha_inicio' => 'required',
+         'fecha_fin' => 'required',        
+         ]);
+         PromocionProducto::create([
+             'id_producto'=> $validData['id_producto'],
+             'descuento'=> $validData['descuento'],
+             'fecha_inicio'=> $validData['fecha_inicio'],
+             'fecha_fin'=> $validData['fecha_fin'],
+             'estado'=> 1,
+         ]);
+         return response()->json(['message'=>'promocion producto registrado'],201);
+     }
 
-        // Ahora que tienes el id del producto, puedes crear las promociones de productos
-        $promocionproductos = json_decode($request->promocionproductos, true);
-    
-        foreach ($promocionproductos as $aux2) {
-            $promocionproducto = PromocionProducto::create([
-                'id_producto' => $producto->id,
-                'descuento' => $aux2['descuento'],
-                'fecha_inicio' => $aux2['fecha_inicio'],
-                'fecha_fin' => $aux2['fecha_fin'],
-                'estado' => 1
-            ]);
-        }
-    
-        return response()->json(['message' => 'Promoción de producto registrada'], 200);
-    }
-    
-    public function stor(Request $request)
-    {
-
-        $promocionproductos=json_decode($request->promocionproductos,true);
-        $aux= count($promocionproductos);
-        for ($i=0; $i < $aux ; $i++) 
-        { 
-            $aux2=$promocionproductos[$i];
-            $promocionproducto=PromocionProducto::create([
-                'id_producto' =>  $aux2['id_producto'],
-                'descuento' => $aux2['descuento'],
-                'fecha_inicio' => $aux2['fecha_inicio'],
-                'fecha_fin' => $aux2['fecha_fin'],
-                'estado' => 1
-                ]);
-        }       
-
-        return response()->json(['message'=>'promocion producto registrada'], 200); 
-    }
-
-    public function store(Request $request)
+/* 
+public function stores(Request $request)
 {
-    $promocionproductos = $request->promocionproductos; // No necesitas json_decode
 
-    $aux = count($promocionproductos);
-    for ($i = 0; $i < $aux; $i++) { 
-        $aux2 = $promocionproductos[$i];
-        $promocionproducto = PromocionProducto::create([
-            'id_producto' => $aux2['id_producto'],
+    $idTienda=$request->id_producto;
+    $promocionproductos=json_decode($request->promocionproductos,true);
+    $aux= count($promocionproductos);
+    for ($i=0; $i < $aux ; $i++) 
+    { 
+        $aux2=$promocionproductos[$i];
+        $promocionproducto=PromocionProducto::create([
+
+            'id_producto' => $idTienda,
             'descuento' => $aux2['descuento'],
             'fecha_inicio' => $aux2['fecha_inicio'],
             'fecha_fin' => $aux2['fecha_fin'],
             'estado' => 1
-        ]);
-    }
+            ]);
+    }       
 
-    return response()->json(['message' => 'promoción producto registrada'], 200); 
+    return response()->json(['message'=>'promocion productos registrada'], 200);
 }
-
+ */
     
 
-    public function storesss(Request $request)
-    {
-/*         $validateData=$request->validate([
-            'id_producto' =>'required',
-            'descuento'=>'required',
-            'fecha_inicio'=>'required|date',
-            'fecha_fin'=>'nullable|date',
 
-        ]);
-        $promocionproducto = PromocionProducto::create([
-            'id_producto' => $validateData['id_producto'],
-            'descuento' => $validateData['descuento'],
-            'fecha_inicio' => $validateData['fecha_inicio'],
-            'fecha_fin' => $validateData['fecha_fin'],
-            'estado' => 1,
-        ]);
-
-        return response()->json(['message' => 'promocionproducto registrada correctamente'], 200);
-        */
-        $idTienda = $request->id_tienda;
-            
-        // Realizar una consulta para encontrar el id del producto relacionado con la tienda
-        $producto = Producto::where('id_tienda', $idTienda)->first();
-
-        
-       // $idProducto=$request->id_producto;
-        $promocionproductos=json_decode($request->promocionproductos,true);
-        $aux= count($promocionproductos);
-        for ($i=0; $i < $aux ; $i++) 
-        { 
-            $aux2=$promocionproductos[$i];
-            $promocionproducto=PromocionProducto::create([
-                'id_producto' => $aux2['descuento'],// $producto->id,//$idProducto,
-                'descuento' => $aux2['descuento'],
-                'fecha_inicio' => $aux2['fecha_inicio'],
-                'fecha_fin' => $aux2['fecha_fin'],
-                'estado' => 1
-                ]);
-        }       
-
-        return response()->json(['message'=>'promocion producto registrada'], 200); 
-    }
 
     /**
      * Display the specified resource.
@@ -262,10 +191,10 @@ class PromocionProductoController extends Controller
 
     public function getPromoProductoTienda($id_tienda){
 
-        $promocionproducto=DB::table('productos')
+        $promocionproducto=DB::table('promocion_productos')
+        ->join('productos','promocion_productos.id_producto','=','productos.id')
         ->join('tiendas','productos.id_tienda','=','tiendas.id')
-        ->join('productos','promocionproductos.id_producto','=','productos.id')
-        ->select('promocionproductos.*','productos.nombre')
+        ->select('promocion_productos.*','productos.nombre','productos.imagen')
         ->where('tiendas.id',$id_tienda)
         ->where('tiendas.estado',1)
         ->get();
@@ -285,7 +214,7 @@ class PromocionProductoController extends Controller
         return response()->json($promocionProducto,200); */
     }
 
-    public function getPromocionProductoByTienda($id_producto){
+/*     public function getPromocionProductoByTienda($id_producto){
         //Busca todos los productos por la tienda
 
         $promocionproducto = DB::table('promocionproductos')
@@ -296,17 +225,8 @@ class PromocionProductoController extends Controller
         ->get();
 
         return response($promocionproducto, 200);  
-
-/*         $promocionproducto = DB::table('promocionproductos')
-        ->join('productos','promocionproducto.id_producto','=','productos.id')
-        ->join('tiendas','productos.id_tienda','=','tiendas.id')
-        ->select('promocionproducto.*,productos.nombre')
-        ->where('productos.id_tienda', $id_tienda)
-        ->where('productos.estado', 1)
-        ->get();
-
-        return response($promocionproducto, 200);   */     
-    }
+   
+    } */
 
     
 }
