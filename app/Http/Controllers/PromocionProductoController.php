@@ -174,21 +174,6 @@ public function stores(Request $request)
 
 
 
-    public function getPromoByTienda($id_tienda){
-        //Busca todos los productos por la tienda
-
-        $data = DB::table('productos')
-        ->select('productos.*')
-        ->where('productos.id_tienda', $id_tienda)
-        ->where('productos.estado', 1)
-        ->get();
-
-        return response($data, 200);
-        
-    }
-
-
-
     public function getPromoProductoTienda($id_tienda){
 
         $promocionproducto=DB::table('promocion_productos')
@@ -204,29 +189,8 @@ public function stores(Request $request)
         return response()->json($promocionproducto);
 
 
-/* 
-        $promocionProducto = PromocionProducto::where('id_tienda',$id)
-        ->where('estado',1) 
-        ->get();
-        if (count($promocionProducto)==0) {
-            return response()-> json('no existen promocion producto',404);
-        }
-        return response()->json($promocionProducto,200); */
+
     }
-
-/*     public function getPromocionProductoByTienda($id_producto){
-        //Busca todos los productos por la tienda
-
-        $promocionproducto = DB::table('promocionproductos')
-       // ->join('productos','promocionproducto.id_producto','=','productos.id')
-        ->select('promocionproductos.*')
-        ->where('promocionproductos.id_producto', $id_producto)
-        ->where('productos.estado', 1)
-        ->get();
-
-        return response($promocionproducto, 200);  
-   
-    } */
 
     
 }
