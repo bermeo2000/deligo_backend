@@ -27,44 +27,6 @@ class ProductoController extends Controller
         return response()->json($producto,200);
 
     }
-
-
-    public function showCateProductos($id) {
-        $data = [];
-    
-        // Obtén la tienda por su ID
-        $tienda = DB::table('tiendas')->find($id);
-    
-        if (!$tienda) {
-            return response()->json(['error' => 'Tienda no encontrada'], 404);
-        }
-    
-        // Obtén las categorías relacionadas con la tienda
-        $categoria = DB::table('categorias_productos')
-            ->select('categorias_productos.*')
-            ->where('categorias_productos.estado', 1)
-            ->where('categorias_productos.id', $id) // Filtrar por ID
-            ->get();
-    
-        foreach ($categoria as $categoria) {
-            // Obtén los productos relacionados con la categoría
-            $productos = DB::table('productos')
-            ->select('productos.*')
-            ->where('id_categoria_productos', $categoria->id)
-            ->get();
-    
-            $data[] = [
-                'cantidad_categoria' => count($categoria),
-                'categoria' => $categoria,
-                'cantidad_productos' => count($productos),
-                'productos' => $productos,
-            ];
-        }
-    
-        return response()->json(['tienda' => $tienda, 'categorias' => $data], 200);
-    }
-
-
     public function getProductoTienda($id){
         $producto = Producto::where('id_tienda',$id)
         ->where('estado',1) 
@@ -83,29 +45,20 @@ class ProductoController extends Controller
             return response()->json(['error' => 'Tienda no encontrada'], 404);
         }
         $data = Array();
-        
-        // Buscar la categoría de productos por su ID
         $categoria = DB::table('categorias_productos')
             ->select('categorias_productos.*')
             ->where('categorias_productos.estado', 1)
-            ->where('categorias_productos.id', $id) // Filtrar por ID
-            ->first(); // Utilizar first() en lugar de get() para obtener una sola categoría
-        
-        if ($categoria) {
-            // Si se encontró la categoría, buscar los productos relacionados
-            $productos = DB::table('productos')
-                ->select('productos.*')
-                ->where('id_categoria_productos', $categoria->id)
-                ->get();
-    
-            $data = ['categoria' => $categoria, 'data' => $productos];
-        } else {
-            // Manejar el caso en que no se encuentre la categoría por el ID
-            return response()->json(['message' => 'Categoría de productos no encontrada'], 404);
-        }
-    
-        /* return response()->json($data, 200); */
-        return response()->json(['tienda' => $tienda, 'categorias' => $data], 200);
+            ->where('categorias_productos.id_tienda', $id) 
+            ->get(); 
+
+            foreach ($categoria as $key => $value) {
+                $productos = DB::table('productos')
+                        ->select('productos.*')
+                        ->where('id_categoria_productos', $value->id)
+                        ->get();
+             array_push($data, ['Categoria'=>$value, 'Productos'=>$productos]);
+            }
+        return response()->json($data, 200); 
     }
 
     /**

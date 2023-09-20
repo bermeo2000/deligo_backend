@@ -141,7 +141,8 @@ class DetalleVentaController extends Controller
         $toppingsData=DB::table('detalle_venta_toppings')
         ->join('detalle_ventas','detalle_venta_toppings.id_detalle_venta','=','detalle_ventas.id')
         ->join('toppings','detalle_venta_toppings.id_topping','=','toppings.id')
-        ->select('toppings.descripcion as nombreTopping', 'toppings.precio', 'detalle_venta_toppings.cantidad', 'detalle_venta_toppings.total_toppings as totalToppings')
+        ->select('toppings.descripcion as nombreTopping', 'toppings.precio',
+         'detalle_venta_toppings.cantidad','detalle_venta_toppings.total_toppings as totalToppings')
         ->where('detalle_venta_toppings.estado',1)
         ->where('detalle_venta_toppings.id_detalle_venta',$id)
         //->where()
@@ -155,7 +156,7 @@ class DetalleVentaController extends Controller
                  ->join('categorias_productos','productos.id_categoria_productos','=','categorias_productos.id')
                  ->leftJoin('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
                  ->leftJoin('marcas','productos.id_marca','=','marcas.id')
-                 ->select('productos.nombre','productos.precio','productos.imagen', DB::raw('COUNT(*) as cantidad'))
+                 ->select('productos.id','productos.nombre','productos.precio','productos.imagen', DB::raw('COUNT(*) as cantidad'))
         ->where('detalle_ventas.id_tienda',$idTienda)
         ->where('detalle_ventas.estado',1)
         ->groupBy('productos.id', 'productos.nombre', 'productos.precio', 'productos.imagen')

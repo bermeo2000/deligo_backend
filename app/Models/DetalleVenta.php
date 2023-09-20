@@ -20,6 +20,9 @@ class DetalleVenta extends Model
         'id_promocion_producto',
         'id_venta',
         'estado',
+        'id_producto_servicio',
+        'fecha_cita',
+        'hora_cita',
     ];
 
     public function detalleVentaToppings()

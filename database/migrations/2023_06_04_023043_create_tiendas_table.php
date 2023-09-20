@@ -43,6 +43,11 @@ return new class extends Migration
             //descripcion
             $table->string('descripcion')->nullable();
 
+            // Emprendimiento tipo servicio
+            $table->time('hora_apertura')->nullable();
+            $table->time('hora_cierre')->nullable();
+            $table->integer('llegada_previa')->nullable(); //tiempo en minutos
+
 
 
             
