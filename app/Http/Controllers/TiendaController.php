@@ -121,7 +121,7 @@ class TiendaController extends Controller
             'imagen'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'id_codigo_pais'    => 'required',
             'id_tipo_usuario'   => 'required',
-            'is_categoria_selec'=>'required',
+            'is_categoria_selec'=> 'required',
 
         ]);
         if (isset($validateData['imagen'])) {
