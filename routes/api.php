@@ -173,6 +173,10 @@ Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 
 // Producto servicio
 Route::resource('producto-servicio', ProductoServicioController::class);
+Route::get('/get-producto-servicio/{id}', [ProductoServicioController::class, 'getProductoServicio']);
+Route::post('/Update-Imagen-Producto-Servicio/{id}', [ProductoServicioController::class,'UpdateImagenProductoServicio']);
+Route::get('productosss/{id}', [ProductoServicioController::class, 'getToppingsTiendas']);
+
 
 // Producto servicio
 Route::resource('rese-servicio', ResenaServicioController::class);
