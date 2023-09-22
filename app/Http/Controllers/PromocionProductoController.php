@@ -60,7 +60,7 @@ class PromocionProductoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PromocionProducto $id)
+    public function show($id)
     {
         $promocionproducto=PromocionProducto::find($id);
         if (is_null($promocionproducto)) {
@@ -141,6 +141,7 @@ class PromocionProductoController extends Controller
         ->select('promocion_productos.*','productos.nombre','productos.imagen')
         ->where('tiendas.id',$id_tienda)
         ->where('tiendas.estado',1)
+        ->where('promocion_productos.estado',1)
         ->get();
         if (count($promocionproducto)== 0) {
             return response()->json(['message' => 'promocion producto no encontrado'], 404);
