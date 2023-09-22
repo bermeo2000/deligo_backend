@@ -121,7 +121,8 @@ class TiendaController extends Controller
             'imagen'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'id_codigo_pais'    => 'required',
             'id_tipo_usuario'   => 'required',
-            'is_categoria_selec'=>'required',
+            'is_categoria_selec'=> 'required',
+
         ]);
         if (isset($validateData['imagen'])) {
            // return response()->json('entro');
@@ -207,6 +208,9 @@ class TiendaController extends Controller
             'puntuacion'               => 'required',
             'descripcion'              => 'nullable',
             'imagen_tienda'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'hora_apertura'            => 'nullable',
+            'hora_cierre'              => 'nullable',
+            'llegada_previa'           => 'nullable',
 
         ]);
         if (isset($validateDataTienda['imagen_tienda'])) {
@@ -235,6 +239,9 @@ class TiendaController extends Controller
             'puntuacion'               =>$validateDataTienda['puntuacion'],
             'descripcion'              =>$validateDataTienda['descripcion'],
             'imagen'                   =>$validateDataTienda['imagen_tienda'],
+            'hora_apertura'            =>$validateDataTienda['hora_apertura'],
+            'hora_cierre'              =>$validateDataTienda['hora_cierre'],
+            'llegada_previa'           =>$validateDataTienda['llegada_previa'],
             'estado'=>1,
         ]);
         

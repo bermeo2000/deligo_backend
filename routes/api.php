@@ -110,10 +110,12 @@ Route::get('showCateProducto/{id}', [ProductoController::class, 'showCateProduct
 Route::resource('categoria-usuario', CategoriasUsuarioController::class);
 
 //Promocion Productos
+
 Route::resource('promo-productos', PromocionProductoController::class);
 Route::get('get-prod-by-tienda/{id}', [PromocionProductoController::class, 'getProductoByTienda']);
 
 Route::get('get-promo-productos-by-tienda/{id}', [PromocionProductoController::class, 'getPromoProductoTienda']);
+
 
 //Toppings
 Route::resource('toppings', ToppingsController::class);
