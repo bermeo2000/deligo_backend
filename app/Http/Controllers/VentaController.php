@@ -47,6 +47,10 @@ class VentaController extends Controller
             //'id_tipo_usuario'   => 'required',
             //'is_categoria_selec'=>'required',
         ]);
+        $usuario=User::find($request->id_cliente);
+        if ($usuario->telefono==null) {
+            return response()->json("Debes registrar tu telefono antes de realizar tu primera compra",400);
+        }
         $cod=$this->generarCodigoVenta();
         $ventas = Venta::create(
             [
@@ -61,7 +65,7 @@ class VentaController extends Controller
                 $this->restarVentas($tiendas[$i]);
             }
            
-        return response()->json(['message' => 'Compra existosa'], 200);
+        return response()->json(['message' => 'La Compra fue existosa'], 200);
 
     }
 
@@ -129,7 +133,8 @@ class VentaController extends Controller
         ]);
        if ( count($aux->toppings)>0) 
        {
-        for ($i=0; $i <count($aux->toppings) ; $i++) { 
+            for ($i=0; $i <count($aux->toppings) ; $i++) 
+         { 
             $auxTopping=$aux->toppings[$i];
             $detalleTopping=DetalleVentaTopping::create([
                 'id_detalle_venta'=>$detalle->id,
@@ -138,7 +143,7 @@ class VentaController extends Controller
                 'total_toppings'=>$auxTopping->precio,
                 'estado'=>1
             ]);
-        }
+         }
         
        }
        } 
@@ -168,7 +173,7 @@ class VentaController extends Controller
             ->where('ventas.id_cliente',$id)
             ->get();
             if ($ventas->isEmpty()) {
-               return response()->json("No ha realizado ningun pedido hast ahora",404);
+               return response()->json(['message' => 'No ha realizado ningun pedido hast ahora.'],404);
             }
             return response()->json($ventas,200);
     }
