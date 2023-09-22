@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductoServicio;
 use Illuminate\Http\Request;
+use App\Models\Tienda;
+use Illuminate\Support\Facades\DB;
 
 class ProductoServicioController extends Controller
 {
@@ -87,10 +89,10 @@ class ProductoServicioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_producto_servicio)
     {
-        $productoServicio= ProductoServicio::find($id);
-        if (is_null($productoServicio)) {
+        $productoServicio= ProductoServicio::find($id_producto_servicio);
+        if (is_null($id_producto_servicio)) {
            return response()->json(['message'=> 'productoServicio no encontrado'], 404);
         }
         $validateData=$request->validate([
@@ -147,6 +149,28 @@ class ProductoServicioController extends Controller
         $productoServicio->imagen = $validData['imagen'];
         $productoServicio->save();
         return response()->json(['message' => 'Imagen actualizada'], 201);
+    }
+
+
+    public function getProductoServicio($id){
+        $productoServicio = ProductoServicio::where('id_emp_servicio',$id)
+        ->where('estado',1) 
+        ->get();
+        if (count($productoServicio)==0) {
+            return response()-> json('no existen producto Servicio',404);
+        }
+        return response()->json($productoServicio,200);
+    }
+
+
+    public function getToppingsTiendas($id){
+        $productoServicio = ProductoServicio::where('id_emp_servicio',$id)
+        ->where('estado',1) 
+        ->get();
+        if (count($productoServicio)==0) {
+            return response()-> json('no existen productoServicio',404);
+        }
+        return response()->json($productoServicio,200);
     }
 
 }
