@@ -351,7 +351,7 @@ class TiendaController extends Controller
     {
         $tienda=Tienda::find($id_tienda);
         if (is_null($tienda)) {
-            return response()->json(['mesagge'=>'No se encontro ninguna tienda',400]);
+            return response()->json(['mesagge'=>'No se encontro ninguna tienda', 404]);
         }
         return response()->json($tienda);
         
