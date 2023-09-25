@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductoServicio;
 use App\Models\Marca;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -117,21 +118,21 @@ class MarcaController extends Controller
     }
 
 
-/*     public function editImagen(Request $request, $id ){
+    public function editImagen(Request $request, $id ){
 
-        $marca = Marca::find($id);
-        if (is_null($marca)) {
-            return response()->json(['message' => 'marca no encontrada.'], 404);
+        $productoServicio = ProductoServicio::find($id);
+        if (is_null($productoServicio)) {
+            return response()->json(['message' => 'productoServicio no encontrada.'], 404);
         }
         $validateData = $request->validate([
             'imagen' => 'required|mimes:jpeg,bmp,png',
         ]);
         $img=$request->file('imagen');
         $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-        $request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $validateData['imagen']);
-        $marca->imagen=$validateData['imagen'];
-        $marca->save();
-        return response()->json(['message' => 'Imagen de marca actualizada'], 201);
-    } */
+        $request->file('imagen')->storeAs("public/images/productoServicio/{$productoServicio->id}", $validateData['imagen']);
+        $productoServicio->imagen=$validateData['imagen'];
+        $productoServicio->save();
+        return response()->json(['message' => 'Imagen de productoServicio actualizada'], 201);
+    }
 
 }

@@ -130,7 +130,8 @@ class ProductoServicioController extends Controller
 
     }
 
-    public function UpdateImagenProductoServicio(Request $request, $id)
+
+/*     public function UpdateImagenProductoServicio(Request $request, $id)
     {
 
         $productoServicio = ProductoServicio::find($id);
@@ -138,42 +139,33 @@ class ProductoServicioController extends Controller
             return response()->json(['message' => 'Imagen no encontrada.'], 404);
         }
         $validData = $request->validate([
-            'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg'
-        ]);
-
-        $img=$request->file('imagen');
-        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-        
-        $request->file('imagen')->storeAs("public/images/productoServicio/{$productoServicio->id}", $validData['imagen']);
-
-        $productoServicio->imagen = $validData['imagen'];
-        $productoServicio->save();
-        return response()->json(['message' => 'Imagen actualizada'], 201);
-    }
-
-    public function Updatefototienda(Request $request, $id)
-    {
-
-        $productoServicio = ProductoServicio::find($id);
-        if (is_null($productoServicio)) {
-            return response()->json(['message' => 'Imagen no encontrada.'], 404);
-        }
-        $validData = $request->validate([
-           /*  'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg' */
             'imagen' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $img=$request->file('imagen');
         $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-        
         $request->file('imagen')->storeAs("public/images/productoServicio/{$productoServicio->id}", $validData['imagen']);
-
-        /*  if ($person->image != '') {
-            unlink(storage_path("app/public/images/persons/{$person->userId}/" . $person->image));
-        } */
         $productoServicio->imagen = $validData['imagen'];
         $productoServicio->save();
-        return response()->json(['message' => 'Imagen actualizada'], 201);
+        return response()->json(['message' => 'Imagen actualizada........'], 201);
+    } */
+    
+
+    public function editImagenes(Request $request, $id ){
+
+        $productoServicio = ProductoServicio::find($id);
+        if (is_null($productoServicio)) {
+            return response()->json(['message' => 'productoServicio no encontrada.'], 404);
+        }
+        $validateData = $request->validate([
+            'imagen' => 'required|mimes:jpeg,bmp,png',
+        ]);
+        $img=$request->file('imagen');
+        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        $request->file('imagen')->storeAs("public/images/productoServicio/{$productoServicio->id}", $validateData['imagen']);
+        $productoServicio->imagen=$validateData['imagen'];
+        $productoServicio->save();
+        return response()->json(['message' => 'Imagen de productoServicio actualizada'], 201);
     }
 
 
