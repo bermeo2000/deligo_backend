@@ -128,7 +128,7 @@ class ProductoController extends Controller
     
     public function storeTopping($request,$idProducto,$idTienda  )
     {
-        $toppings=json_decode($request->toppings,true);
+        $toppings=json_decode($request->toppings);
         $aux= count($toppings);
         for ($i=0; $i < $aux ; $i++) 
         { 
@@ -140,7 +140,7 @@ class ProductoController extends Controller
             {
                 $toppings_producto = ToppingsProductos::create([
                 'id_producto' => $idProducto,
-                'id_toppings' => $topping->id,
+                'id_toppings' => $aux2,
                 'estado' => 1
                 ]);
             } 
@@ -306,20 +306,6 @@ class ProductoController extends Controller
      */
     public function destroy($id_producto)
     {
-
-        // $producto=Producto::find($id);
-        // if (is_null($producto)) {
-        //     return response()->json(['message' => 'producto no encontrada'], 404);
-        // }
-        // $producto->estado = 0;
-        // $producto->save();
-        // return response()->json(['message'=>'producto eliminada']);
-        //NO ESTA PROBADO
-        //promocion producto, reseña producto y  
-        //toppings productos se deben tambien eliminar 
-        //detalle de ventas no, porque queremos mantener el 
-        //historico de la venta de ese producto
-
         $producto_destroy = Producto::find($id_producto);
 
         $promo_prod_destroy = PromocionProducto::where('id_producto', $producto_destroy->id)->get();

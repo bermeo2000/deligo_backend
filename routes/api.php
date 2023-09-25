@@ -75,7 +75,7 @@ Route::post('/updateRedes/{id}', [TiendaController::class,'updateRedes']);
 Route::post('/updateDelivery/{id}', [TiendaController::class,'updateDelivery']);
 Route::get('/get-tienda-by-cat/{id}', [TiendaController::class, 'getAllTiendasCategoria']);
 Route::get('/get-tienda/{id}', [TiendaController::class, 'getTienda']);
-Route::get('/show/{id}', [TiendaController::class, 'show']);
+Route::get('/show/{id}', [TiendaController::class, 'show']); // trae una sola tienda
 /* Route::get('/getshowTienda/{id}', [TiendaController::class, 'getshowTienda']); */
 Route::post('/updatetienda/{id}', [TiendaController::class, 'updateTienda']);
 /* Route::get('/getcategotiatiendas/{id}', [TiendaController::class, 'getCategotiaTiendas']);
@@ -94,7 +94,7 @@ Route::resource('tipo-peso', TipoPesoController::class);
 
 //Marcas
 Route::resource('Marca', MarcaController::class);
-Route::post('edit-img-marca/{id}', [MarcaController::class, 'editImagen']);
+Route::post('edit-img-marcas/{id}', [MarcaController::class, 'editImagen']);
 Route::get('get-marca-by-tienda/{id}', [MarcaController::class, 'getMarcaTienda']);
 
 //Productos
@@ -173,6 +173,8 @@ Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 
 // Producto servicio
 Route::resource('producto-servicio', ProductoServicioController::class);
+Route::get('/get-producto-servicio/{id}', [ProductoServicioController::class, 'getProductoServicio']);
+Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
 
 // Producto servicio
 Route::resource('rese-servicio', ResenaServicioController::class);

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductoServicio;
 use Illuminate\Http\Request;
+use App\Models\Tienda;
+use Illuminate\Support\Facades\DB;
 
 class ProductoServicioController extends Controller
 {
@@ -38,7 +40,7 @@ class ProductoServicioController extends Controller
             'descripcion'=>'required|max:255',
             'duracion'=>'required|max:255',
             'precio'=>'required',
-            'puntuacion'=>'nullable',
+            /* 'puntuacion'=>'nullable', */
             'imagen' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'id_categoria_productos'=>'required',
             'id_emp_servicio'=>'required',
@@ -51,7 +53,7 @@ class ProductoServicioController extends Controller
             'descripcion'=>$valiData['descripcion'],
             'duracion'=>$valiData['duracion'],
             'precio'=>$valiData['precio'],
-            'puntuacion'=>$valiData['puntuacion'],
+           /*  'puntuacion'=>$valiData['puntuacion'], */
             'imagen'=>$valiData['imagen'],
             'id_categoria_productos'=>$valiData['id_categoria_productos'],
             'id_emp_servicio'=>$valiData['id_emp_servicio'],
@@ -87,10 +89,10 @@ class ProductoServicioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_producto_servicio)
     {
-        $productoServicio= ProductoServicio::find($id);
-        if (is_null($productoServicio)) {
+        $productoServicio= ProductoServicio::find($id_producto_servicio);
+        if (is_null($id_producto_servicio)) {
            return response()->json(['message'=> 'productoServicio no encontrado'], 404);
         }
         $validateData=$request->validate([
@@ -98,7 +100,7 @@ class ProductoServicioController extends Controller
             'descripcion'=>'required|max:255',
             'duracion'=>'required|max:255',
             'precio'=>'required',
-            'puntuacion'=>'nullable',
+            /* 'puntuacion'=>'nullable', */
             'id_categoria_productos'=>'required',
             'id_emp_servicio'=>'required',
         ]);
@@ -106,7 +108,7 @@ class ProductoServicioController extends Controller
         $productoServicio->descripcion=$validateData['descripcion'];
         $productoServicio->duracion=$validateData['duracion'];
         $productoServicio->precio=$validateData['precio'];
-        $productoServicio->puntuacion=$validateData['puntuacion'];
+       /*  $productoServicio->puntuacion=$validateData['puntuacion']; */
         $productoServicio->id_categoria_productos=$validateData['id_categoria_productos'];
         $productoServicio->id_emp_servicio=$validateData['id_emp_servicio'];
         $productoServicio->save();
@@ -128,25 +130,35 @@ class ProductoServicioController extends Controller
 
     }
 
-    public function UpdateImagenProductoServicio(Request $request, $id)
-    {
+    
+
+    public function editImagenes(Request $request, $id ){
 
         $productoServicio = ProductoServicio::find($id);
         if (is_null($productoServicio)) {
-            return response()->json(['message' => 'Imagen no encontrada.'], 404);
+            return response()->json(['message' => 'productoServicio no encontrada.'], 404);
         }
-        $validData = $request->validate([
-            'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg'
+        $validateData = $request->validate([
+            'imagen' => 'required|mimes:jpeg,bmp,png',
         ]);
-
         $img=$request->file('imagen');
-        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-        
-        $request->file('imagen')->storeAs("public/images/productoServicio/{$productoServicio->id}", $validData['imagen']);
-
-        $productoServicio->imagen = $validData['imagen'];
+        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        $request->file('imagen')->storeAs("public/images/productoServicio/{$productoServicio->id}", $validateData['imagen']);
+        $productoServicio->imagen=$validateData['imagen'];
         $productoServicio->save();
-        return response()->json(['message' => 'Imagen actualizada'], 201);
+        return response()->json(['message' => 'Imagen de productoServicio actualizada'], 201);
     }
+
+
+    public function getProductoServicio($id){
+        $productoServicio = ProductoServicio::where('id_emp_servicio',$id)
+        ->where('estado',1) 
+        ->get();
+        if (count($productoServicio)==0) {
+            return response()-> json('no existen producto Servicio',404);
+        }
+        return response()->json($productoServicio,200);
+    }
+
 
 }
