@@ -130,25 +130,6 @@ class ProductoServicioController extends Controller
 
     }
 
-
-/*     public function UpdateImagenProductoServicio(Request $request, $id)
-    {
-
-        $productoServicio = ProductoServicio::find($id);
-        if (is_null($productoServicio)) {
-            return response()->json(['message' => 'Imagen no encontrada.'], 404);
-        }
-        $validData = $request->validate([
-            'imagen' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
-
-        $img=$request->file('imagen');
-        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-        $request->file('imagen')->storeAs("public/images/productoServicio/{$productoServicio->id}", $validData['imagen']);
-        $productoServicio->imagen = $validData['imagen'];
-        $productoServicio->save();
-        return response()->json(['message' => 'Imagen actualizada........'], 201);
-    } */
     
 
     public function editImagenes(Request $request, $id ){
@@ -178,5 +159,6 @@ class ProductoServicioController extends Controller
         }
         return response()->json($productoServicio,200);
     }
+
 
 }

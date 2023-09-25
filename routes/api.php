@@ -174,8 +174,7 @@ Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 // Producto servicio
 Route::resource('producto-servicio', ProductoServicioController::class);
 Route::get('/get-producto-servicio/{id}', [ProductoServicioController::class, 'getProductoServicio']);
-Route::post('/UpdateImagen/{id}', [ProductoServicioController::class,'UpdateImagenProductoServicio']);
-Route::post('edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
+Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
 
 // Producto servicio
 Route::resource('rese-servicio', ResenaServicioController::class);
