@@ -104,6 +104,7 @@ Route::get('get-prod-by-categoria/{id}', [ProductoController::class, 'getProduct
 Route::post('prod-update/{id}', [ProductoController::class, 'Actualizar']);
 Route::get('productos/{id}', [ProductoController::class, 'getProductoTienda']);
 Route::get('showCateProducto/{id}', [ProductoController::class, 'showCateProducto']);
+Route::get('/produc', [ProductoController::class, 'indexx']);
 
 
 //Categorias Usuarios
