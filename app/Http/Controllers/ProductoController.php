@@ -183,7 +183,7 @@ class ProductoController extends Controller
         // ->join('toppings','toppings_productos.id_toppings','=','toppings.id')
         ->select('productos.*','categorias_productos.descripcion as categoria')
         ->select('productos.*','categorias_productos.descripcion as categoria')
-        ->select('productos.*'/* ,'tiendas.*' */, 'tiendas.id_categoria_tienda as id_categoria_tienda')
+        ->select('productos.*',/* 'tiendas.*', */ 'tiendas.id_categoria_tienda as id_categoria_tienda')
         ->where('productos.estado',1)
         ->where('productos.id',$id)
         // ->where('toppings_productos.estado',1)
