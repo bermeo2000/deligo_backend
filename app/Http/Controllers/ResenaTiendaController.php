@@ -120,12 +120,18 @@ class ResenaTiendaController extends Controller
         if(is_null($user)){
             return response()->json(['message' => 'Usuario no Encontrado'], 404);
         }
+        $rese_tienda_user = $this->getReseTiendaByUsuario_DB($user);
+
+        return response()->json($rese_tienda_user, 200);
+    }
+
+    public function getReseTiendaByUsuario_DB($user)
+    {
         $rese_tienda_user = DB::table('resena_tiendas')
         ->where('resena_tiendas.id_user', $user->id)
         ->where('resena_tiendas.estado', 1)
         ->get();
-
-        return response()->json($rese_tienda_user, 200);
+        return $rese_tienda_user;
     }
 
     public function getReseTiendaByTienda($id_tienda)
@@ -169,7 +175,56 @@ class ResenaTiendaController extends Controller
         $tienda->save();
     }
 
+    public function initResePage($id_tienda, $id_user)
+    {
+        $tienda = Tienda::find($id_tienda);
+        if(is_null($tienda)){
+            return response()->json(['message' => 'Tienda no encontrada'], 404);
+        }
+        
+        $user = User::find($id_user);
+        if(is_null($user)){
+            return response()->json(['message' => 'Usuario no Encontrado'], 404);
+        }
 
+        $rese_tiendas_all = $this->getReseTiendaAllExclude($tienda, $user);
+        if($rese_tiendas_all == '[]'){
+            $rese_tiendas_all = false;
+        }
 
+        $rese_tienda_user = $this->getReseTiendaUser($tienda, $user);
+        if($rese_tienda_user == '[]'){
+            $rese_tienda_user = false;
+        }
+
+        return response()->json(
+            ['data' => [
+                'rese_all' => $rese_tiendas_all,
+                'rese_user' => $rese_tienda_user
+            ]], 200
+        );
+    }
+
+    private function getReseTiendaUser($tienda, $user){
+        //este metodo busca la reseña del usuario en esa tienda
+        //el usuario solo podrá tener una reseña
+        $rese_tienda_user = DB::table('resena_tiendas')
+        ->where('resena_tiendas.id_tienda', $tienda->id)
+        ->where('resena_tiendas.id_user', $user->id)
+        ->where('resena_tiendas.estado', 1)
+        ->get();
+        return $rese_tienda_user;
+    }
+    
+    private function getReseTiendaAllExclude($tienda, $user)
+    {
+        // excluye la reseña del usuario activo
+        $rese_tienda_tienda = DB::table('resena_tiendas')
+        ->where('resena_tiendas.id_tienda', $tienda->id)
+        ->where('resena_tiendas.estado', 1)
+        ->where('resena_tiendas.id_user', '!=', $user->id)
+        ->get();
+        return $rese_tienda_tienda;
+    }
 
 }

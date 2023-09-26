@@ -144,6 +144,7 @@ Route::resource('reclamo', ReclamoController::class);
 Route::resource('rese-tienda', ResenaTiendaController::class);
 Route::get('get-rese-tienda-usuario/{id}', [ResenaTiendaController::class, 'getReseTiendaByUsuario']);
 Route::get('get-rese-tienda-tienda/{id}', [ResenaTiendaController::class, 'getReseTiendaByTienda']);
+Route::get('init-rese-tienda/{idt}/{idu}', [ResenaTiendaController::class, 'initResePage']);
 //Ruta de prueba
 //Route::get('actualizar-puntuacion-tienda/{id}', [ResenaTiendaController::class, 'savePuntuacionTienda']);
 
