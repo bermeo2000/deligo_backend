@@ -37,7 +37,7 @@ class ResenaTiendaController extends Controller
         $valid_data = $request->validate([
             'id_tienda' => 'required',
             'id_user' => 'required',
-            'texto' => 'required|string',
+            'texto' => 'string',
             'puntuacion_estrellas' => 'required|numeric',
         ]);
 
@@ -84,7 +84,7 @@ class ResenaTiendaController extends Controller
         $valid_data = $request->validate([
             'id_tienda' => 'required',
             'id_user' => 'required',
-            'texto' => 'required|string',
+            'texto' => 'string',
             'puntuacion_estrellas' => 'required|numeric',
         ]);
         $rese_tienda_up->id_tienda = $valid_data['id_tienda'];
@@ -220,6 +220,8 @@ class ResenaTiendaController extends Controller
     {
         // excluye la reseña del usuario activo
         $rese_tienda_tienda = DB::table('resena_tiendas')
+        ->join('users', 'resena_tiendas.id_user', '=', 'users.id')
+        ->select('resena_tiendas.*', 'users.nombre as user_nombre', 'users.apellido as user_apellido')
         ->where('resena_tiendas.id_tienda', $tienda->id)
         ->where('resena_tiendas.estado', 1)
         ->where('resena_tiendas.id_user', '!=', $user->id)

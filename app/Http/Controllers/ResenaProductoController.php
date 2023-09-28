@@ -31,6 +31,9 @@ class ResenaProductoController extends Controller
      */
     public function store(Request $request)
     {
+        //FIXME
+        // EL TEXTO NO ES OBLIGATORIO
+
         // TODO
         // Trabajar mucho en validaciones y manejo de errores
         // Validar que la puntuacion sea numeric
