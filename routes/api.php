@@ -94,7 +94,7 @@ Route::resource('tipo-peso', TipoPesoController::class);
 
 //Marcas
 Route::resource('Marca', MarcaController::class);
-Route::post('edit-img-marca/{id}', [MarcaController::class, 'editImagen']);
+Route::post('edit-img-marcas/{id}', [MarcaController::class, 'editImagen']);
 Route::get('get-marca-by-tienda/{id}', [MarcaController::class, 'getMarcaTienda']);
 
 //Productos
@@ -104,6 +104,7 @@ Route::get('get-prod-by-categoria/{id}', [ProductoController::class, 'getProduct
 Route::post('prod-update/{id}', [ProductoController::class, 'Actualizar']);
 Route::get('productos/{id}', [ProductoController::class, 'getProductoTienda']);
 Route::get('showCateProducto/{id}', [ProductoController::class, 'showCateProducto']);
+Route::get('/produc', [ProductoController::class, 'indexx']);
 
 
 //Categorias Usuarios
@@ -175,8 +176,7 @@ Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 // Producto servicio
 Route::resource('producto-servicio', ProductoServicioController::class);
 Route::get('/get-producto-servicio/{id}', [ProductoServicioController::class, 'getProductoServicio']);
-Route::post('/Update-Imagen/{id}', [ProductoServicioController::class,'UpdateImagenProductoServicio']);
-Route::post('/updatefotoTienda/{id}', [ProductoServicioController::class,'Updatefototienda']);
+Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
 
 // Producto servicio
 Route::resource('rese-servicio', ResenaServicioController::class);

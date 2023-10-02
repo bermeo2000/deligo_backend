@@ -40,7 +40,7 @@ class ProductoServicioController extends Controller
             'descripcion'=>'required|max:255',
             'duracion'=>'required|max:255',
             'precio'=>'required',
-            'puntuacion'=>'nullable',
+            /* 'puntuacion'=>'nullable', */
             'imagen' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'id_categoria_productos'=>'required',
             'id_emp_servicio'=>'required',
@@ -53,7 +53,7 @@ class ProductoServicioController extends Controller
             'descripcion'=>$valiData['descripcion'],
             'duracion'=>$valiData['duracion'],
             'precio'=>$valiData['precio'],
-            'puntuacion'=>$valiData['puntuacion'],
+           /*  'puntuacion'=>$valiData['puntuacion'], */
             'imagen'=>$valiData['imagen'],
             'id_categoria_productos'=>$valiData['id_categoria_productos'],
             'id_emp_servicio'=>$valiData['id_emp_servicio'],
@@ -100,7 +100,7 @@ class ProductoServicioController extends Controller
             'descripcion'=>'required|max:255',
             'duracion'=>'required|max:255',
             'precio'=>'required',
-            'puntuacion'=>'nullable',
+            /* 'puntuacion'=>'nullable', */
             'id_categoria_productos'=>'required',
             'id_emp_servicio'=>'required',
         ]);
@@ -108,7 +108,7 @@ class ProductoServicioController extends Controller
         $productoServicio->descripcion=$validateData['descripcion'];
         $productoServicio->duracion=$validateData['duracion'];
         $productoServicio->precio=$validateData['precio'];
-        $productoServicio->puntuacion=$validateData['puntuacion'];
+       /*  $productoServicio->puntuacion=$validateData['puntuacion']; */
         $productoServicio->id_categoria_productos=$validateData['id_categoria_productos'];
         $productoServicio->id_emp_servicio=$validateData['id_emp_servicio'];
         $productoServicio->save();
@@ -130,50 +130,23 @@ class ProductoServicioController extends Controller
 
     }
 
-    public function UpdateImagenProductoServicio(Request $request, $id)
-    {
+    
+
+    public function editImagenes(Request $request, $id ){
 
         $productoServicio = ProductoServicio::find($id);
         if (is_null($productoServicio)) {
-            return response()->json(['message' => 'Imagen no encontrada.'], 404);
+            return response()->json(['message' => 'productoServicio no encontrada.'], 404);
         }
-        $validData = $request->validate([
-            'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg'
+        $validateData = $request->validate([
+            'imagen' => 'required|mimes:jpeg,bmp,png',
         ]);
-
         $img=$request->file('imagen');
-        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-        
-        $request->file('imagen')->storeAs("public/images/productoServicio/{$productoServicio->id}", $validData['imagen']);
-
-        $productoServicio->imagen = $validData['imagen'];
+        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        $request->file('imagen')->storeAs("public/images/productoServicio/{$productoServicio->id}", $validateData['imagen']);
+        $productoServicio->imagen=$validateData['imagen'];
         $productoServicio->save();
-        return response()->json(['message' => 'Imagen actualizada'], 201);
-    }
-
-    public function Updatefototienda(Request $request, $id)
-    {
-
-        $productoServicio = ProductoServicio::find($id);
-        if (is_null($productoServicio)) {
-            return response()->json(['message' => 'Imagen no encontrada.'], 404);
-        }
-        $validData = $request->validate([
-           /*  'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg' */
-            'imagen' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
-
-        $img=$request->file('imagen');
-        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-        
-        $request->file('imagen')->storeAs("public/images/productoServicio/{$productoServicio->id}", $validData['imagen']);
-
-        /*  if ($person->image != '') {
-            unlink(storage_path("app/public/images/persons/{$person->userId}/" . $person->image));
-        } */
-        $productoServicio->imagen = $validData['imagen'];
-        $productoServicio->save();
-        return response()->json(['message' => 'Imagen actualizada'], 201);
+        return response()->json(['message' => 'Imagen de productoServicio actualizada'], 201);
     }
 
 
@@ -186,5 +159,6 @@ class ProductoServicioController extends Controller
         }
         return response()->json($productoServicio,200);
     }
+
 
 }

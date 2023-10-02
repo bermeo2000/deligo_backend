@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductoServicio;
 use App\Models\Marca;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -117,7 +118,7 @@ class MarcaController extends Controller
     }
 
 
-/*     public function editImagen(Request $request, $id ){
+    public function editImagen(Request $request, $id ){
 
         $marca = Marca::find($id);
         if (is_null($marca)) {
@@ -132,6 +133,6 @@ class MarcaController extends Controller
         $marca->imagen=$validateData['imagen'];
         $marca->save();
         return response()->json(['message' => 'Imagen de marca actualizada'], 201);
-    } */
+    }
 
 }
