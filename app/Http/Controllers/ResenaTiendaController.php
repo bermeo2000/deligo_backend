@@ -209,6 +209,8 @@ class ResenaTiendaController extends Controller
         //este metodo busca la reseña del usuario en esa tienda
         //el usuario solo podrá tener una reseña
         $rese_tienda_user = DB::table('resena_tiendas')
+        ->join('users', 'resena_tiendas.id_user', '=', 'users.id')
+        ->select('resena_tiendas.*', 'users.nombre as user_nombre', 'users.apellido as user_apellido')
         ->where('resena_tiendas.id_tienda', $tienda->id)
         ->where('resena_tiendas.id_user', $user->id)
         ->where('resena_tiendas.estado', 1)
