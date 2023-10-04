@@ -208,8 +208,8 @@ class TiendaController extends Controller
             'puntuacion'               => 'required',
             'descripcion'              => 'nullable',
             'imagen_tienda'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-            'hora_apertura'            => 'nullable',
-            'hora_cierre'              => 'nullable',
+            'hora_apertura'            => 'required',
+            'hora_cierre'              => 'required',
             'llegada_previa'           => 'nullable',
 
         ]);
