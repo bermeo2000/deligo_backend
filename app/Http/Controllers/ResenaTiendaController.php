@@ -37,7 +37,7 @@ class ResenaTiendaController extends Controller
         $valid_data = $request->validate([
             'id_tienda' => 'required',
             'id_user' => 'required',
-            'texto' => 'string',
+            'texto' => '',
             'puntuacion_estrellas' => 'required|numeric',
         ]);
 
@@ -84,7 +84,7 @@ class ResenaTiendaController extends Controller
         $valid_data = $request->validate([
             'id_tienda' => 'required',
             'id_user' => 'required',
-            'texto' => 'string',
+            'texto' => '',
             'puntuacion_estrellas' => 'required|numeric',
         ]);
         $rese_tienda_up->id_tienda = $valid_data['id_tienda'];
