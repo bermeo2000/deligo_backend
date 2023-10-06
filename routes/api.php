@@ -62,7 +62,7 @@ Route::post('/updat-User-Email/{id}', [UserController::class, 'updatUserEmail'])
 Route::post('/updat-User-Password/{id}', [UserController::class, 'updateditPassword']);
 Route::post('/updat-User-Image/{id}', [UserController::class, 'updatUserImage']);
 Route::get('/get-user/{id}', [UserController::class, 'getUser']);
-
+Route::post('/Updatefotouser/{id}', [UserController::class, 'UpdatefotoUser']);
 
 //Categoria Tiendas
 Route::resource('categoria-tienda', CategoriaTiendaController::class);

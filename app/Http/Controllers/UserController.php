@@ -177,7 +177,7 @@ class UserController extends Controller
     }
 
 
-    public function updatUserImage(Request $request, $id)
+/*     public function updatUserImage(Request $request, $id)
     {
 
         $user = User::find($id);
@@ -192,11 +192,38 @@ class UserController extends Controller
         $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
         
         $request->file('imagen')->storeAs("public/images/Usuario/{$user->id}", $validData['imagen']);
+                           
 
         $user->imagen = $validData['imagen'];
         $user->save();
         return response()->json(['message' => 'Imagen actualizada'], 201);
+    } */
+
+    public function UpdatefotoUser(Request $request, $id)
+    {
+
+        $usuario = User::find($id);
+        if (is_null($usuario)) {
+            return response()->json(['message' => 'Imagen no encontrada.'], 404);
+        }
+        $validData = $request->validate([
+            'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg'
+        ]);
+
+        $img=$request->file('imagen');
+        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        
+        $request->file('imagen')->storeAs("public/images/usuario/{$usuario->id}", $validData['imagen']);
+
+        /*  if ($person->image != '') {
+            unlink(storage_path("app/public/images/persons/{$person->userId}/" . $person->image));
+        } */
+        $usuario->imagen = $validData['imagen'];
+        $usuario->save();
+        return response()->json(['message' => 'Imagen actualizada'], 201);
     }
+
+
 
     public function getUser($id){
         $u = User::where('id', $id)->get();
