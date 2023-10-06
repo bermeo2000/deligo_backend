@@ -159,9 +159,9 @@ Route::get('init-rese-producto/{idp}/{idu}', [ResenaProductoController::class, '
 
 //Reseña Servicios
 Route::resource('rese-servicio', ResenaServicioController::class);
-Route::get('get-rese-servicios-usuario/{id}', [ResenaServicioController::class, 'getReseServicioByUsuario']);
-Route::get('get-rese-servicios-tienda/{id}', [ResenaServicioController::class, 'getReseServicioByServicio']);
-
+Route::get('get-rese-servicio-usuario/{id}', [ResenaServicioController::class, 'getReseServicioByUsuario']);
+Route::get('get-rese-servicio-servicio/{id}', [ResenaServicioController::class, 'getReseServicioByServicio']);
+Route::get('init-rese-servicio/{ids}/{idu}', [ResenaServicioController::class, 'initResePage']);
 
 //Tipo Advertencias
 Route::resource('tipo-adv', TipoAdvertenciaController::class);
@@ -178,10 +178,6 @@ Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 Route::resource('producto-servicio', ProductoServicioController::class);
 Route::get('/get-producto-servicio/{id}', [ProductoServicioController::class, 'getProductoServicio']);
 Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
-
-// Producto servicio
-Route::resource('rese-servicio', ResenaServicioController::class);
-
 
 
 Route::middleware('auth:sanctum')->group( function () {
