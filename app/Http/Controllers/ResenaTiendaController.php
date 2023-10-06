@@ -60,7 +60,6 @@ class ResenaTiendaController extends Controller
         // Obtiene una reseña en especifico sin tener en cuenta la tienda
         $rese_tienda = ResenaTienda::find($id_rese_tienda);
         return response()->json($rese_tienda, 200);
-
     }
 
     /**
@@ -181,7 +180,6 @@ class ResenaTiendaController extends Controller
         if(is_null($tienda)){
             return response()->json(['message' => 'Tienda no encontrada'], 404);
         }
-        
         $user = User::find($id_user);
         if(is_null($user)){
             return response()->json(['message' => 'Usuario no Encontrado'], 404);

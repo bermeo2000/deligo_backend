@@ -153,6 +153,7 @@ Route::get('init-rese-tienda/{idt}/{idu}', [ResenaTiendaController::class, 'init
 Route::resource('rese-producto', ResenaProductoController::class);
 Route::get('get-rese-producto-usuario/{id}', [ResenaProductoController::class, 'getReseProductoByUsuario']);
 Route::get('get-rese-producto-tienda/{id}', [ResenaProductoController::class, 'getReseProductoByProducto']);
+Route::get('init-rese-producto/{idp}/{idu}', [ResenaProductoController::class, 'initResePage']);
 //Ruta de prueba
 //Route::get('actualizar-puntuacion-producto/{id}', [ResenaProductoController::class, 'savePuntuacionProducto']);
 
