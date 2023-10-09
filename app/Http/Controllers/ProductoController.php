@@ -350,6 +350,9 @@ class ProductoController extends Controller
         ->get();
         return response()->json($productos);
     }
+
+
+ 
     
 
    

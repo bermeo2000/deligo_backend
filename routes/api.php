@@ -106,6 +106,8 @@ Route::get('productos/{id}', [ProductoController::class, 'getProductoTienda']);
 Route::get('showCateProducto/{id}', [ProductoController::class, 'showCateProducto']);
 
 
+
+
 //Categorias Usuarios
 Route::resource('categoria-usuario', CategoriasUsuarioController::class);
 

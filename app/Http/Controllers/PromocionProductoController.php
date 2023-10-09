@@ -138,7 +138,7 @@ class PromocionProductoController extends Controller
         $promocionproducto=DB::table('promocion_productos')
         ->join('productos','promocion_productos.id_producto','=','productos.id')
         ->join('tiendas','productos.id_tienda','=','tiendas.id')
-        ->select('productos.id_tienda','promocion_productos.*','productos.nombre','productos.imagen')
+        ->select('promocion_productos.*','productos.nombre','productos.imagen')
         ->where('tiendas.id',$id_tienda)
         ->where('tiendas.estado',1)
         ->where('promocion_productos.estado',1)
