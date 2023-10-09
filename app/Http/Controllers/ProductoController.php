@@ -27,6 +27,21 @@ class ProductoController extends Controller
         return response()->json($producto,200);
 
     }
+
+
+    public function indexx()
+    {
+        $producto = DB::table('productos')
+        ->join('tiendas','productos.id_tienda','=','tiendas.id')
+        ->select('productos.*','tiendas.*')
+        ->where('productos.estado',1)
+        ->where('tiendas.estado',1)
+    
+        ->get();
+        return response()->json($producto, 200);
+    }
+
+
     public function getProductoTienda($id){
         $producto = Producto::where('id_tienda',$id)
         ->where('estado',1) 
@@ -163,10 +178,12 @@ class ProductoController extends Controller
         $producto = Producto::find($id);
         $producto=DB::table('productos')
         ->join('categorias_productos','productos.id_categoria_productos','=','categorias_productos.id')
+        ->join('tiendas','productos.id_tienda','=','tiendas.id')
         // ->join('toppings_productos','productos.id','=','toppings_productos.id_producto')
         // ->join('toppings','toppings_productos.id_toppings','=','toppings.id')
         ->select('productos.*','categorias_productos.descripcion as categoria')
         ->select('productos.*','categorias_productos.descripcion as categoria')
+        ->select('productos.*',/* 'tiendas.*', */ 'tiendas.id_categoria_tienda as id_categoria_tienda')
         ->where('productos.estado',1)
         ->where('productos.id',$id)
         // ->where('toppings_productos.estado',1)
@@ -354,11 +371,4 @@ class ProductoController extends Controller
 
  
     
-
-   
-
-
-
-
-
 }

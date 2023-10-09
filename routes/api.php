@@ -104,6 +104,7 @@ Route::get('get-prod-by-categoria/{id}', [ProductoController::class, 'getProduct
 Route::post('prod-update/{id}', [ProductoController::class, 'Actualizar']);
 Route::get('productos/{id}', [ProductoController::class, 'getProductoTienda']);
 Route::get('showCateProducto/{id}', [ProductoController::class, 'showCateProducto']);
+Route::get('/produc', [ProductoController::class, 'indexx']);
 
 
 
@@ -146,6 +147,7 @@ Route::resource('reclamo', ReclamoController::class);
 Route::resource('rese-tienda', ResenaTiendaController::class);
 Route::get('get-rese-tienda-usuario/{id}', [ResenaTiendaController::class, 'getReseTiendaByUsuario']);
 Route::get('get-rese-tienda-tienda/{id}', [ResenaTiendaController::class, 'getReseTiendaByTienda']);
+Route::get('init-rese-tienda/{idt}/{idu}', [ResenaTiendaController::class, 'initResePage']);
 //Ruta de prueba
 //Route::get('actualizar-puntuacion-tienda/{id}', [ResenaTiendaController::class, 'savePuntuacionTienda']);
 
@@ -153,14 +155,15 @@ Route::get('get-rese-tienda-tienda/{id}', [ResenaTiendaController::class, 'getRe
 Route::resource('rese-producto', ResenaProductoController::class);
 Route::get('get-rese-producto-usuario/{id}', [ResenaProductoController::class, 'getReseProductoByUsuario']);
 Route::get('get-rese-producto-tienda/{id}', [ResenaProductoController::class, 'getReseProductoByProducto']);
+Route::get('init-rese-producto/{idp}/{idu}', [ResenaProductoController::class, 'initResePage']);
 //Ruta de prueba
 //Route::get('actualizar-puntuacion-producto/{id}', [ResenaProductoController::class, 'savePuntuacionProducto']);
 
 //Reseña Servicios
 Route::resource('rese-servicio', ResenaServicioController::class);
-Route::get('get-rese-servicios-usuario/{id}', [ResenaServicioController::class, 'getReseServicioByUsuario']);
-Route::get('get-rese-servicios-tienda/{id}', [ResenaServicioController::class, 'getReseServicioByServicio']);
-
+Route::get('get-rese-servicio-usuario/{id}', [ResenaServicioController::class, 'getReseServicioByUsuario']);
+Route::get('get-rese-servicio-servicio/{id}', [ResenaServicioController::class, 'getReseServicioByServicio']);
+Route::get('init-rese-servicio/{ids}/{idu}', [ResenaServicioController::class, 'initResePage']);
 
 //Tipo Advertencias
 Route::resource('tipo-adv', TipoAdvertenciaController::class);
@@ -177,10 +180,6 @@ Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 Route::resource('producto-servicio', ProductoServicioController::class);
 Route::get('/get-producto-servicio/{id}', [ProductoServicioController::class, 'getProductoServicio']);
 Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
-
-// Producto servicio
-Route::resource('rese-servicio', ResenaServicioController::class);
-
 
 
 Route::middleware('auth:sanctum')->group( function () {

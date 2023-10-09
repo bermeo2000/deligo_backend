@@ -37,7 +37,7 @@ class ResenaProductoController extends Controller
         $valid_data = $request->validate([
             'id_producto' => 'required',
             'id_user' => 'required',
-            'texto' => 'required|string',
+            'texto' => '',
             'puntuacion_estrellas' => 'required|numeric',
         ]);
         // id_producto
@@ -61,7 +61,6 @@ class ResenaProductoController extends Controller
         // Obtiene una reseña de producto en especifico sin tener en cuenta la tienda
         $rese_producto = ResenaProducto::find($id_rese_producto);
         return response()->json($rese_producto, 200);
-        // validación aquí?
     }
 
     /**
@@ -85,7 +84,7 @@ class ResenaProductoController extends Controller
         $valid_data = $request->validate([
             'id_producto' => 'required',
             'id_user' => 'required',
-            'texto' => 'required|string',
+            'texto' => '',
             'puntuacion_estrellas' => 'required|numeric',
         ]);
         $rese_producto_up->id_producto = $valid_data['id_producto'];
@@ -121,12 +120,17 @@ class ResenaProductoController extends Controller
         if(is_null($user)){
             return response()->json(['message' => 'Usuario no Encontrado'], 404);
         }
+        $rese_producto_user = $this->getReseProductobyUsuario_DB($user);
+
+        return response()->json($rese_producto_user, 200);
+    }
+
+    public function getReseProductobyUsuario_DB($user){
         $rese_producto_user = DB::table('resena_productos')
         ->where('resena_productos.id_user', $user->id)
         ->where('resena_productos.estado', 1)
         ->get();
-
-        return response()->json($rese_producto_user, 200);
+        return $rese_producto_user;
     }
 
     public function getReseProductoByProducto($id_producto)
@@ -161,12 +165,67 @@ class ResenaProductoController extends Controller
 
         $sum = 0;
         $len = 0;
-        foreach ($rese_producto_producto as $rtt) {
-            $sum += $rtt->puntuacion_estrellas;
+        foreach ($rese_producto_producto as $rpp) {
+            $sum += $rpp->puntuacion_estrellas;
             $len++;
         }
         $promedio = $sum / $len;
         $producto->puntuacion = (float) $promedio;
         $producto->save();
     }
+
+    public function initResePage($id_producto, $id_user)
+    {
+        $producto = Producto::find($id_producto);
+        if(is_null($producto)){
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+        $user = User::find($id_user);
+        if(is_null($user)){
+            return response()->json(['message' => 'Usuario no Encontrado'], 404);
+        }
+
+        $rese_productpos_all = $this->getReseProductoAllExclude($producto, $user);
+        if($rese_productpos_all == '[]'){
+            $rese_productpos_all = false;
+        }
+        $rese_producto_user = $this->getReseProductoUser($producto, $user);
+        if($rese_producto_user == '[]'){
+            $rese_producto_user = false;
+        }
+
+        return response()->json(
+            ['data' => [
+                'rese_all' => $rese_productpos_all,
+                'rese_user' => $rese_producto_user
+            ]], 200
+        );
+    }
+
+    private function getReseProductoUser($producto, $user){
+        //este metodo busca la reseña del usuario en esa producto
+        //el usuario solo podrá tener una reseña
+        $rese_producto_user = DB::table('resena_productos')
+        ->join('users', 'resena_productos.id_user', '=', 'users.id')
+        ->select('resena_productos.*', 'users.nombre as user_nombre', 'users.apellido as user_apellido')
+        ->where('resena_productos.id_producto', $producto->id)
+        ->where('resena_productos.id_user', $user->id)
+        ->where('resena_productos.estado', 1)
+        ->get();
+        return $rese_producto_user;
+    }
+    
+    private function getReseProductoAllExclude($producto, $user)
+    {
+        // excluye la reseña del usuario activo
+        $rese_producto_producto = DB::table('resena_productos')
+        ->join('users', 'resena_productos.id_user', '=', 'users.id')
+        ->select('resena_productos.*', 'users.nombre as user_nombre', 'users.apellido as user_apellido')
+        ->where('resena_productos.id_producto', $producto->id)
+        ->where('resena_productos.estado', 1)
+        ->where('resena_productos.id_user', '!=', $user->id)
+        ->get();
+        return $rese_producto_producto;
+    }
+
 }

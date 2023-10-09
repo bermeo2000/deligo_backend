@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_tienda')->constrained('tiendas');
             $table->foreignId('id_user')->constrained('users');
-            $table->string('texto', 500);
+            $table->string('texto', 500)->nullable(); //FIXME 500 es muy poco
             $table->integer('puntuacion_estrellas');
             $table->boolean('estado');
         });
