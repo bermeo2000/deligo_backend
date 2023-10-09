@@ -178,6 +178,7 @@ Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 Route::resource('producto-servicio', ProductoServicioController::class);
 Route::get('/get-producto-servicio/{id}', [ProductoServicioController::class, 'getProductoServicio']);
 Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
+Route::get('/get-citas-by-tienda-and-fecha/{id}/{fecha}', [ProductoServicioController::class, 'getProductoByTiendaAndFecha']);
 
 
 Route::middleware('auth:sanctum')->group( function () {
