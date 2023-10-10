@@ -120,6 +120,11 @@ class VentaController extends Controller
         if ($aux->idProducto =="null") {
             $aux->idProducto=NULL;
         }
+        if ($aux->id_producto_servicio =="null") {
+            $aux->id_producto_servicio=NULL;
+            $aux->fecha_cita=NULL;
+            $aux->hora_cita=NULL;
+        }
         $detalle=DetalleVenta::create([
             'anotes'=>$aux->anote,
             'id_producto'=>$aux->idProducto,
@@ -127,6 +132,9 @@ class VentaController extends Controller
             'precio'=>$aux->precioProducto,
             'cantidad'=>$aux->cantidad_compra,
             'id_promocion_producto'=>$aux->id_promocion_producto,
+            'id_producto_servicio'=>$aux->id_producto_servicio,
+            'fecha_cita'=>$aux->fecha_cita,
+            'hora_cita'=>$aux->hora_cita,
             //'array_toppings_selec'=>json_encode($aux->array_toppings_selec),
             'id_venta'=>$idVenta,
             'estado'=>1
