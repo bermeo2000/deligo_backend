@@ -44,9 +44,13 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $user = User::find($id);
+        if (is_null($user)) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+        return response()->json($user);
     }
 
     /**
@@ -60,9 +64,28 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id_usuario)
     {
-        //
+        $user = User::find($id_usuario);
+        if (is_null($id_usuario)) {
+            return response()->json(['message' => 'Usuario encontrado'], 404);
+        }
+        $validateData = $request->validate([
+            'nombre'   => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'ciudad'   =>'required|string|max:255',
+            'cedula'   =>'required|string|max:255',
+            'telefono' =>'required|string|max:255',
+
+        ]);
+        $user->nombre=$validateData['nombre'];
+        $user->apellido=$validateData['apellido'];
+        $user->ciudad=$validateData['ciudad'];
+        $user->cedula=$validateData['cedula'];
+        $user->telefono=$validateData['telefono'];
+       
+        $user->save();
+        return response()->json(['message' => 'Usuario actualizado'], 201);
     }
 
     /**
@@ -123,10 +146,10 @@ class UserController extends Controller
     }
 
 
-    public function updateUser(Request $request, $id)
+ /*    public function updateUser(Request $request, $id_usuario)
     {
-        $user = User::find($id);
-        if (is_null($user)) {
+        $user = User::find($id_usuario);
+        if (is_null($id_usuario)) {
             return response()->json(['message' => 'Usuario encontrado'], 404);
         }
         $validateData = $request->validate([
@@ -145,7 +168,7 @@ class UserController extends Controller
        
         $user->save();
         return response()->json(['message' => 'Usuario actualizado'], 201);
-    }
+    } */
 
     public function updatUserEmail(Request $request, $id)
     {
