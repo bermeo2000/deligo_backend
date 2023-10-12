@@ -109,7 +109,8 @@ class UserController extends Controller
             'nombre'            => 'required|string|max:255',
             'apellido'          => 'required|string|max:255',
             'ciudad'            => 'required|string|max:255',
-            'email'             => 'required|string|max:255',
+            /* 'email'             => 'required|string|max:255', */
+            'email'             => 'required|string|email|max:255|unique:users',
             'password'          => 'required|string|max:255',
             'id_tipo_usuario'   => 'required',
             'is_categoria_selec'=>'required',
