@@ -168,6 +168,7 @@ class ProductoServicioController extends Controller
         ->where('detalle_ventas.id_tienda',$idTienda)
         ->where('detalle_ventas.fecha_cita', $fecha)
         ->where('detalle_ventas.estado',1) 
+        ->orderBy('horaInicio', 'asc')
         ->get();
         if (count($productoServicio)==0) {
             return response()-> json('no existen Citas en el dia',404);
