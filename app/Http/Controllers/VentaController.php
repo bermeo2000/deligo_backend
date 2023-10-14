@@ -139,7 +139,7 @@ class VentaController extends Controller
             'id_venta'=>$idVenta,
             'estado'=>1
         ]);
-       if ( count($aux->toppings)>0) 
+        if ( count($aux->toppings)>0) 
        {
             for ($i=0; $i <count($aux->toppings) ; $i++) 
          { 
