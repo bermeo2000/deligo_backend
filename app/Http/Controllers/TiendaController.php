@@ -347,9 +347,9 @@ class TiendaController extends Controller
     } */
 
 
-    public function show( $id_tienda)
+    public function show($id)
     {
-        $tienda=Tienda::find($id_tienda);
+        $tienda=Tienda::find($id);
         if (is_null($tienda)) {
             return response()->json(['mesagge'=>'No se encontro ninguna tienda', 404]);
         }
