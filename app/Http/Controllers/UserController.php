@@ -44,9 +44,13 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $user = User::find($id);
+        if (is_null($user)) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+        return response()->json($user);
     }
 
     /**
@@ -60,9 +64,28 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id_usuario)
     {
-        //
+        $user = User::find($id_usuario);
+        if (is_null($id_usuario)) {
+            return response()->json(['message' => 'Usuario encontrado'], 404);
+        }
+        $validateData = $request->validate([
+            'nombre'   => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'ciudad'   =>'required|string|max:255',
+            'cedula'   =>'required|string|max:255',
+            'telefono' =>'required|string|max:255',
+
+        ]);
+        $user->nombre=$validateData['nombre'];
+        $user->apellido=$validateData['apellido'];
+        $user->ciudad=$validateData['ciudad'];
+        $user->cedula=$validateData['cedula'];
+        $user->telefono=$validateData['telefono'];
+       
+        $user->save();
+        return response()->json(['message' => 'Usuario actualizado'], 201);
     }
 
     /**
@@ -86,7 +109,8 @@ class UserController extends Controller
             'nombre'            => 'required|string|max:255',
             'apellido'          => 'required|string|max:255',
             'ciudad'            => 'required|string|max:255',
-            'email'             => 'required|string|max:255',
+            /* 'email'             => 'required|string|max:255', */
+            'email'             => 'required|string|email|max:255|unique:users',
             'password'          => 'required|string|max:255',
             'id_tipo_usuario'   => 'required',
             'is_categoria_selec'=>'required',
@@ -123,10 +147,10 @@ class UserController extends Controller
     }
 
 
-    public function updateUser(Request $request, $id)
+ /*    public function updateUser(Request $request, $id_usuario)
     {
-        $user = User::find($id);
-        if (is_null($user)) {
+        $user = User::find($id_usuario);
+        if (is_null($id_usuario)) {
             return response()->json(['message' => 'Usuario encontrado'], 404);
         }
         $validateData = $request->validate([
@@ -145,7 +169,7 @@ class UserController extends Controller
        
         $user->save();
         return response()->json(['message' => 'Usuario actualizado'], 201);
-    }
+    } */
 
     public function updatUserEmail(Request $request, $id)
     {
@@ -177,7 +201,7 @@ class UserController extends Controller
     }
 
 
-    public function updatUserImage(Request $request, $id)
+/*     public function updatUserImage(Request $request, $id)
     {
 
         $user = User::find($id);
@@ -192,11 +216,38 @@ class UserController extends Controller
         $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
         
         $request->file('imagen')->storeAs("public/images/Usuario/{$user->id}", $validData['imagen']);
+                           
 
         $user->imagen = $validData['imagen'];
         $user->save();
         return response()->json(['message' => 'Imagen actualizada'], 201);
+    } */
+
+    public function UpdatefotoUser(Request $request, $id)
+    {
+
+        $usuario = User::find($id);
+        if (is_null($usuario)) {
+            return response()->json(['message' => 'Imagen no encontrada.'], 404);
+        }
+        $validData = $request->validate([
+            'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg'
+        ]);
+
+        $img=$request->file('imagen');
+        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        
+        $request->file('imagen')->storeAs("public/images/usuario/{$usuario->id}", $validData['imagen']);
+
+        /*  if ($person->image != '') {
+            unlink(storage_path("app/public/images/persons/{$person->userId}/" . $person->image));
+        } */
+        $usuario->imagen = $validData['imagen'];
+        $usuario->save();
+        return response()->json(['message' => 'Imagen actualizada'], 201);
     }
+
+
 
     public function getUser($id){
         $u = User::where('id', $id)->get();

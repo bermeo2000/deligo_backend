@@ -62,7 +62,8 @@ Route::post('/updat-User-Email/{id}', [UserController::class, 'updatUserEmail'])
 Route::post('/updat-User-Password/{id}', [UserController::class, 'updateditPassword']);
 Route::post('/updat-User-Image/{id}', [UserController::class, 'updatUserImage']);
 Route::get('/get-user/{id}', [UserController::class, 'getUser']);
-
+Route::post('/Updatefotouser/{id}', [UserController::class, 'UpdatefotoUser']);
+Route::get('/showUser/{id}', [UserController::class, 'showUser']);
 
 //Categoria Tiendas
 Route::resource('categoria-tienda', CategoriaTiendaController::class);
@@ -181,6 +182,8 @@ Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 Route::resource('producto-servicio', ProductoServicioController::class);
 Route::get('/get-producto-servicio/{id}', [ProductoServicioController::class, 'getProductoServicio']);
 Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
+Route::get('/get-citas-by-tienda-and-fecha/{id}/{fecha}', [ProductoServicioController::class, 'getProductoByTiendaAndFecha']);
+Route::get('/get-citas-by-usuario/{id}/{fecha}', [ProductoServicioController::class, 'getProductoByUsuario']);
 
 
 Route::middleware('auth:sanctum')->group( function () {

@@ -160,5 +160,41 @@ class ProductoServicioController extends Controller
         return response()->json($productoServicio,200);
     }
 
+    public function getProductoByTiendaAndFecha($idTienda, $fecha){
+        $productoServicio = DB::Table('detalle_ventas')
+        ->join('producto_servicios','detalle_ventas.id_producto_servicio','=','producto_servicios.id')
+        ->select('detalle_ventas.fecha_cita as dia', 'detalle_ventas.hora_cita as horaInicio',
+        'producto_servicios.duracion','producto_servicios.nombre as nombreServicio')
+        ->where('detalle_ventas.id_tienda',$idTienda)
+        ->when($fecha !== 'null', function ($query) use ($fecha) {
+            return $query->where('detalle_ventas.fecha_cita', $fecha);
+        })
+        ->where('detalle_ventas.estado',1) 
+        ->orderBy('horaInicio', 'asc')
+        ->get();
+        if (count($productoServicio)==0) {
+            return response()-> json('no existen Citas en el dia',404);
+        }
+        return response()->json($productoServicio,200);
+    }
+    public function getProductoByUsuario($idUsuario,$fecha){
+        $productoServicio = DB::Table('detalle_ventas')
+        ->join('producto_servicios','detalle_ventas.id_producto_servicio','=','producto_servicios.id')
+        ->join('ventas','detalle_ventas.id_venta','=','ventas.id')
+        ->select('detalle_ventas.fecha_cita as dia', 'detalle_ventas.hora_cita as horaInicio',
+        'producto_servicios.duracion','producto_servicios.nombre as nombreServicio')
+        ->when($fecha !== 'null', function ($query) use ($fecha) {
+            return $query->where('detalle_ventas.fecha_cita', $fecha);
+        })
+        ->where('detalle_ventas.estado',1) 
+        ->where('ventas.id_cliente',$idUsuario)
+        ->orderBy('horaInicio', 'asc')
+        ->get();
+        if (count($productoServicio)==0) {
+            return response()-> json('no existen Citas en el dia',404);
+        }
+        return response()->json($productoServicio,200);
+    }
+
 
 }
