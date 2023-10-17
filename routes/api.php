@@ -100,12 +100,15 @@ Route::get('get-marca-by-tienda/{id}', [MarcaController::class, 'getMarcaTienda'
 
 //Productos
 Route::resource('producto', ProductoController::class);
+Route::post('/edita-img-productos/{id}', [ProductoController::class, 'editImagenes']);
 Route::get('get-prod-by-tienda/{id}', [ProductoController::class, 'getProductoByTienda']);
 Route::get('get-prod-by-categoria/{id}', [ProductoController::class, 'getProductosByCategoria']);
 Route::post('prod-update/{id}', [ProductoController::class, 'Actualizar']);
 Route::get('productos/{id}', [ProductoController::class, 'getProductoTienda']);
 Route::get('showCateProducto/{id}', [ProductoController::class, 'showCateProducto']);
 Route::get('/produc', [ProductoController::class, 'indexx']);
+
+
 
 
 //Categorias Usuarios

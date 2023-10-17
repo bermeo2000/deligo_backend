@@ -218,11 +218,15 @@ class ProductoController extends Controller
      */
     public function update(Request $request, $id_producto)
     {
+        $producto=Producto::find($id_producto);
+        if (is_null($id_producto)) {
+            return response()->json(['message'=> 'productoServicio no encontrado'], 404);
+         }
         $validData = $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required',
             'peso' => 'nullable',
-            'imagen' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+//            'imagen' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'id_categoria_productos' => 'required',
             'id_marca' => 'nullable',
             'id_tipo_peso' => 'nullable',
@@ -231,7 +235,7 @@ class ProductoController extends Controller
             'is_topping' => 'required',
         ]);
 
-        $producto_update = Producto::find($id_producto);
+      /*   $producto_update = Producto::find($id_producto);
 
         $tienda_prod_updt = Tienda::find($producto_update->id_tienda);
 
@@ -246,26 +250,43 @@ class ProductoController extends Controller
             $producto_update->imagen = $validData['imagen'];
 
             $request->file('imagen')->storeAs("public/images/productos/{$tienda_prod_updt->id}/{$producto_update->id}", $validData['imagen']);
-        }
+        } */
 
-        $producto_update->nombre = $validData['nombre'];
-        $producto_update->precio = $validData['precio'];
-        $producto_update->peso = $validData['peso'];
-        $producto_update->id_categoria_productos = $validData['id_categoria_productos'];
-        $producto_update->id_marca = $validData['id_marca'];
-        $producto_update->id_tipo_peso = $validData['id_tipo_peso'];
-        $producto_update->id_tienda = $validData['id_tienda'];
-        $producto_update->descripcion = $validData['descripcion'];
-        $producto_update->is_topping = $validData['is_topping'];
+        $producto->nombre = $validData['nombre'];
+        $producto->precio = $validData['precio'];
+        $producto->peso = $validData['peso'];
+        $producto->id_categoria_productos = $validData['id_categoria_productos'];
+        $producto->id_marca = $validData['id_marca'];
+        $producto->id_tipo_peso = $validData['id_tipo_peso'];
+        $producto->id_tienda = $validData['id_tienda'];
+        $producto->descripcion = $validData['descripcion'];
+        $producto->is_topping = $validData['is_topping'];
 
-        $producto_update->save();
+        $producto->save();
 
         return response()
         ->json([
             'message' => 'Producto de tu tienda actualizado',
-            'data' => $producto_update   
+            'data' => $producto   
         ], 200);        
 
+    }
+
+    public function editImagenes(Request $request, $id ){
+
+        $producto = Producto::find($id);
+        if (is_null($producto)) {
+            return response()->json(['message' => 'producto no encontrada.'], 404);
+        }
+        $validateData = $request->validate([
+            'imagen' => 'required|mimes:jpeg,bmp,png',
+        ]);
+        $img=$request->file('imagen');
+        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        $request->file('imagen')->storeAs("public/images/productos/{$producto->id}", $validateData['imagen']);
+        $producto->imagen=$validateData['imagen'];
+        $producto->save();
+        return response()->json(['message' => 'Imagen de productos actualizada'], 201);
     }
     public function Actualizar(Request $request, $id_producto){
         
@@ -367,5 +388,8 @@ class ProductoController extends Controller
         ->get();
         return response()->json($productos);
     }
+
+
+ 
     
 }
