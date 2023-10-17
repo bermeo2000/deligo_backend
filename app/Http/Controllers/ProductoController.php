@@ -92,8 +92,8 @@ class ProductoController extends Controller
         //probado con imagen y todo y funciona
         $validData = $request->validate([
             'nombre' => 'required|string|max:255',
-            'precio' => 'required',
-            'peso' => 'nullable',
+            'precio'     => 'required|string|max:255',
+            'peso'       => 'required|string|max:255',
             'imagen' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'id_categoria_productos' => 'required',
             'id_marca' => 'nullable',
