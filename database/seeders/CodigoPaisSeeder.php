@@ -40,13 +40,14 @@ class CodigoPaisSeeder extends Seeder
             ]);
         }
 
-        DB::table('codigo_pais')->insert([
+        //@andres: Quité esto porque luego de la reduciión de paises duplicaba el ultimo 
+        /* DB::table('codigo_pais')->insert([
             'nombre' => $nombre,
             'name' => $name,
             'iso2' => $iso2,
             'iso3' => $iso3,
             'phone_code' => $phoneCode,
             'estado' => $estado,
-        ]);
+        ]); */
     }
 }
