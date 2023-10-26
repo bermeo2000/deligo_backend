@@ -53,6 +53,41 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    public function showd($id)
+{
+    $user = User::find($id);
+
+    if ($user === null) {
+        return response()->json("El usuario no existe", 404);
+    }
+
+    $dataUser = new \stdClass();
+    $dataUser->nombre = $user->nombre;
+    $dataUser->apellido = $user->apellido;
+    $dataUser->ciudad = $user->ciudad;
+    $dataUser->email = $user->email;
+    $dataUser->password = $user->password;
+    $dataUser->id_tipo_usuario = $user->id_tipo_usuario;
+    $dataUser->is_categoria_selec = $user->is_categoria_selec;
+    $dataUser->id_categoria_tienda = "sin categorías"; // Valor predeterminado
+
+    if ($user->is_categoria_selec == 1) {
+        $categorias_usuarios = DB::table('categorias_usuarios')
+            ->join('categoria_tiendas', 'categorias_usuarios.id_categoria_tienda', '=', 'categoria_tiendas.id')
+            ->select('categoria_tiendas.id')
+            ->where('categorias_usuarios.id_usuario', $id)
+            ->where('categorias_usuarios.estado', 1)
+            ->get();
+
+        if (!$categorias_usuarios->isEmpty()) {
+            $dataUser->id_categoria_tienda = $categorias_usuarios->pluck('id')->toArray();
+        }
+    }
+
+    return response()->json($dataUser, 200);
+}
+
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -142,6 +177,13 @@ class UserController extends Controller
                 ]);
             }
         } 
+        else 
+        {
+             return response()
+                    ->json([
+                    'message' => 'El is_categoria_selec no existe',
+                     ], 400);
+        }
 
         return response()->json(['message' => 'Usuario registrado'], 200);
     }
@@ -253,8 +295,5 @@ class UserController extends Controller
         $u = User::where('id', $id)->get();
         return response()->json($u, 200);
     }
-
-    
-
    
 }

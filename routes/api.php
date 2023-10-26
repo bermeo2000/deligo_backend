@@ -64,6 +64,9 @@ Route::post('/updat-User-Image/{id}', [UserController::class, 'updatUserImage'])
 Route::get('/get-user/{id}', [UserController::class, 'getUser']);
 Route::post('/Updatefotouser/{id}', [UserController::class, 'UpdatefotoUser']);
 Route::get('/showUser/{id}', [UserController::class, 'showUser']);
+Route::get('/showUsuarior/{id}', [UserController::class, 'showd']);   //obtenerUsuario
+
+
 
 //Categoria Tiendas
 Route::resource('categoria-tienda', CategoriaTiendaController::class);
