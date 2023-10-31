@@ -255,7 +255,7 @@ class ProductosSeeder extends Seeder
                 DB::table('productos')->insert([
                     'nombre' => $p[0],
                     'precio' => $p[1],
-                    'imagen' => $p[2],
+                    'imagen' => "public/images/seeders/{$p[2]}",
                     'id_categoria_productos' => $p[3],
                     'id_marca' => $p[4],
                     'id_tienda' => $p[5],
