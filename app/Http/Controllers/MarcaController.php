@@ -128,8 +128,7 @@ class MarcaController extends Controller
             'imagen' => 'required|mimes:jpeg,bmp,png',
         ]);
         $img=$request->file('imagen');
-        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-        $request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $validateData['imagen']);
+        $validateData['imagen'] = $request->file('imagen')->storePublicly("public/images/marca");
         $marca->imagen=$validateData['imagen'];
         $marca->save();
         return response()->json(['message' => 'Imagen de marca actualizada'], 201);

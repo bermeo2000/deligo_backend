@@ -128,9 +128,8 @@ class ToppingsController extends Controller
         $validateData = $request->validate([
             'imagen' => 'required|mimes:jpeg,bmp,png',
         ]);
-        $img=$request->file('imagen');
-        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-        $request->file('imagen')->storeAs("public/images/toppings/{$toppings->id}", $validateData['imagen']);
+
+        $validateData['imagen'] = $request->file('imagen')->storePublicly("public/images/toppings");
         $toppings->imagen=$validateData['imagen'];
         $toppings->save();
         return response()->json(['message' => 'Foto de toppings actualizada'], 201);
