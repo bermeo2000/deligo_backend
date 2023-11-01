@@ -45,8 +45,8 @@ class ProductoServicioController extends Controller
             'id_categoria_productos'=>'required',
             'id_emp_servicio'=>'required',
         ]);
-        $img = $request->file('imagen');
-        $valiData['imagen'] =  time().'.'.$img->getClientOriginalExtension();
+
+        $valiData['imagen'] =  $request->file('imagen')->storePublicly("public/images/productoServicio");
 
         $productoServicio=ProductoServicio::create([
             'nombre'=>$valiData['nombre'],
@@ -60,8 +60,6 @@ class ProductoServicioController extends Controller
             'estado'=>1,
         ]);
 
- 
-        $request->file('imagen')->storeAs("public/images/productoServicio/{$productoServicio->id}", $valiData['imagen']);
         return response()->json(['message'=>'producto Servicio registrado'],200);
     }
 
@@ -130,8 +128,6 @@ class ProductoServicioController extends Controller
 
     }
 
-    
-
     public function editImagenes(Request $request, $id ){
 
         $productoServicio = ProductoServicio::find($id);
@@ -141,9 +137,9 @@ class ProductoServicioController extends Controller
         $validateData = $request->validate([
             'imagen' => 'required|mimes:jpeg,bmp,png',
         ]);
-        $img=$request->file('imagen');
-        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-        $request->file('imagen')->storeAs("public/images/productoServicio/{$productoServicio->id}", $validateData['imagen']);
+
+        $validateData['imagen'] = $request->file('imagen')->storePublicly("public/images/productoServicio");
+
         $productoServicio->imagen=$validateData['imagen'];
         $productoServicio->save();
         return response()->json(['message' => 'Imagen de productoServicio actualizada'], 201);

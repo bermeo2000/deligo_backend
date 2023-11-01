@@ -19,7 +19,7 @@ class VentaController extends Controller
     public function index()
     {
        
-        return response()->json($cod);
+        /* return response()->json($cod); */
     }
 
     /**
