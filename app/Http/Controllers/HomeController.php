@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\PromocionProducto;
 use App\Models\CategoriaTienda;
 use App\Models\Producto;
 use App\Models\User;
@@ -13,29 +13,36 @@ class HomeController extends Controller
 {
     // En este controller estan presentes las consultas para el home
     // con el fin de optimizar y hacer una sola petición
-    
+
     public function getHome($id){
         $tienda_fav = $this->getTiendaFav_DB($id);
-
+    
         $home = Array();
-
-        $tiendas=DB::table('tiendas')
-        ->join('categoria_tiendas','tiendas.id_categoria_tienda','=','categoria_tiendas.id')
-        ->select('tiendas.*', 'categoria_tiendas.nombre as categoria')
-        ->where('tiendas.estado',1)
-        ->get();
-        $categoria_tiendas = CategoriaTienda::where('estado',1)->get();
-        $productos = Producto::where('estado',1)->get();
-
+    
+        $tiendas = DB::table('tiendas')
+            ->join('categoria_tiendas', 'tiendas.id_categoria_tienda', '=', 'categoria_tiendas.id')
+            ->select('tiendas.*', 'categoria_tiendas.nombre as categoria')
+            ->where('tiendas.estado', 1)
+            ->get();
+    
+            $categoria_tiendas = CategoriaTienda::where('estado',1)->get();
+        $productos = Producto::where('estado', 1)->get();
+        $promocion_productos = DB::table('promocion_productos')
+            ->join('productos', 'promocion_productos.id_producto', '=', 'productos.id')
+            ->select('promocion_productos.*', 'productos.nombre as nombreprom', 'productos.imagen')
+            ->where('promocion_productos.estado', 1)
+            ->get();
+    
         array_push(
             $home, [
                 'categoria_tiendas' => $categoria_tiendas,
                 'tiendas' => $tiendas,
                 'productos' => $productos,
+                'promocion' => $promocion_productos,
                 'tienda_fav' => $tienda_fav
             ]
         );
-
+    
         return response()->json($home, 200);
     }
 

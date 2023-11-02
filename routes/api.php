@@ -116,9 +116,9 @@ Route::resource('categoria-usuario', CategoriasUsuarioController::class);
 //Promocion Productos
 
 Route::resource('promo-productos', PromocionProductoController::class);
-Route::get('get-prod-by-tienda/{id}', [PromocionProductoController::class, 'getProductoByTienda']);
-
+Route::get('get-promo-by-tienda/{id}', [PromocionProductoController::class, 'getPromocionByTienda']);
 Route::get('get-promo-productos-by-tienda/{id}', [PromocionProductoController::class, 'getPromoProductoTienda']);
+Route::get('showPromocion/{id}',[PromocionProductoController::class,'getPromoProducto']);
 
 //Toppings
 Route::resource('toppings', ToppingsController::class);
