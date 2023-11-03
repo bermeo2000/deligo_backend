@@ -44,6 +44,7 @@ class LoginController extends Controller
                     /* 'codigo_referido'=>$user->codigo_referido, */
                     'rol' => $query[0]->tipo,
                     'codigo_referido_usuario' => $user->codigo_referido_usuario,
+                    'puntos_go' => $user->puntos_go,
                     'message' => "Credenciales válidas"
 
                 ], 200);
@@ -68,6 +69,7 @@ class LoginController extends Controller
                 'rol' => $query[0]->tipo,
                 'id_tiendas' => $tiendas_emp,
                 'codigo_referido'=>$user->codigo_referido,
+                'puntos_go' => $user->puntos_go,
                 'message' => "Credenciales válidas"
             ]);
 

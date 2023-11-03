@@ -175,6 +175,7 @@ Route::resource('amon-tiendas', AmonestacionTiendaController::class);
 Route::post('/save-referido-user', [HomeController::class, 'saveReferidoUsuario']);
 Route::get('/get-home/{id}', [HomeController::class, 'getHome']);
 Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
+Route::get('/save-puntos-go/{id}', [HomeController::class, 'savePuntosGO']);
 
 // Producto servicio
 Route::resource('producto-servicio', ProductoServicioController::class);

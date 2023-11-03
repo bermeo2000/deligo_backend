@@ -142,4 +142,24 @@ class HomeController extends Controller
         return response()->json($tienda_fav, 200);
     }
 
+    public function savePuntosGO($id_user)
+    {
+
+        $userPG = User::find($id_user);
+
+        if(is_null($userPG)){
+            return response()->json([
+                'message' => 'Usuario no existe.'
+            ], 400);
+        }
+        
+        $userPG->puntos_go += 5;
+        $userPG->save();
+
+        return response()->json([
+            'message' => 'PuntosGO actualizados',
+            'puntos_go' =>  $userPG->puntos_go,
+        ], 200);
+    }
+
 }
