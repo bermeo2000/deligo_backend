@@ -69,7 +69,7 @@ class UserController extends Controller
     $dataUser->password = $user->password;
     $dataUser->id_tipo_usuario = $user->id_tipo_usuario;
     $dataUser->is_categoria_selec = $user->is_categoria_selec;
-    $dataUser->id_categoria_tienda = "sin categorías"; // Valor predeterminado
+    $dataUser->id_categoria_tienda = "sin categorías";
 
     if ($user->is_categoria_selec == 1) {
         $categorias_usuarios = DB::table('categorias_usuarios')
