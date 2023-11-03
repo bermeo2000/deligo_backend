@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductoServicioController;
+use App\Http\Controllers\TestBucketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -66,8 +67,6 @@ Route::post('/Updatefotouser/{id}', [UserController::class, 'UpdatefotoUser']);
 Route::get('/showUser/{id}', [UserController::class, 'showUser']);
 Route::get('/showUsuarior/{id}', [UserController::class, 'showd']);   //obtenerUsuario
 
-
-
 //Categoria Tiendas
 Route::resource('categoria-tienda', CategoriaTiendaController::class);
 
@@ -111,19 +110,15 @@ Route::get('productos/{id}', [ProductoController::class, 'getProductoTienda']);
 Route::get('showCateProducto/{id}', [ProductoController::class, 'showCateProducto']);
 Route::get('/produc', [ProductoController::class, 'indexx']);
 
-
-
-
 //Categorias Usuarios
 Route::resource('categoria-usuario', CategoriasUsuarioController::class);
 
 //Promocion Productos
 
 Route::resource('promo-productos', PromocionProductoController::class);
-Route::get('get-prod-by-tienda/{id}', [PromocionProductoController::class, 'getProductoByTienda']);
-
+Route::get('get-promo-by-tienda/{id}', [PromocionProductoController::class, 'getPromocionByTienda']);
 Route::get('get-promo-productos-by-tienda/{id}', [PromocionProductoController::class, 'getPromoProductoTienda']);
-
+Route::get('showPromocion/{id}',[PromocionProductoController::class,'getPromoProducto']);
 
 //Toppings
 Route::resource('toppings', ToppingsController::class);
@@ -180,6 +175,7 @@ Route::resource('amon-tiendas', AmonestacionTiendaController::class);
 Route::post('/save-referido-user', [HomeController::class, 'saveReferidoUsuario']);
 Route::get('/get-home/{id}', [HomeController::class, 'getHome']);
 Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
+Route::get('/save-puntos-go/{id}', [HomeController::class, 'savePuntosGO']);
 
 // Producto servicio
 Route::resource('producto-servicio', ProductoServicioController::class);
@@ -188,6 +184,7 @@ Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'edi
 Route::get('/get-citas-by-tienda-and-fecha/{id}/{fecha}', [ProductoServicioController::class, 'getProductoByTiendaAndFecha']);
 Route::get('/get-citas-by-usuario/{id}/{fecha}', [ProductoServicioController::class, 'getProductoByUsuario']);
 
+Route::post('/save-img-bucket', [TestBucketController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group( function () {
 

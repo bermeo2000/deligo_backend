@@ -19,7 +19,7 @@ class TiendasSeeder extends Seeder
         $tiendas = [
             [
                 'Animal Store',
-                'animal_store.png',
+                'public/images/seeders/1.png',
                 'Calceta',
                 1,
                 'Calle 404',

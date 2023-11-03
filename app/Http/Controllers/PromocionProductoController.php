@@ -34,25 +34,41 @@ class PromocionProductoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
-     public function store(Request $request)
-     {
-         $validData = $request->validate([
-         'id_producto' => 'required',
-         'descuento' => 'required',
-         'fecha_inicio' => 'required',
-         'fecha_fin' => 'required',        
-         ]);
-         PromocionProducto::create([
-             'id_producto'=> $validData['id_producto'],
-             'descuento'=> $validData['descuento'],
-             'fecha_inicio'=> $validData['fecha_inicio'],
-             'fecha_fin'=> $validData['fecha_fin'],
-             'estado'=> 1,
-         ]);
-         return response()->json(['message'=>'promocion producto registrado'],201);
-     }
-
+    public function store(Request $request)
+    {
+        $validData = $request->validate([
+            'id_producto' => 'required',
+            'descuento' => 'required',
+            'fecha_inicio' => 'required',
+            'fecha_fin' => 'required',
+        ]);
+    
+        // Obtener el producto por su ID
+        $producto = Producto::find($validData['id_producto']);
+    
+        if (!$producto) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+    
+        // Calcular el precio con descuento
+        $precioOriginal = $producto->precio;
+        $descuento = $validData['descuento'];
+        $precioConDescuento = $precioOriginal - ($precioOriginal * $descuento / 100);
+    
+        // Almacenar la promoción de producto
+        PromocionProducto::create([
+            'id_producto' => $validData['id_producto'],
+            'descuento' => $descuento,
+            'precio_con_descuento' => $precioConDescuento,
+            'fecha_inicio' => $validData['fecha_inicio'],
+            'fecha_fin' => $validData['fecha_fin'],
+            'estado' => 1,
+        ]);
+    
+        // Incluir el precio con descuento en la respuesta JSON
+        return response()->json(['message' => 'Promoción de producto registrada', 'precio_con_descuento' => $precioConDescuento], 201);
+    }
+    
     
 
 
@@ -118,39 +134,89 @@ class PromocionProductoController extends Controller
     }
 
 
-    public function getProductoByTienda($id_tienda){
-        //Busca todos los productos por la tienda
-
-        $data = DB::table('productos')
-        ->select('productos.*')
-        ->where('productos.id_tienda', $id_tienda)
-        ->where('productos.estado', 1)
-        ->get();
-
+    public function getPromocionByTienda($id_tienda)
+    {
+        // Busca todos los productos por la tienda
+        $productos = DB::table('productos')
+            ->select('productos.id')
+            ->where('productos.id_tienda', $id_tienda)
+            ->where('productos.estado', 1)
+            ->get();
+    
+        // Luego, busca las promociones de productos relacionadas con los productos de la tienda
+        $data = DB::table('promocion_productos')
+            ->select('promocion_productos.*')
+            ->whereIn('promocion_productos.id_producto', $productos->pluck('id'))
+            ->where('promocion_productos.estado', 1)
+            ->get();
+    
         return response($data, 200);
-        
     }
+    
 
 
 
-    public function getPromoProductoTienda($id_tienda){
-
-        $promocionproducto=DB::table('promocion_productos')
-        ->join('productos','promocion_productos.id_producto','=','productos.id')
-        ->join('tiendas','productos.id_tienda','=','tiendas.id')
-        ->select('promocion_productos.*','productos.nombre','productos.imagen')
-        ->where('tiendas.id',$id_tienda)
-        ->where('tiendas.estado',1)
-        ->where('promocion_productos.estado',1)
-        ->get();
-        if (count($promocionproducto)== 0) {
-            return response()->json(['message' => 'promocion producto no encontrado'], 404);
+    public function getPromoProductoTienda($id_tienda) {
+        $promocionproducto = DB::table('promocion_productos')
+            ->join('productos', 'promocion_productos.id_producto', '=', 'productos.id')
+            ->join('tiendas', 'productos.id_tienda', '=', 'tiendas.id')
+            ->select(
+                'promocion_productos.*',
+                'productos.nombre',
+                'productos.imagen',
+                'productos.precio' 
+            )
+            ->where('tiendas.id', $id_tienda)
+            ->where('tiendas.estado', 1)
+            ->where('promocion_productos.estado', 1)
+            ->get();
+    
+        if (count($promocionproducto) == 0) {
+            return response()->json(['message' => 'promoción de producto no encontrada'], 404);
         }
+        foreach ($promocionproducto as $promo) {
+            $descuento = $promo->descuento;
+            $precioOriginal = $promo->precio;
+            $precioConDescuento = $precioOriginal - ($precioOriginal * $descuento / 100);
+            $promo->precio_con_descuento = $precioConDescuento;
+        }
+    
         return response()->json($promocionproducto);
-
-
-
     }
+    
 
+    public function getPromoProducto($id) {
+        $pro = PromocionProducto::find($id);
+        if($pro == []){
+            return response()->json(['message'=> "Promoción producto no encontrada"], 404);
+        }
+
+        $promocionproducto = DB::table('promocion_productos')
+            ->join('productos', 'promocion_productos.id_producto', '=', 'productos.id')
+            ->join('tiendas', 'productos.id_tienda', '=', 'tiendas.id')
+            ->select(
+                'promocion_productos.*',
+                'productos.nombre',
+                'productos.imagen',
+                'productos.precio' 
+            )
+           /*  ->where('tiendas.id', $id_tienda)
+            ->where('tiendas.estado', 1) */
+            ->where('promocion_productos.id',$id)
+            ->where('promocion_productos.estado', 1)
+            ->get();
+    
+        if (count($promocionproducto) == 0) {
+            return response()->json(['message' => 'promoción de producto no encontrada'], 404);
+        }
+        foreach ($promocionproducto as $promo) {
+            $descuento = $promo->descuento;
+            $precioOriginal = $promo->precio;
+            $precioConDescuento = $precioOriginal - ($precioOriginal * $descuento / 100);
+            $promo->precio_con_descuento = $precioConDescuento;
+        }
+    
+        return response()->json($promocionproducto);
+    }
     
 }
