@@ -55,6 +55,8 @@ class HomeController extends Controller
         ->get();
         $is_promocion_productos = $this->validateQuery($promocion_productos);
 
+        $deliTOP = $this->getDeliTop($user);
+
         array_push(
             $home,
             [
@@ -71,7 +73,8 @@ class HomeController extends Controller
                     'promo' => $promocion_productos,
                     'status'=> $is_promocion_productos,
                 ],
-                'tienda_fav' => $tienda_fav
+                'tienda_fav' => $tienda_fav,
+                'deliTOP' => $deliTOP,
             ]
         );
 
@@ -204,6 +207,45 @@ class HomeController extends Controller
             'message' => 'PuntosGO actualizados',
             'puntos_go' => $userPG->puntos_go,
         ], 200);
+    }
+
+    private function getDeliTop($user)
+    {   
+        $deliTOP = array();
+
+        $tiendas_top = DB::table('tiendas')
+        ->join('categoria_tiendas', 'tiendas.id_categoria_tienda', '=', 'categoria_tiendas.id')
+        ->join('users','users.id','=', 'tiendas.id_propietario')
+        ->select('tiendas.*', 'categoria_tiendas.nombre as categoria')
+        ->where('users.is_plus', 1)
+        ->where('tiendas.estado', 1)
+        ->where('tiendas.ciudad', $user->ciudad)
+        ->get();
+        $is_tiendas_top = $this->validateQuery($tiendas_top);
+
+        $productos_top = DB::table('productos')
+        ->join('tiendas','tiendas.id','=', 'productos.id_tienda')
+        ->join('users','users.id','=', 'tiendas.id_propietario')
+        ->select('productos.*')
+        ->where('users.is_plus', 1)
+        ->where('productos.estado', 1)
+        ->where('tiendas.ciudad', $user->ciudad)
+        ->get();
+
+        $is_productos_top = $this->validateQuery($productos_top);
+
+        array_push($deliTOP, [
+            'tiendas_top' => [
+                'tt' => $tiendas_top,
+                'status' => $is_tiendas_top
+            ],
+            'productos_top' => [
+                'pt' => $productos_top,
+                'status' => $is_productos_top
+            ]
+        ]);
+        
+        return $deliTOP;
     }
 
 }
