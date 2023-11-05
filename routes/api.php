@@ -135,6 +135,8 @@ Route::resource('estado-venta', EstadoVentaController::class);
 //Ventas
 Route::resource('venta', VentaController::class);
 Route::get('get-ventas-by-usuario/{id}', [VentaController::class, 'getVentasByUsuario']);
+Route::post('/resta-puntos/{id}', [VentaController::class, 'restarPuntos']);
+
 //Detalle Ventas
 Route::resource('detalle-venta', DetalleVentaController::class);
 Route::get('detalle-by-venta/{id}', [DetalleVentaController::class,'showDetallesByVentas']);
@@ -183,8 +185,7 @@ Route::get('/get-producto-servicio/{id}', [ProductoServicioController::class, 'g
 Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
 Route::get('/get-citas-by-tienda-and-fecha/{id}/{fecha}', [ProductoServicioController::class, 'getProductoByTiendaAndFecha']);
 Route::get('/get-citas-by-usuario/{id}/{fecha}', [ProductoServicioController::class, 'getProductoByUsuario']);
-
-Route::post('/save-img-bucket', [TestBucketController::class, 'store']);
+Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
 
 Route::middleware('auth:sanctum')->group( function () {
 

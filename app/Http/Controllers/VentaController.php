@@ -185,6 +185,20 @@ class VentaController extends Controller
             }
             return response()->json($ventas,200);
     }
-
+    
+    public function restarPuntos($id,  Request $puntos)
+    {
+         $aux=$puntos[0];
+         
+      
+            $user=User::find($id);
+            $auxUserPuntos=$user->puntos_go;
+            if ($auxUserPuntos>=$aux) {
+                $user->puntos_go=$auxUserPuntos-$aux;
+                $user->save();
+                return response()->json($user->puntos_go);
+            }
+         
+    }
 
 }
