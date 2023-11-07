@@ -155,11 +155,18 @@ class HomeController extends Controller
             1 = Cuando por lo que sea exista un problema con el id del usuario retorna esta opción
             2 = Cuando por lo que sea no exista el emprendedor con ese código de usuario retorna esta opción
             3 = Cuando exista algún problema con la consulta de la tienda retorna esta opción
+            4 = Cuando el usuario no tiene codigo de referido
         */
         // Quizá no es el mejor manejo de errores pero sirve de momento
         $user = DB::table('users')
             ->where('users.id', $id_user)
             ->get();
+
+        if ($user[0]->codigo_referido_usuario == null) {
+            $tienda_fav = 4;
+            return $tienda_fav;
+        }
+        
         if ($user == '[]') {
             $tienda_fav = 1;
             return $tienda_fav;
