@@ -136,6 +136,7 @@ Route::resource('estado-venta', EstadoVentaController::class);
 Route::resource('venta', VentaController::class);
 Route::get('get-ventas-by-usuario/{id}', [VentaController::class, 'getVentasByUsuario']);
 Route::post('/resta-puntos/{id}', [VentaController::class, 'restarPuntos']);
+Route::get('get-ventas-by-emprendedor/{idPropietario}/{tienda}', [VentaController::class, 'getVentasByEmprendedor']);
 
 //Detalle Ventas
 Route::resource('detalle-venta', DetalleVentaController::class);
