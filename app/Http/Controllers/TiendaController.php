@@ -161,12 +161,12 @@ public function updateuser(Request $request, string $id_usuario)
             'is_categoria_selec' => 'required',
 
         ]);
-     // Verificar si la cédula ya existe en la base de datos
-     $cedulaExistente = User::where('cedula', $validateData['cedula'])->exists();
+        // Verificar si la cédula ya existe en la base de datos
+        $cedulaExistente = User::where('cedula', $validateData['cedula'])->exists();
 
-     if ($cedulaExistente) {
-         return response()->json("La cédula ya está registrada", 400);
-     }
+        if ($cedulaExistente) {
+            return response()->json("La cédula ya está registrada", 400);
+        }
 
         if (isset($validateData['imagen'])) {
             $validateData['imagen'] = $request->file('imagen')->storePublicly("public/images/usuario");
@@ -246,7 +246,7 @@ public function updateuser(Request $request, string $id_usuario)
         ]);
 
         if (isset($validateDataTienda['imagen_tienda'])) {
-            $validateDataTienda['imagen_tienda'] = $request->file('imagen')->storePublicly("public/images/tienda");
+            $validateDataTienda['imagen_tienda'] = $request->file('imagen_tienda')->storePublicly("public/images/tienda");
         } else {
             $validateDataTienda['imagen_tienda'] = null;
         }

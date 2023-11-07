@@ -19,7 +19,8 @@ class TipoPagosSeeder extends Seeder
         $tipo_pagos = [
             'Efectivo',
             'Transferencia',
-            'Tarjeta'
+            'Tarjeta',
+            'PuntosGO'
         ];
 
         foreach($tipo_pagos as $tp){

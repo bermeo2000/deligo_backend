@@ -120,7 +120,7 @@ Route::resource('categoria-usuario', CategoriasUsuarioController::class);
 
 //Promocion Productos
 
-Route::resource('promo-productos', PromocionProductoController::class);
+Route::resource('promocion', PromocionProductoController::class);
 Route::get('get-promo-by-tienda/{id}', [PromocionProductoController::class, 'getPromocionByTienda']);
 Route::get('get-promo-productos-by-tienda/{id}', [PromocionProductoController::class, 'getPromoProductoTienda']);
 Route::get('showPromocion/{id}',[PromocionProductoController::class,'getPromoProducto']);
@@ -140,6 +140,9 @@ Route::resource('estado-venta', EstadoVentaController::class);
 //Ventas
 Route::resource('venta', VentaController::class);
 Route::get('get-ventas-by-usuario/{id}', [VentaController::class, 'getVentasByUsuario']);
+Route::post('/resta-puntos/{id}', [VentaController::class, 'restarPuntos']);
+Route::get('get-ventas-by-emprendedor/{idPropietario}/{tienda}', [VentaController::class, 'getVentasByEmprendedor']);
+
 //Detalle Ventas
 Route::resource('detalle-venta', DetalleVentaController::class);
 Route::get('detalle-by-venta/{id}', [DetalleVentaController::class,'showDetallesByVentas']);
@@ -188,8 +191,7 @@ Route::get('/get-producto-servicio/{id}', [ProductoServicioController::class, 'g
 Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
 Route::get('/get-citas-by-tienda-and-fecha/{id}/{fecha}', [ProductoServicioController::class, 'getProductoByTiendaAndFecha']);
 Route::get('/get-citas-by-usuario/{id}/{fecha}', [ProductoServicioController::class, 'getProductoByUsuario']);
-
-Route::post('/save-img-bucket', [TestBucketController::class, 'store']);
+Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
 
 Route::middleware('auth:sanctum')->group( function () {
 
