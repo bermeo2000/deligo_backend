@@ -115,7 +115,7 @@ Route::resource('categoria-usuario', CategoriasUsuarioController::class);
 
 //Promocion Productos
 
-Route::resource('promo-productos', PromocionProductoController::class);
+Route::resource('promocion', PromocionProductoController::class);
 Route::get('get-promo-by-tienda/{id}', [PromocionProductoController::class, 'getPromocionByTienda']);
 Route::get('get-promo-productos-by-tienda/{id}', [PromocionProductoController::class, 'getPromoProductoTienda']);
 Route::get('showPromocion/{id}',[PromocionProductoController::class,'getPromoProducto']);
@@ -136,6 +136,7 @@ Route::resource('estado-venta', EstadoVentaController::class);
 Route::resource('venta', VentaController::class);
 Route::get('get-ventas-by-usuario/{id}', [VentaController::class, 'getVentasByUsuario']);
 Route::post('/resta-puntos/{id}', [VentaController::class, 'restarPuntos']);
+Route::get('get-ventas-by-emprendedor/{idPropietario}/{tienda}', [VentaController::class, 'getVentasByEmprendedor']);
 
 //Detalle Ventas
 Route::resource('detalle-venta', DetalleVentaController::class);

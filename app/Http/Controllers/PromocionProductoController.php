@@ -78,12 +78,36 @@ class PromocionProductoController extends Controller
      */
     public function show($id)
     {
-        $promocionproducto=PromocionProducto::find($id);
-        if (is_null($promocionproducto)) {
-            return response()->json(['message' => 'promocionproducto no encontrado'], 404);
+        $pro = PromocionProducto::find($id);
+        if($pro == []){
+            return response()->json(['message'=> "Promoción producto no encontrada"], 404);
         }
+
+        $promocionproducto = DB::table('promocion_productos')
+            ->join('productos', 'promocion_productos.id_producto', '=', 'productos.id')
+            ->join('tiendas', 'productos.id_tienda', '=', 'tiendas.id')
+            ->select(
+                'promocion_productos.*',
+                'productos.nombre',
+                'productos.imagen',
+                'productos.precio' 
+            )
+            ->where('promocion_productos.estado', 1)
+            ->where('promocion_productos.id',$id)
+            ->get();
+        if (count($promocionproducto) == 0) {
+            return response()->json(['message' => 'promoción de producto no encontrada'], 404);
+        }
+        foreach ($promocionproducto as $promo) {
+            $descuento = $promo->descuento;
+            $precioOriginal = $promo->precio;
+            $precioConDescuento = $precioOriginal - ($precioOriginal * $descuento / 100);
+            $promo->precio_con_descuento = $precioConDescuento;
+        }
+    
         return response()->json($promocionproducto);
     }
+    
 
     
 
