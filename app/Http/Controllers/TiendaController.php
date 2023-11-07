@@ -118,12 +118,12 @@ class TiendaController extends Controller
             'is_categoria_selec' => 'required',
 
         ]);
-     // Verificar si la cédula ya existe en la base de datos
-     $cedulaExistente = User::where('cedula', $validateData['cedula'])->exists();
+        // Verificar si la cédula ya existe en la base de datos
+        $cedulaExistente = User::where('cedula', $validateData['cedula'])->exists();
 
-     if ($cedulaExistente) {
-         return response()->json("La cédula ya está registrada", 400);
-     }
+        if ($cedulaExistente) {
+            return response()->json("La cédula ya está registrada", 400);
+        }
 
         if (isset($validateData['imagen'])) {
             $validateData['imagen'] = $request->file('imagen')->storePublicly("public/images/usuario");
