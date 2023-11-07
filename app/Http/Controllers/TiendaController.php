@@ -203,7 +203,7 @@ class TiendaController extends Controller
         ]);
 
         if (isset($validateDataTienda['imagen_tienda'])) {
-            $validateDataTienda['imagen_tienda'] = $request->file('imagen')->storePublicly("public/images/tienda");
+            $validateDataTienda['imagen_tienda'] = $request->file('imagen_tienda')->storePublicly("public/images/tienda");
         } else {
             $validateDataTienda['imagen_tienda'] = null;
         }
