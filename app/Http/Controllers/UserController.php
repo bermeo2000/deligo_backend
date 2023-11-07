@@ -281,9 +281,6 @@ class UserController extends Controller
         
         $request->file('imagen')->storeAs("public/images/usuario/{$usuario->id}", $validData['imagen']);
 
-        /*  if ($person->image != '') {
-            unlink(storage_path("app/public/images/persons/{$person->userId}/" . $person->image));
-        } */
         $usuario->imagen = $validData['imagen'];
         $usuario->save();
         return response()->json(['message' => 'Imagen actualizada'], 201);

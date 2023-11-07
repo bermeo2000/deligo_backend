@@ -102,6 +102,49 @@ class TiendaController extends Controller
 
 
 
+
+public function updateuser(Request $request, string $id_usuario)
+{
+    $user = User::find($id_usuario);
+    if (is_null($id_usuario)) {
+        return response()->json(['message' => 'Usuario encontrado'], 404);
+    }
+    $validateData = $request->validate([
+        'nombre'   => 'required|string|max:255',
+        'apellido' => 'required|string|max:255',
+        'ciudad'   =>'required|string|max:255',
+        'cedula'   =>'required|string|max:255',
+        'telefono' =>'required|string|max:255',
+        'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg',
+
+    ]);
+    $user->nombre=$validateData['nombre'];
+    $user->apellido=$validateData['apellido'];
+    $user->ciudad=$validateData['ciudad'];
+    $user->cedula=$validateData['cedula'];
+    $user->telefono=$validateData['telefono'];
+
+    if ($request->hasFile('imagen')) {
+        $img = $request->file('imagen');
+        $imagePath = "public/images/usuario/{$user->id}";
+        $imageName = time() . '.' . $img->getClientOriginalExtension();
+        $img->storeAs($imagePath, $imageName);
+
+        // Eliminar la imagen anterior si existe
+        if ($user->imagen) {
+            Storage::delete("{$imagePath}/{$user->imagen}");
+        }
+
+        $user->imagen = $imageName;
+    } 
+    $user->save();
+    return response()->json(['message' => 'Usuario actualizado'], 201);
+}
+
+
+
+
+
     public function storeEmprendedor(Request $request)
     {
         $validateData = $request->validate([

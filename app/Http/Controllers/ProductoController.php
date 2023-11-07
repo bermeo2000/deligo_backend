@@ -224,7 +224,6 @@ class ProductoController extends Controller
             'nombre' => 'required|string|max:255',
             'precio' => 'required',
             'peso' => 'nullable',
-            //            'imagen' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'id_categoria_productos' => 'required',
             'id_marca' => 'nullable',
             'id_tipo_peso' => 'nullable',
@@ -244,6 +243,11 @@ class ProductoController extends Controller
         $producto->is_topping = $validData['is_topping'];
 
         $producto->save();
+        
+        if ($producto->is_topping == 1) {
+            $this->updateToppings($request, $producto->id);
+        }
+
 
         return response()
             ->json([
@@ -251,6 +255,33 @@ class ProductoController extends Controller
                 'data' => $producto
             ], 200);
 
+    }
+
+
+    public function updateToppings(Request $request, $idProducto)
+    {
+        ToppingsProductos::where('id_producto', $idProducto)->delete();
+
+        $toppings = $request->input('toppings');
+    
+        if ($toppings && is_array($toppings)) {
+            foreach ($toppings as $toppingId) {
+                $topping = Toppings::find($toppingId);
+    
+                if ($topping) {
+                    ToppingsProductos::create([
+                        'id_producto' => $idProducto,
+                        'id_toppings' => $toppingId,
+                        'estado' => 1
+                    ]);
+                } else {
+                    return response()
+                        ->json([
+                            'message' => 'Uno o más toppings no existen.',
+                        ], 400);
+                }
+            }
+        }
     }
 
     public function editImagenes(Request $request, $id)
@@ -269,6 +300,7 @@ class ProductoController extends Controller
         $producto->save();
         return response()->json(['message' => 'Imagen de productos actualizada'], 201);
     }
+
     public function Actualizar(Request $request, $id_producto)
     {
 
