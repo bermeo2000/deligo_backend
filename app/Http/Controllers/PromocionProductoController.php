@@ -217,12 +217,17 @@ class PromocionProductoController extends Controller
 
         $promocionproducto = DB::table('promocion_productos')
             ->join('productos', 'promocion_productos.id_producto', '=', 'productos.id')
+            ->join('categorias_productos','productos.id_categoria_productos','=','categorias_productos.id')
             ->join('tiendas', 'productos.id_tienda', '=', 'tiendas.id')
             ->select(
                 'promocion_productos.*',
                 'productos.nombre',
                 'productos.imagen',
-                'productos.precio' 
+                'productos.precio',
+                'productos.descripcion',
+                'productos.puntuacion',
+                'productos.id_tienda',
+                'categorias_productos.descripcion as categoria'
             )
            /*  ->where('tiendas.id', $id_tienda)
             ->where('tiendas.estado', 1) */
