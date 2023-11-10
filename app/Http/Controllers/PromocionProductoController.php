@@ -90,7 +90,10 @@ class PromocionProductoController extends Controller
                 'promocion_productos.*',
                 'productos.nombre',
                 'productos.imagen',
-                'productos.precio' 
+                'productos.precio',
+                'productos.descripcion',
+                 'productos.puntuacion'
+
             )
             ->where('promocion_productos.estado', 1)
             ->where('promocion_productos.id',$id)
