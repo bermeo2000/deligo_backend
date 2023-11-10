@@ -43,6 +43,16 @@ class HomeController extends Controller
         ->where('tiendas.ciudad', $user->ciudad)
         ->get();
         $is_productos = $this->validateQuery($productos);
+        
+        /* Valida ciudad */
+        $servicios = DB::table('producto_servicios')
+        ->join('tiendas','tiendas.id','=', 'producto_servicios.id_emp_servicio')
+        ->where('tiendas.estado', 1)
+        ->select('producto_servicios.*')
+        ->where('producto_servicios.estado', 1)
+        ->where('tiendas.ciudad', $user->ciudad)
+        ->get();
+        $is_servicios = $this->validateQuery($servicios);
 
         /* Valida ciudad */
         $promocion_productos = DB::table('promocion_productos')
@@ -68,6 +78,10 @@ class HomeController extends Controller
                 'productos' => [
                     'p' => $productos,
                     'status' => $is_productos,
+                ],
+                'servicios' => [
+                    's' => $servicios,
+                    'status' => $is_servicios,
                 ],
                 'promocion' => [
                     'promo' => $promocion_productos,
@@ -255,11 +269,28 @@ class HomeController extends Controller
         return $deliTOP;
     }
 
+    /* Esta función es para validar la alerta esa del home (no se me ocurre otra forma de hacerlo) */
+    public  function isCodRef($id_user)
+    {
+        $emp = DB::table('users')
+        ->where('id', $id_user)
+        ->update([
+            'is_cod_ref' => 1  
+        ]);
 
-    /* 
-    
-        prueba
-        prueba
-    */
+        return response()->json($emp, 200);
+    }
+
+    /* No pertenece al home pero lo pongo aquí para evitar conflicto */
+    /* Esta función valida si ya vió el tutorial o no, para así obligar al usuario */
+    public function isTutorial($id_emp){
+        $emp = DB::table('users')
+        ->where('id', $id_emp)
+        ->update([
+            'is_tutorial' => 1  
+        ]);
+
+        return response()->json($emp, 200);
+    }
 
 }

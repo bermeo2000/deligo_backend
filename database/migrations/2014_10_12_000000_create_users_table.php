@@ -31,6 +31,8 @@ return new class extends Migration
 
             //PuntosGO
             $table->integer('puntos_go')->default(0);
+            $table->boolean('is_cod_ref')->default(0);
+            $table->boolean('is_tutorial')->default(0);
 
             /* 
                 por defecto si seleccionó o no irá 0 pero

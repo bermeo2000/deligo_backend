@@ -116,28 +116,35 @@ public function updateuser(Request $request, string $id_usuario)
         'cedula'   =>'required|string|max:255',
         'telefono' =>'required|string|max:255',
         'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg',
+        'id_codigo_pais' => 'required',
+        'id_tipo_usuario' => 'required',
 
     ]);
+    $codigo = $this->generarCodigo($validateData['nombre']);
+        while (User::where('codigo_referido', $codigo)->exists()) {
+            $codigo = $this->generarCodigo();
+        }
+        if (isset($validateData['imagen'])) {
+            $validateData['imagen'] = $request->file('imagen')->storePublicly("public/images/usuario");
+        } else {
+            $validateData['imagen'] = null;
+        }
+    
     $user->nombre=$validateData['nombre'];
     $user->apellido=$validateData['apellido'];
     $user->ciudad=$validateData['ciudad'];
     $user->cedula=$validateData['cedula'];
     $user->telefono=$validateData['telefono'];
+    $user->id_tipo_usuario=$validateData['id_tipo_usuario'];
+    $user->id_codigo_pais=$validateData['id_codigo_pais'];
+    $user->ventas=100;
+    $user->imagen= $validateData['imagen'];
+    $user->codigo_referido=$codigo;
+    $user->codigo_referido_usuario=$user->codigo_referido_usuario==null?$codigo:$user->codigo_referido_usuario;
 
-    if ($request->hasFile('imagen')) {
-        $img = $request->file('imagen');
-        $imagePath = "public/images/usuario/{$user->id}";
-        $imageName = time() . '.' . $img->getClientOriginalExtension();
-        $img->storeAs($imagePath, $imageName);
-
-        // Eliminar la imagen anterior si existe
-        if ($user->imagen) {
-            Storage::delete("{$imagePath}/{$user->imagen}");
-        }
-
-        $user->imagen = $imageName;
-    } 
+  
     $user->save();
+    $this->storeTienda($request, $user);
     return response()->json(['message' => 'Usuario actualizado'], 201);
 }
 
