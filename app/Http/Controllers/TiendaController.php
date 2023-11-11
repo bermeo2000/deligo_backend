@@ -169,11 +169,11 @@ public function updateuser(Request $request, string $id_usuario)
 
         ]);
         // Verificar si la cédula ya existe en la base de datos
-        $cedulaExistente = User::where('cedula', $validateData['cedula'])->exists();
+       /*  $cedulaExistente = User::where('cedula', $validateData['cedula'])->exists();
 
         if ($cedulaExistente) {
             return response()->json("La cédula ya está registrada", 400);
-        }
+        } */
 
         if (isset($validateData['imagen'])) {
             $validateData['imagen'] = $request->file('imagen')->storePublicly("public/images/usuario");
