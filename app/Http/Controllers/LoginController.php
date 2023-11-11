@@ -73,6 +73,7 @@ class LoginController extends Controller
                 'codigo_referido' => $user->codigo_referido,
                 'puntos_go' => $user->puntos_go,
                 'is_tutorial' => $user->is_tutorial,
+                'is_plus' => $user->is_plus,
                 'message' => "Credenciales válidas"
             ]);
 
