@@ -146,6 +146,7 @@ Route::get('get-ventas-by-emprendedor/{idPropietario}/{tienda}', [VentaControlle
 //Detalle Ventas
 Route::resource('detalle-venta', DetalleVentaController::class);
 Route::get('detalle-by-venta/{id}', [DetalleVentaController::class,'showDetallesByVentas']);
+Route::get('detalle-venta-by-emprendedor/{idVenta}/{idTienda}', [DetalleVentaController::class,'detalleVentasByEmprendedor']);
 Route::get('producto-mas-vendido/{id}', [DetalleVentaController::class,'productosMasVendidos']);
 
 //Reclamos
