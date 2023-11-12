@@ -28,7 +28,7 @@ class UsuarioSeeder extends Seeder
                 '0987456123',
                 1,
                 1,
-                6,
+                1,
                 0,
             ],
             [
@@ -42,7 +42,7 @@ class UsuarioSeeder extends Seeder
                 '0987456123',
                 1,
                 2,
-                6,
+                1,
                 0
             ],
             //Emprendedores para probar el video de la beta
@@ -57,7 +57,7 @@ class UsuarioSeeder extends Seeder
                 '0987456123',
                 1,
                 2,
-                6,
+                1,
                 0
             ],
             [
@@ -71,7 +71,7 @@ class UsuarioSeeder extends Seeder
                 '0987456123',
                 1,
                 2,
-                6,
+                1,
                 0
             ],
             //USUARIOS
@@ -86,7 +86,7 @@ class UsuarioSeeder extends Seeder
                 '0987456123',
                 1,
                 3,
-                6,
+                1,
                 0
             ],
             [
@@ -100,7 +100,7 @@ class UsuarioSeeder extends Seeder
                 '0987456123',
                 1,
                 3,
-                6,
+                1,
                 0
             ],
         ];

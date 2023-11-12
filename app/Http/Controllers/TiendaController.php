@@ -383,15 +383,22 @@ public function updateuser(Request $request, string $id_usuario)
 
     public function show($id)
     {
-        $tienda = Tienda::find($id);
-        if (is_null($tienda)) {
+        $tienda=DB::table('tiendas')
+        ->join('categoria_tiendas','tiendas.id_categoria_tienda','=','categoria_tiendas.id')
+        ->select('tiendas.*', 'categoria_tiendas.nombre as categoria')
+        ->where('tiendas.estado',1)
+        ->where('tiendas.id', $id)
+        ->get();
+
+        /* $tienda = Tienda::find($id); */
+
+        if (count($tienda) == 0) {
             return response()->json(['mesagge' => 'No se encontro ninguna tienda', 404]);
         }
+
         return response()->json($tienda);
 
     }
-
-
 
     public function showCateProducto()
     {

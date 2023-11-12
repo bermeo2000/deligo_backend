@@ -24,7 +24,7 @@ class TiendasSeeder extends Seeder
                 1,
                 'Calle 404',
                 '0987456123',
-                6,
+                1,
                 'animal_store_ig',
                 'animal_store_fb',
                 'animal_store_tiktok',

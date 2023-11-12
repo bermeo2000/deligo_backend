@@ -73,7 +73,13 @@ class ProductoController extends Controller
                 ->select('productos.*')
                 ->where('id_categoria_productos', $value->id)
                 ->get();
-            array_push($data, ['Categoria' => $value, 'Productos' => $productos]);
+            
+            $servicios = DB::table('producto_servicios')
+            ->select('producto_servicios.*')
+            ->where('id_categoria_productos', $value->id)
+            ->get();
+
+            array_push($data, ['Categoria' => $value, 'Productos' => $productos, 'Servicios' => $servicios]);
         }
         return response()->json($data, 200);
     }
