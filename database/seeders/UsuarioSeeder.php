@@ -32,9 +32,9 @@ class UsuarioSeeder extends Seeder
                 0,
             ],
             [
-                'Emprendedor',
-                'Inicial',
-                'emprendedor@emp.com',
+                'Gabriel',
+                'Rivas',
+                'gabriel.rivas@deligo.com',
                 '12345678',
                 'Calceta',
                 '1234567890',
@@ -49,7 +49,7 @@ class UsuarioSeeder extends Seeder
             [
                 'Josselyn',
                 'Mendoza',
-                'joss_men@emp.com',
+                'josselyn.mendoza@deligo.com',
                 '12345678',
                 'Calceta',
                 '1234567890',
@@ -63,7 +63,7 @@ class UsuarioSeeder extends Seeder
             [
                 'Luis',
                 'Macías Bermeo',
-                'bermeo2000@emp.com',
+                'bermeo2000@deligo.com',
                 '12345678',
                 'Calceta',
                 '1234567890',
@@ -76,9 +76,9 @@ class UsuarioSeeder extends Seeder
             ],
             //USUARIOS
             [
-                'Usuario',
-                'Inicial',
-                'usuario@user.com',
+                'Alex',
+                'Arqui',
+                'alex.arqui@deligo.com',
                 '12345678',
                 'Calceta',
                 '1234567890',
@@ -92,7 +92,7 @@ class UsuarioSeeder extends Seeder
             [
                 'Andres',
                 'Zambrano',
-                'zambrasda17@gmail.com',
+                'andres.zambrano@deligo.com',
                 '12345678',
                 'Calceta',
                 '1234567890',
