@@ -293,4 +293,8 @@ class HomeController extends Controller
         return response()->json($emp, 200);
     }
 
+    /* 
+        se cayó railway hpta
+    */
+
 }
