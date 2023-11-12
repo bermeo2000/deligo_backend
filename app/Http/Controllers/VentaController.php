@@ -187,23 +187,24 @@ class VentaController extends Controller
     }
 
     public function getVentasByEmprendedor($idPropietario,$tienda){
-        $ventas= DB::table('detalle_ventas')
-        ->join('ventas','detalle_ventas.id_venta','=','ventas.id')
-        ->join('tiendas','detalle_ventas.id_tienda','=','tiendas.id')
-        ->join('tipo_pagos','ventas.id_tipo_pago','=','tipo_pagos.id')
-        ->select('ventas.id','ventas.fecha','ventas.codigo_comprobante', 'tipo_pagos.descripcion as metodoPago', 'tiendas.nombre_tienda',DB::raw('SUM(detalle_ventas.precio) as total_precio'))
-        ->where('ventas.estado',1)
+        $ventas = DB::table('detalle_ventas')
+        ->join('ventas', 'detalle_ventas.id_venta', '=', 'ventas.id')
+        ->join('tiendas', 'detalle_ventas.id_tienda', '=', 'tiendas.id')
+        ->join('tipo_pagos', 'ventas.id_tipo_pago', '=', 'tipo_pagos.id')
+        ->select('ventas.id', 'ventas.fecha', 'ventas.codigo_comprobante', 'tipo_pagos.descripcion as metodoPago', 'tiendas.nombre_tienda', DB::raw('SUM(detalle_ventas.precio * detalle_ventas.cantidad) as total_precio'))
+        ->where('ventas.estado', 1)
         ->when($tienda !== 'null', function ($query) use ($tienda) {
             return $query->where('detalle_ventas.id_tienda', $tienda);
         })
-        ->where('tiendas.id_propietario',$idPropietario)
+        ->where('tiendas.id_propietario', $idPropietario)
         ->groupBy('ventas.id', 'ventas.fecha', 'ventas.codigo_comprobante', 'tipo_pagos.descripcion', 'tiendas.nombre_tienda')
         ->orderBy('ventas.id', 'asc')
         ->distinct()
         ->get();
-        if ($ventas->isEmpty()) {
-           return response()->json(['message' => 'No ha realizado ningun pedido hasta ahora.'],404);
-        }
+    
+    if ($ventas->isEmpty()) {
+        return response()->json(['message' => 'No ha realizado ningun pedido hasta ahora.'], 404);
+    }
         return response()->json($ventas,200);
 }
 
