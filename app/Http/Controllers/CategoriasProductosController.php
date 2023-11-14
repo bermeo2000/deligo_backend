@@ -152,7 +152,7 @@ class CategoriasProductosController extends Controller
             return response()->json(['message' => 'Está vació y debería borrar', 'data' => $productos]);
         } */
 
-        return response()->json(['message' => 'se ha eliminado el producto' ]);
+        return response()->json("La categoria se elimino con exito", 200);
     }
 
     public function getCatProducByTienda($id_tienda){
