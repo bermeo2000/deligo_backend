@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
             UsuarioSeeder::class,
             TiendasSeeder::class,
             MarcasSeeder::class,
-            CategoriaProductoSeeder::class,
-            ProductosSeeder::class
+            //CategoriaProductoSeeder::class,
+            //ProductosSeeder::class
         ]);
     }
 }
