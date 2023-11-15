@@ -92,7 +92,18 @@ class DetalleVentaController extends Controller
                  ->leftJoin('marcas','productos.id_marca','=','marcas.id')
                  ->join('tiendas','productos.id_tienda','=','tiendas.id')
                  //->leftJoin('promocion_productos','detalle_ventas.id_promocion_productos','=','promocion_productos.id')
-                 ->select('detalle_ventas.*', 
+                 ->select( 'detalle_ventas.id',
+                 DB::raw('detalle_ventas.precio * detalle_ventas.cantidad as precio'),
+                 'detalle_ventas.cantidad',
+                 'detalle_ventas.anotes',
+                 'detalle_ventas.id_producto',
+                 'detalle_ventas.id_promocion_producto',
+                 'detalle_ventas.id_venta',
+                 'detalle_ventas.id_tienda',
+                 'detalle_ventas.estado',
+                 'detalle_ventas.id_producto_servicio',
+                 'detalle_ventas.fecha_cita',
+                 'detalle_ventas.hora_cita',
                  'productos.nombre as nombreProd','productos.precio as precioProd','productos.descripcion as descripcionProd','productos.imagen as imagenProd',
                  'categorias_productos.descripcion as categoria', 
                  'tipo_pesos.descripcion as tipoPeso',
@@ -102,36 +113,60 @@ class DetalleVentaController extends Controller
                  ->where('detalle_ventas.id_venta',$det->id_venta)
                  ->where('detalle_ventas.id',$det->id)
                  ->get();
-    
-            }
-            else 
-            {
-                 $detallePromocion=DB::table('detalle_ventas')
-                 ->join('promocion_productos','detalle_ventas.id_promocion_producto','=','promocion_productos.id')
-                 ->join('productos','promocion_productos.id_producto','=','productos.id')
-                 ->join('categorias_productos','productos.id_categoria_productos','=','categorias_productos.id')
-                 ->leftJoin('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
-                 ->leftJoin('marcas','productos.id_marca','=','marcas.id')
-                 ->join('tiendas','productos.id_tienda','=','tiendas.id')
-                 //->leftJoin('promocion_productos','detalle_ventas.id_promocion_productos','=','promocion_productos.id')
-                 ->select('detalle_ventas.*', 
-                 'productos.nombre as nombreProd','productos.precio as precioProd','productos.descripcion as descripcionProd','productos.imagen as imagenProd',
-                 'categorias_productos.descripcion as categoria', 
-                 'tipo_pesos.descripcion as tipoPeso',
-                 'marcas.descripcion as marca',
-                 'tiendas.nombre_tienda as tienda')
-                 ->where('detalle_ventas.id_producto',$det->id_producto)
-                 ->where('detalle_ventas.id_venta',$det->id_venta)
-                 ->where('detalle_ventas.id',$det->id)
-                 ->get();
-                $detalle=PromocionProducto::find($det->id_promocion_producto);
-            }
-
-            if($det->toppings!="null")
-            {
-                $toppingsDetalle=$this->obtenerDataToppings($det->id);
-            }
+                 if($det->toppings!="null")
+                 {
+                     $toppingsDetalle=$this->obtenerDataToppings($det->id);
+                 }
             array_push($detalleVenta,['Producto'=>$detalleProducto,'productoPromocion'=>$detallePromocion,'Toppings'=>$toppingsDetalle]);
+
+            } 
+        }
+        foreach ($detalles as $key => $det) 
+        {
+            if ($det->id_promocion_producto!=null) 
+            {
+                $detallePromocion = DB::table('detalle_ventas')
+                ->join('promocion_productos', 'detalle_ventas.id_promocion_producto', '=', 'promocion_productos.id')
+                ->join('productos', 'promocion_productos.id_producto', '=', 'productos.id')
+                ->join('categorias_productos', 'productos.id_categoria_productos', '=', 'categorias_productos.id')
+                ->leftJoin('tipo_pesos', 'productos.id_tipo_peso', '=', 'tipo_pesos.id')
+                ->leftJoin('marcas', 'productos.id_marca', '=', 'marcas.id')
+                ->join('tiendas', 'productos.id_tienda', '=', 'tiendas.id')
+                ->select(
+                    'detalle_ventas.id',
+                    DB::raw('detalle_ventas.precio * detalle_ventas.cantidad as precio'),
+                    'detalle_ventas.cantidad',
+                    'detalle_ventas.anotes',
+                    'detalle_ventas.id_producto',
+                    'detalle_ventas.id_promocion_producto',
+                    'detalle_ventas.id_venta',
+                    'detalle_ventas.id_tienda',
+                    'detalle_ventas.estado',
+                    'detalle_ventas.id_producto_servicio',
+                    'detalle_ventas.fecha_cita',
+                    'detalle_ventas.hora_cita',
+                    'productos.nombre as nombreProd',
+                    'productos.precio as precioProd',
+                    'productos.descripcion as descripcionProd',
+                    'productos.imagen as imagenProd',
+                    'promocion_productos.descuento',
+                    'categorias_productos.descripcion as categoria',
+                    'tipo_pesos.descripcion as tipoPeso',
+                    'marcas.descripcion as marca',
+                    'tiendas.nombre_tienda as tienda'
+                )
+                ->where('detalle_ventas.id_producto', $det->id_producto)
+                ->where('detalle_ventas.id_venta', $det->id_venta)
+                ->where('detalle_ventas.id', $det->id)
+                ->get();
+            
+                 if($det->toppings!="null")
+                 {
+                     $toppingsDetalle=$this->obtenerDataToppings($det->id);
+                 }
+            array_push($detalleVenta,['Producto'=>null,'productoPromocion'=>$detallePromocion,'Toppings'=>$toppingsDetalle]);
+
+            } 
         }
         return response()->json($detalleVenta);
     }
@@ -193,7 +228,18 @@ class DetalleVentaController extends Controller
                  ->leftJoin('marcas','productos.id_marca','=','marcas.id')
                  ->join('tiendas','productos.id_tienda','=','tiendas.id')
                  //->leftJoin('promocion_productos','detalle_ventas.id_promocion_productos','=','promocion_productos.id')
-                 ->select('detalle_ventas.*', 
+                 ->select( 'detalle_ventas.id',
+                 DB::raw('detalle_ventas.precio * detalle_ventas.cantidad as precio'),
+                 'detalle_ventas.cantidad',
+                 'detalle_ventas.anotes',
+                 'detalle_ventas.id_producto',
+                 'detalle_ventas.id_promocion_producto',
+                 'detalle_ventas.id_venta',
+                 'detalle_ventas.id_tienda',
+                 'detalle_ventas.estado',
+                 'detalle_ventas.id_producto_servicio',
+                 'detalle_ventas.fecha_cita',
+                 'detalle_ventas.hora_cita',
                  'productos.nombre as nombreProd','productos.precio as precioProd','productos.descripcion as descripcionProd','productos.imagen as imagenProd',
                  'categorias_productos.descripcion as categoria', 
                  'tipo_pesos.descripcion as tipoPeso',
@@ -203,38 +249,104 @@ class DetalleVentaController extends Controller
                  ->where('detalle_ventas.id_venta',$det->id_venta)
                  ->where('detalle_ventas.id',$det->id)
                  ->get();
-    
-            }
-            else 
-            {
-                 $detallePromocion=DB::table('detalle_ventas')
-                 ->join('promocion_productos','detalle_ventas.id_promocion_producto','=','promocion_productos.id')
-                 ->join('productos','promocion_productos.id_producto','=','productos.id')
-                 ->join('categorias_productos','productos.id_categoria_productos','=','categorias_productos.id')
-                 ->leftJoin('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
-                 ->leftJoin('marcas','productos.id_marca','=','marcas.id')
-                 ->join('tiendas','productos.id_tienda','=','tiendas.id')
-                 //->leftJoin('promocion_productos','detalle_ventas.id_promocion_productos','=','promocion_productos.id')
-                 ->select('detalle_ventas.*', 
-                 'productos.nombre as nombreProd','productos.precio as precioProd','productos.descripcion as descripcionProd','productos.imagen as imagenProd',
-                 'categorias_productos.descripcion as categoria', 
-                 'tipo_pesos.descripcion as tipoPeso',
-                 'marcas.descripcion as marca',
-                 'tiendas.nombre_tienda as tienda')
-                 ->where('detalle_ventas.id_producto',$det->id_producto)
-                 ->where('detalle_ventas.id_venta',$det->id_venta)
-                 ->where('detalle_ventas.id',$det->id)
-                 ->get();
-                $detalle=PromocionProducto::find($det->id_promocion_producto);
-            }
+                 if($det->toppings!="null")
+                 {
+                     $toppingsDetalle=$this->obtenerDataToppings($det->id);
+                 }
+            array_push($detalleVenta,['Producto'=>$detalleProducto,'productoPromocion'=>$detallePromocion,'productoServicio'=> null,'Toppings'=>$toppingsDetalle]);
 
-            if($det->toppings!="null")
+            } 
+        }
+        foreach ($detalles as $key => $det) 
+        {
+            if ($det->id_promocion_producto!=null) 
             {
-                $toppingsDetalle=$this->obtenerDataToppings($det->id);
-            }
-            array_push($detalleVenta,['Producto'=>$detalleProducto,'productoPromocion'=>$detallePromocion,'Toppings'=>$toppingsDetalle]);
+                $detallePromocion = DB::table('detalle_ventas')
+                ->join('promocion_productos', 'detalle_ventas.id_promocion_producto', '=', 'promocion_productos.id')
+                ->join('productos', 'promocion_productos.id_producto', '=', 'productos.id')
+                ->join('categorias_productos', 'productos.id_categoria_productos', '=', 'categorias_productos.id')
+                ->leftJoin('tipo_pesos', 'productos.id_tipo_peso', '=', 'tipo_pesos.id')
+                ->leftJoin('marcas', 'productos.id_marca', '=', 'marcas.id')
+                ->join('tiendas', 'productos.id_tienda', '=', 'tiendas.id')
+                ->select(
+                    'detalle_ventas.id',
+                    DB::raw('detalle_ventas.precio * detalle_ventas.cantidad as precio'),
+                    'detalle_ventas.cantidad',
+                    'detalle_ventas.anotes',
+                    'detalle_ventas.id_producto',
+                    'detalle_ventas.id_promocion_producto',
+                    'detalle_ventas.id_venta',
+                    'detalle_ventas.id_tienda',
+                    'detalle_ventas.estado',
+                    'detalle_ventas.id_producto_servicio',
+                    'detalle_ventas.fecha_cita',
+                    'detalle_ventas.hora_cita',
+                    'productos.nombre as nombreProd',
+                    'productos.precio as precioProd',
+                    'productos.descripcion as descripcionProd',
+                    'productos.imagen as imagenProd',
+                    'promocion_productos.descuento',
+                    'categorias_productos.descripcion as categoria',
+                    'tipo_pesos.descripcion as tipoPeso',
+                    'marcas.descripcion as marca',
+                    'tiendas.nombre_tienda as tienda'
+                )
+                ->where('detalle_ventas.id_producto', $det->id_producto)
+                ->where('detalle_ventas.id_venta', $det->id_venta)
+                ->where('detalle_ventas.id', $det->id)
+                ->get();
+            
+                 if($det->toppings!="null")
+                 {
+                     $toppingsDetalle=$this->obtenerDataToppings($det->id);
+                 }
+            array_push($detalleVenta,['Producto'=>null,'productoPromocion'=>$detallePromocion,'productoServicio'=> null,'Toppings'=>$toppingsDetalle]);
+
+            } 
+        } 
+        foreach ($detalles as $key => $det) 
+        {
+            if ($det->id_producto_servicio!=null) 
+            {
+                $detalleServicio = DB::table('detalle_ventas')
+                ->join('producto_servicios','detalle_ventas.id_producto_servicio','=','producto_servicios.id')
+                ->join('categorias_productos', 'producto_servicios.id_categoria_productos', '=', 'categorias_productos.id')
+                ->join('tiendas', 'producto_servicios.id_emp_servicio', '=', 'tiendas.id')
+                ->select(
+                    'detalle_ventas.id',
+                    DB::raw('detalle_ventas.precio * detalle_ventas.cantidad as precio'),
+                    'detalle_ventas.cantidad',
+                    'detalle_ventas.anotes',
+                    'detalle_ventas.id_producto',
+                    'detalle_ventas.id_promocion_producto',
+                    'detalle_ventas.id_venta',
+                    'detalle_ventas.id_tienda',
+                    'detalle_ventas.estado',
+                    'detalle_ventas.id_producto_servicio',
+                    'detalle_ventas.fecha_cita',
+                    'detalle_ventas.hora_cita',
+                    'producto_servicios.nombre as nombreProd',
+                    'producto_servicios.precio as precioProd',
+                    'producto_servicios.descripcion as descripcionProd',
+                    'producto_servicios.imagen as imagenProd',
+                    'categorias_productos.descripcion as categoria',
+                    'tiendas.nombre_tienda as tienda'
+                )
+                ->where('detalle_ventas.id_producto', $det->id_producto)
+                ->where('detalle_ventas.id_venta', $det->id_venta)
+                ->where('detalle_ventas.id', $det->id)
+                ->get();
+            
+                 if($det->toppings!="null")
+                 {
+                     $toppingsDetalle=$this->obtenerDataToppings($det->id);
+                 }
+            array_push($detalleVenta,['Producto'=>null,'productoPromocion'=>null,'productoServicio'=> $detalleServicio,'Toppings'=>$toppingsDetalle]);
+
+            } 
         }
         return response()->json($detalleVenta);
     }
+
 
 }
