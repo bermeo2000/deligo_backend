@@ -159,8 +159,10 @@ class ProductoServicioController extends Controller
     public function getProductoByTiendaAndFecha($idTienda, $fecha){
         $productoServicio = DB::Table('detalle_ventas')
         ->join('producto_servicios','detalle_ventas.id_producto_servicio','=','producto_servicios.id')
+        ->join('tiendas','producto_servicios.id_emp_servicio','=','tiendas.id')
         ->select('detalle_ventas.fecha_cita as dia', 'detalle_ventas.hora_cita as horaInicio',
-        'producto_servicios.duracion','producto_servicios.nombre as nombreServicio')
+        'producto_servicios.duracion','producto_servicios.nombre as nombreServicio', 'producto_servicios.precio','producto_servicios.imagen',
+        'tiendas.nombre_tienda')
         ->where('detalle_ventas.id_tienda',$idTienda)
         ->when($fecha !== 'null', function ($query) use ($fecha) {
             return $query->where('detalle_ventas.fecha_cita', $fecha);
@@ -177,8 +179,10 @@ class ProductoServicioController extends Controller
         $productoServicio = DB::Table('detalle_ventas')
         ->join('producto_servicios','detalle_ventas.id_producto_servicio','=','producto_servicios.id')
         ->join('ventas','detalle_ventas.id_venta','=','ventas.id')
+        ->join('tiendas','producto_servicios.id_emp_servicio','=','tiendas.id')
         ->select('detalle_ventas.fecha_cita as dia', 'detalle_ventas.hora_cita as horaInicio',
-        'producto_servicios.duracion','producto_servicios.nombre as nombreServicio')
+        'producto_servicios.duracion','producto_servicios.nombre as nombreServicio', 'producto_servicios.precio','producto_servicios.imagen',
+        'tiendas.nombre_tienda')
         ->when($fecha !== 'null', function ($query) use ($fecha) {
             return $query->where('detalle_ventas.fecha_cita', $fecha);
         })

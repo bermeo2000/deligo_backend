@@ -20,10 +20,10 @@ class DatabaseSeeder extends Seeder
             CategoriasTiendasSeeder::class,
             CodigoPaisSeeder::class,
             UsuarioSeeder::class,
-            TiendasSeeder::class,
-            MarcasSeeder::class,
-            CategoriaProductoSeeder::class,
-            ProductosSeeder::class
+            //TiendasSeeder::class,
+            //MarcasSeeder::class,
+            //CategoriaProductoSeeder::class,
+            //ProductosSeeder::class
         ]);
     }
 }
