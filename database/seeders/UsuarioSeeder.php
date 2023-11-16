@@ -31,7 +31,7 @@ class UsuarioSeeder extends Seeder
                 1,
                 0,
             ],
-            [
+            /* [
                 'Gabriel',
                 'Rivas',
                 'gabriel.rivas@deligo.com',
@@ -102,7 +102,7 @@ class UsuarioSeeder extends Seeder
                 3,
                 1,
                 0
-            ],
+            ], */
         ];
 
         foreach($usuarios as $u){

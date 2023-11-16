@@ -16,29 +16,37 @@ class CategoriaProductoSeeder extends Seeder
         //
         $cat_productos  = [
             [
-                'CatProdT1',
+                'Comida',
                 1
             ],
-            /* [
-                'CatProdT2',
+            [
+                'Bebidas',
+                1
+            ],
+            [
+                'Piqueos',
+                1
+            ],
+            [
+                'Mujer',
                 2
             ],
             [
-                'CatProdT1',
+                'Hombre',
+                2
+            ],
+            [
+                'Niños/as',
+                2
+            ],
+            [
+                'Cabello',
                 3
             ],
             [
-                'CatProdT2',
-                4
+                'Uñas',
+                3
             ],
-            [
-                'CatProdT1',
-                5
-            ],
-            [
-                'CatProdT2',
-                6
-            ], */
 
         ];
 

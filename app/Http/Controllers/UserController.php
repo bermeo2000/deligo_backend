@@ -267,7 +267,6 @@ class UserController extends Controller
 
     public function UpdatefotoUser(Request $request, $id)
     {
-
         $usuario = User::find($id);
         if (is_null($usuario)) {
             return response()->json(['message' => 'Imagen no encontrada.'], 404);
@@ -276,14 +275,10 @@ class UserController extends Controller
             'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg'
         ]);
 
-        $img=$request->file('imagen');
-        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-        
-        $request->file('imagen')->storeAs("public/images/usuario/{$usuario->id}", $validData['imagen']);
-
+        $validData['imagen'] = $request->file('imagen')->storePublicly("public/images/usuario");
         $usuario->imagen = $validData['imagen'];
         $usuario->save();
-        return response()->json(['message' => 'Imagen actualizada'], 201);
+        return response()->json(['message' => 'Imagen de usuario actualizada'], 201);
     }
 
 
