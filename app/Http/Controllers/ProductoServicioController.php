@@ -196,5 +196,14 @@ class ProductoServicioController extends Controller
         return response()->json($productoServicio,200);
     }
 
+    public function getServicioCategoria($idCategoria){
+        $productoServicio = ProductoServicio::where('estado',1) 
+        ->where('id_categoria_productos',$idCategoria)
+        ->get();
+        if (count($productoServicio)==0) {
+            return response()-> json('no existen producto Servicio',404);
+        }
+        return response()->json($productoServicio,200);
+    }
 
 }

@@ -194,6 +194,7 @@ Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'edi
 Route::get('/get-citas-by-tienda-and-fecha/{id}/{fecha}', [ProductoServicioController::class, 'getProductoByTiendaAndFecha']);
 Route::get('/get-citas-by-usuario/{id}/{fecha}', [ProductoServicioController::class, 'getProductoByUsuario']);
 Route::post('/edit-img-productos/{id}', [ProductoServicioController::class, 'editImagenes']);
+Route::get('/get-producto-servicio-by-categoria/{id}', [ProductoServicioController::class, 'getServicioCategoria']);
 
 Route::middleware('auth:sanctum')->group( function () {
 

@@ -232,7 +232,9 @@ class PromocionProductoController extends Controller
                 'productos.puntuacion',
                 'productos.id_tienda',
                 'categorias_productos.descripcion as categoria',
+                'tiendas.imagen as imagenTienda',
                 'tiendas.nombre_tienda as nombreTienda'
+
 
             )
            /*  ->where('tiendas.id', $id_tienda)
