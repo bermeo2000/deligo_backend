@@ -47,10 +47,6 @@ class VentaController extends Controller
             //'id_tipo_usuario'   => 'required',
             //'is_categoria_selec'=>'required',
         ]);
-        $usuario=User::find($request->id_cliente);
-        if ($usuario->telefono==null) {
-            return response()->json("Debes registrar tu telefono antes de realizar tu primera compra",400);
-        }
         $cod=$this->generarCodigoVenta();
         $ventas = Venta::create(
             [

@@ -191,7 +191,8 @@ class PromocionProductoController extends Controller
                 'promocion_productos.*',
                 'productos.nombre',
                 'productos.imagen',
-                'productos.precio' 
+                'productos.precio' ,
+                //'tiendas.nombre_tienda as nombreTienda'
             )
             ->where('tiendas.id', $id_tienda)
             ->where('tiendas.estado', 1)
@@ -230,7 +231,9 @@ class PromocionProductoController extends Controller
                 'productos.descripcion',
                 'productos.puntuacion',
                 'productos.id_tienda',
-                'categorias_productos.descripcion as categoria'
+                'categorias_productos.descripcion as categoria',
+                'tiendas.nombre_tienda as nombreTienda'
+
             )
            /*  ->where('tiendas.id', $id_tienda)
             ->where('tiendas.estado', 1) */
