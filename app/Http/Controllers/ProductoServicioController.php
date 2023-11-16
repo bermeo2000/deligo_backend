@@ -37,7 +37,7 @@ class ProductoServicioController extends Controller
     {
         $valiData=$request->validate([
             'nombre'=>'required|string|max:255',
-            'descripcion'=>'required|max:255',
+            'descripcion'=>'nullable|max:255',
             'duracion'=>'required|max:255',
             'precio'=>'required',
             /* 'puntuacion'=>'nullable', */
@@ -95,7 +95,7 @@ class ProductoServicioController extends Controller
         }
         $validateData=$request->validate([
             'nombre'=>'required|string|max:255',
-            'descripcion'=>'required|max:255',
+            'descripcion'=>'nullable|max:255',
             'duracion'=>'required|max:255',
             'precio'=>'required',
             /* 'puntuacion'=>'nullable', */

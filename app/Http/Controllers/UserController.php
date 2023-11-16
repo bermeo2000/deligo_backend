@@ -109,8 +109,8 @@ class UserController extends Controller
             'nombre'   => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'ciudad'   =>'required|string|max:255',
-            'cedula'   =>'required|string|max:255',
-            'telefono' =>'required|string|max:255',
+            'cedula'   =>'nullable|string|max:255',
+            'telefono' =>'nullable|string|max:255',
 
         ]);
         $user->nombre=$validateData['nombre'];
