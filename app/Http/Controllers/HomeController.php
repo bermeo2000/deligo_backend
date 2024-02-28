@@ -28,7 +28,7 @@ class HomeController extends Controller
         /* Valida la ciudad */
         $tiendas = DB::table('tiendas')
         ->join('categoria_tiendas', 'tiendas.id_categoria_tienda', '=', 'categoria_tiendas.id')
-        ->select('tiendas.*', 'categoria_tiendas.nombre as categoria')
+        ->select('tiendas.*', 'tiendas.nombre_tienda as nombre','categoria_tiendas.nombre as categoria')
         ->where('tiendas.estado', 1)
         ->where('tiendas.ciudad', $user->ciudad)
         ->get();
