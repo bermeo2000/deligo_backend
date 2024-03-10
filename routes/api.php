@@ -183,12 +183,12 @@ Route::resource('tipo-adv', TipoAdvertenciaController::class);
 // Amonestacion tiendas
 Route::resource('amon-tiendas', AmonestacionTiendaController::class);
 
-// Home (usuario)
+/* // Home (usuario)
 Route::post('/save-referido-user', [HomeController::class, 'saveReferidoUsuario']);
 Route::get('/get-home/{id}', [HomeController::class, 'getHome']);
 Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
 Route::get('/save-puntos-go/{id}', [HomeController::class, 'savePuntosGO']);
-Route::get('/tutorial-watched/{id}', [HomeController::class, 'isTutorial']);
+Route::get('/tutorial-watched/{id}', [HomeController::class, 'isTutorial']); */
 
 // Producto servicio
 Route::resource('producto-servicio', ProductoServicioController::class);
@@ -202,5 +202,12 @@ Route::get('/get-producto-servicio-by-categoria/{id}', [ProductoServicioControll
 Route::middleware('auth:sanctum')->group( function () {
 
     //Rutas con TOKEN
+
+    // Home (usuario)
+    Route::post('/save-referido-user', [HomeController::class, 'saveReferidoUsuario']);
+    Route::get('/get-home/{id}', [HomeController::class, 'getHome']);
+    Route::get('/get-tienda-fav/{id}', [HomeController::class, 'getTiendaFav']);
+    Route::get('/save-puntos-go/{id}', [HomeController::class, 'savePuntosGO']);
+    Route::get('/tutorial-watched/{id}', [HomeController::class, 'isTutorial']);
 
 });
