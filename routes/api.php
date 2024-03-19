@@ -45,7 +45,7 @@ use App\Http\Controllers\ResenaServicioController;
 
 //Espacio de desarrollo
 
-// Test
+// Test de imagenes y demas cosas
 Route::post('/save-img-bucket', [TestBucketController::class, 'store']);
 
 //Registro y Login

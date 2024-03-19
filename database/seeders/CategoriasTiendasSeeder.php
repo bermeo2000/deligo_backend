@@ -19,23 +19,23 @@ class CategoriasTiendasSeeder extends Seeder
         $categoria_tiendas = [
             [
                 'Ropa',
-                'https://minecraftaso.com/wp-content/uploads/2023/08/ropa.png',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/ropa.png',
                 1
             ],
             [
                 'Comida',
-                'https://minecraftaso.com/wp-content/uploads/2023/08/comida.png',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/comida.png',
                 1
             ],
             
             [
                 'Electrónica',
-                'https://minecraftaso.com/wp-content/uploads/2023/08/tecnologia.png',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/tecnologia.png',
                 1
             ],
             [
                 'Calzado',
-                'https://minecraftaso.com/wp-content/uploads/2023/08/calzado.png',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/calzado.png',
                 1
             ],
             [
@@ -45,17 +45,17 @@ class CategoriasTiendasSeeder extends Seeder
             ],
             [
                 'Mascotas',
-                'https://minecraftaso.com/wp-content/uploads/2023/08/mascotas.png',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/mascotas.png',
                 1
             ],
             [
                 'Servicios',
-                'https://minecraftaso.com/wp-content/uploads/2023/08/Hogar.png',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/mueble.png',
                 1
             ],
             [
                 'Otros',
-                'https://minecraftaso.com/wp-content/uploads/2023/08/Otros.png',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/salud.png',
                 1
             ]
 
