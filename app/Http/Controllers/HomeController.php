@@ -38,7 +38,8 @@ class HomeController extends Controller
         $productos = DB::table('productos')
         ->join('tiendas','tiendas.id','=', 'productos.id_tienda')
         ->where('tiendas.estado', 1)
-        ->select('productos.*')
+        ->select('productos.*', 
+        'tiendas.id as idTienda', 'tiendas.nombre_tienda as nombreTienda',)
         ->where('productos.estado', 1)
         ->where('tiendas.ciudad', $user->ciudad)
         ->get();
@@ -58,7 +59,9 @@ class HomeController extends Controller
         $promocion_productos = DB::table('promocion_productos')
         ->join('productos', 'promocion_productos.id_producto', '=', 'productos.id')
         ->join('tiendas','tiendas.id','=', 'productos.id_tienda')
-        ->select('promocion_productos.*', 'productos.nombre as nombre_promo', 'productos.imagen')
+        ->select('promocion_productos.*', 
+        'productos.nombre as nombre_promo', 'productos.descripcion as descripcion', 'productos.precio as precio', 'productos.imagen', 'productos.is_topping','productos.puntuacion as puntuacion',
+        'tiendas.nombre_tienda as nombreTienda', )
         ->where('promocion_productos.estado', 1)
         ->where('productos.estado', 1)
         ->where('tiendas.ciudad', $user->ciudad)
