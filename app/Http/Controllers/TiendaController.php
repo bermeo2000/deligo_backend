@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategoriasProductos;
+use App\Models\CategoriaTienda;
 use App\Models\Tienda;
 use App\Models\User;
 use App\Models\CategoriasUsuario;
@@ -154,9 +156,6 @@ public function updateuser(Request $request, string $id_usuario)
     // * Guarda el emprendedor 
     public function storeEmprendedor(Request $request)
     {
-        \Log::info($request);
-        \Log::info('Hola');
-
         $validateData = $request->validate([
 
             'nombre' => 'required|string|max:255',
@@ -219,8 +218,6 @@ public function updateuser(Request $request, string $id_usuario)
 
     public function storeTienda($request, $usuario)
     {
-
-        // TODO Revisar bien esto, quitar los que no sirven y anotarlos para tenerlos en cuenta en el actualizar
         $validateDataTienda = $request->validate([
             'nombre_tienda' => 'required|string|max:255',
             'id_categoria_tienda' => 'required',
@@ -262,6 +259,14 @@ public function updateuser(Request $request, string $id_usuario)
             // TODO poner llegada previa en algun lado del dashboard cuando sea de tipo servicio
             /* 'llegada_previa' => $validateDataTienda['llegada_previa'], */
             'estado' => 1,
+        ]);
+
+        $cat_tienda = CategoriaTienda::where('id', $tienda->id_categoria_tienda)->get();
+
+        $cat_p = CategoriasProductos::create([
+            'descripcion' => $cat_tienda[0]->nombre,
+            'id_tienda' => $tienda->id,
+            'estado' => 1
         ]);
 
         // ? Aquí debería haber un return para validar en el otro lado si hay un error ?

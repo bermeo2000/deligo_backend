@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-
     public function index()
     {
         //no se toma en cuenta esta funcion
@@ -104,7 +100,8 @@ class ProductoController extends Controller
             'nombre' => 'required|string|max:255',
             'precio' => 'required|string|max:255',
             'peso' => 'nullable|string|max:255',
-            'imagen' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            //! Desactivada hasta que se pruebe con servidor
+            /* 'imagen' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048', */
             'id_categoria_productos' => 'required',
             'id_marca' => 'nullable',
             'id_tipo_peso' => 'nullable',
@@ -125,7 +122,9 @@ class ProductoController extends Controller
             'nombre' => $validData['nombre'],
             'precio' => $validData['precio'],
             'peso' => $validData['peso'],
-            'imagen' => $validData['imagen'],
+            // ! Desactivada hasta que se pruebe con servidor
+            /* 'imagen' => $validData['imagen'], */
+            'imagen' => 'public/assets/category/comida.png',
             'estado' => 1,
             'id_categoria_productos' => $validData['id_categoria_productos'],
             'id_marca' => $validData['id_marca'],
@@ -135,10 +134,6 @@ class ProductoController extends Controller
             'is_topping' => $validData['is_topping'],
         ]);
 
-        //Puede que esto afecte
-        /* if ($validData['imagen'] != null) {
-            
-        } */
         if ($producto->is_topping == 1) {
             $this->storeTopping($request, $producto->id, $producto->id_tienda);
         }
