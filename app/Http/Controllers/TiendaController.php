@@ -122,7 +122,7 @@ public function updateuser(Request $request, string $id_usuario)
     ]);
     $codigo = $this->generarCodigo($validateData['nombre']);
         while (User::where('codigo_referido', $codigo)->exists()) {
-            $codigo = $this->generarCodigo();
+            $codigo = $this->generarCodigo($validateData['nombre']);
         }
         if (isset($validateData['imagen'])) {
             $validateData['imagen'] = $request->file('imagen')->storePublicly("public/images/usuario");
@@ -151,72 +151,62 @@ public function updateuser(Request $request, string $id_usuario)
 
 
 
-
+    // * Guarda el emprendedor 
     public function storeEmprendedor(Request $request)
     {
+        \Log::info($request);
+        \Log::info('Hola');
+
         $validateData = $request->validate([
+
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
-            'password' => 'required|string|max:255',
             'ciudad' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            // TODO tener en cuenta la posibilidad de telefono personal y de la tienda
+            'telefonoPersonal' => 'required|string|min:10',
+
+            // ! Ya no se va a pedir en el registro
+            /* 'imagen' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'cedula' => 'required|string|max:255',
-            'telefono' => 'required|string|max:255',
-            'imagen' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'id_codigo_pais' => 'required',
             'id_tipo_usuario' => 'required',
-            'is_categoria_selec' => 'required',
+            'is_categoria_selec' => 'required', */
 
         ]);
-        // Verificar si la cédula ya existe en la base de datos
-       /*  $cedulaExistente = User::where('cedula', $validateData['cedula'])->exists();
 
-        if ($cedulaExistente) {
-            return response()->json("La cédula ya está registrada", 400);
-        } */
-
-        if (isset($validateData['imagen'])) {
+        // * Guardado de imagen
+        /* if (isset($validateData['imagen'])) {
             $validateData['imagen'] = $request->file('imagen')->storePublicly("public/images/usuario");
         } else {
             $validateData['imagen'] = null;
-        }
+        } */
 
         $codigo = $this->generarCodigo($validateData['nombre']);
         while (User::where('codigo_referido', $codigo)->exists()) {
-            $codigo = $this->generarCodigo();
+            $codigo = $this->generarCodigo($validateData['nombre']);
         }
-        $usuario = User::create([
+
+        //Crea el emprendedor
+        $emprendedor = User::create([
             'nombre' => $validateData['nombre'],
             'apellido' => $validateData['apellido'],
             'email' => $validateData['email'],
             'password' => $validateData['password'],
             'ciudad' => $validateData['ciudad'],
-            'cedula' => $validateData['cedula'],
-            'telefono' => $validateData['telefono'],
-            'imagen' => $validateData['imagen'],
-            'id_codigo_pais' => $validateData['id_codigo_pais'],
-            'id_tipo_usuario' => $validateData['id_tipo_usuario'],
-            'is_categoria_selec' => $validateData['is_categoria_selec'],
+            'telefono' => $validateData['telefonoPersonal'],
+            'id_codigo_pais' => 1,
+            'id_tipo_usuario' => 2,
             'codigo_referido' => $codigo,
             'codigo_referido_usuario' => $codigo,
             'ventas' => 100,
             'estado' => 1,
         ]);
 
-        if ($validateData['is_categoria_selec'] == 1) {
-            $array = explode(",", $request->categorias);
-            for ($i = 0; $i < count($array); $i++) {
-                $aux = $array[$i];
-                CategoriasUsuario::create([
-                    'estado' => 1,
-                    'id_usuario' => $usuario->id,
-                    'id_categoria_tienda' => $aux,
-                ]);
-            }
-        }
+        $this->storeTienda($request, $emprendedor);
 
-        $this->storeTienda($request, $usuario);
-        return response()->json("funciono");
+        return response()->json(['message' => 'Tienda creada con éxito'], 200);
     }
 
     public function generarCodigo($nombre)
@@ -229,59 +219,52 @@ public function updateuser(Request $request, string $id_usuario)
 
     public function storeTienda($request, $usuario)
     {
+
+        // TODO Revisar bien esto, quitar los que no sirven y anotarlos para tenerlos en cuenta en el actualizar
         $validateDataTienda = $request->validate([
             'nombre_tienda' => 'required|string|max:255',
             'id_categoria_tienda' => 'required',
-            'ciudadTienda' => 'required|string|max:255',
-            'direccion' => 'nullable|string|max:255',
+            'ciudad' => 'required|string|max:255',
             'celular' => 'required|string|max:255',
-            'id_codigo_pais' => 'required',
-            'instagram_user' => 'nullable|string|max:255',
-            'facebook_user' => 'nullable|string|max:255',
-            'tiktok_user' => 'nullable|string|max:255',
-            'lat' => 'nullable',
-            'lng' => 'nullable',
+            'direccion' => 'nullable|string|max:255',
             'is_delivery' => 'required',
             'cargo_delivery' => 'nullable',
             'tiempo_delivery_min' => 'nullable',
-            'puntuacion' => 'required',
             'descripcion' => 'nullable',
-            'imagen_tienda' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-            'hora_apertura' => 'required',
-            'hora_cierre' => 'required',
-            'llegada_previa' => 'nullable',
+            /* 'imagen_tienda' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048', */
+            'hora_apertura' => 'nullable',
+            'hora_cierre' => 'nullable',
         ]);
 
-        if (isset($validateDataTienda['imagen_tienda'])) {
+        // * Guardado de imagen
+        /* if (isset($validateDataTienda['imagen_tienda'])) {
             $validateDataTienda['imagen_tienda'] = $request->file('imagen_tienda')->storePublicly("public/images/tienda");
         } else {
             $validateDataTienda['imagen_tienda'] = null;
-        }
+        } */
 
         $tienda = Tienda::create([
             'nombre_tienda' => $validateDataTienda['nombre_tienda'],
             'id_propietario' => $usuario->id,
             'id_categoria_tienda' => $validateDataTienda['id_categoria_tienda'],
-            'ciudad' => $validateDataTienda['ciudadTienda'],
+            'ciudad' => $validateDataTienda['ciudad'],
             'direccion' => $validateDataTienda['direccion'],
             'celular' => $validateDataTienda['celular'],
-            'id_codigo_pais' => $validateDataTienda['id_codigo_pais'],
-            'instagram_user' => $validateDataTienda['instagram_user'],
-            'facebook_user' => $validateDataTienda['facebook_user'],
-            'tiktok_user' => $validateDataTienda['tiktok_user'],
-            'lat' => $validateDataTienda['lat'],
-            'lng' => $validateDataTienda['lng'],
+            'id_codigo_pais' => 1,
             'is_delivery' => $validateDataTienda['is_delivery'],
             'cargo_delivery' => $validateDataTienda['cargo_delivery'],
             'tiempo_delivery_min' => $validateDataTienda['tiempo_delivery_min'],
-            'puntuacion' => $validateDataTienda['puntuacion'],
+            'puntuacion' => 0,
             'descripcion' => $validateDataTienda['descripcion'],
-            'imagen' => $validateDataTienda['imagen_tienda'],
+            /* 'imagen' => $validateDataTienda['imagen_tienda'], */
             'hora_apertura' => $validateDataTienda['hora_apertura'],
             'hora_cierre' => $validateDataTienda['hora_cierre'],
-            'llegada_previa' => $validateDataTienda['llegada_previa'],
+            // TODO poner llegada previa en algun lado del dashboard cuando sea de tipo servicio
+            /* 'llegada_previa' => $validateDataTienda['llegada_previa'], */
             'estado' => 1,
         ]);
+
+        // ? Aquí debería haber un return para validar en el otro lado si hay un error ?
 
     }
 

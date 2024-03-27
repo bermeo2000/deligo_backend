@@ -18,47 +18,36 @@ class CategoriasTiendasSeeder extends Seeder
         //
         $categoria_tiendas = [
             [
-                'Ropa',
-                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/ropa.png',
+                'Alimentos y bebidas',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/categories_new/foods_and_drinks.png',
                 1
             ],
             [
-                'Comida',
-                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/comida.png',
+                'Ropa, calzado y accesorios',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/categories_new/clothes_and_shoes.png',
                 1
             ],
             
             [
-                'Electrónica',
-                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/tecnologia.png',
+                'Equipos eléctronicos',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/categories_new/computers.png',
                 1
             ],
             [
-                'Calzado',
-                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/calzado.png',
-                1
-            ],
-            [
-                'Accesorios',
-                'https://minecraftaso.com/wp-content/uploads/2023/08/Accesorios.png',
-                1
-            ],
-            [
-                'Mascotas',
-                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/mascotas.png',
+                'Belleza y cuidado personal',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/categories_new/selfcare.png',
                 1
             ],
             [
                 'Servicios',
-                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/mueble.png',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/categories_new/services.png',
                 1
             ],
             [
                 'Otros',
-                'https://deligobucketbcb.s3.amazonaws.com/public/assets/category/salud.png',
+                'https://deligobucketbcb.s3.amazonaws.com/public/assets/categories_new/others.png',
                 1
-            ]
-
+            ],
        ];
 
         foreach($categoria_tiendas as $ct){

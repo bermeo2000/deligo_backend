@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::where('estado',1)->get();
+        $user = User::where('estado', 1)->get();
         return response()->json($user, 200);
 
         //esto no se usa
@@ -39,7 +39,7 @@ class UserController extends Controller
         //
     }
 
-   
+
 
     /**
      * Display the specified resource.
@@ -54,38 +54,38 @@ class UserController extends Controller
     }
 
     public function showd($id)
-{
-    $user = User::find($id);
+    {
+        $user = User::find($id);
 
-    if ($user === null) {
-        return response()->json("El usuario no existe", 404);
-    }
-
-    $dataUser = new \stdClass();
-    $dataUser->nombre = $user->nombre;
-    $dataUser->apellido = $user->apellido;
-    $dataUser->ciudad = $user->ciudad;
-    $dataUser->email = $user->email;
-    $dataUser->password = $user->password;
-    $dataUser->id_tipo_usuario = $user->id_tipo_usuario;
-    $dataUser->is_categoria_selec = $user->is_categoria_selec;
-    $dataUser->id_categoria_tienda = "sin categorías";
-
-    if ($user->is_categoria_selec == 1) {
-        $categorias_usuarios = DB::table('categorias_usuarios')
-            ->join('categoria_tiendas', 'categorias_usuarios.id_categoria_tienda', '=', 'categoria_tiendas.id')
-            ->select('categoria_tiendas.id')
-            ->where('categorias_usuarios.id_usuario', $id)
-            ->where('categorias_usuarios.estado', 1)
-            ->get();
-
-        if (!$categorias_usuarios->isEmpty()) {
-            $dataUser->id_categoria_tienda = $categorias_usuarios->pluck('id')->toArray();
+        if ($user === null) {
+            return response()->json("El usuario no existe", 404);
         }
-    }
 
-    return response()->json($dataUser, 200);
-}
+        $dataUser = new \stdClass();
+        $dataUser->nombre = $user->nombre;
+        $dataUser->apellido = $user->apellido;
+        $dataUser->ciudad = $user->ciudad;
+        $dataUser->email = $user->email;
+        $dataUser->password = $user->password;
+        $dataUser->id_tipo_usuario = $user->id_tipo_usuario;
+        $dataUser->is_categoria_selec = $user->is_categoria_selec;
+        $dataUser->id_categoria_tienda = "sin categorías";
+
+        if ($user->is_categoria_selec == 1) {
+            $categorias_usuarios = DB::table('categorias_usuarios')
+                ->join('categoria_tiendas', 'categorias_usuarios.id_categoria_tienda', '=', 'categoria_tiendas.id')
+                ->select('categoria_tiendas.id')
+                ->where('categorias_usuarios.id_usuario', $id)
+                ->where('categorias_usuarios.estado', 1)
+                ->get();
+
+            if (!$categorias_usuarios->isEmpty()) {
+                $dataUser->id_categoria_tienda = $categorias_usuarios->pluck('id')->toArray();
+            }
+        }
+
+        return response()->json($dataUser, 200);
+    }
 
 
     /**
@@ -106,19 +106,19 @@ class UserController extends Controller
             return response()->json(['message' => 'Usuario encontrado'], 404);
         }
         $validateData = $request->validate([
-            'nombre'   => 'required|string|max:255',
+            'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
-            'ciudad'   =>'required|string|max:255',
-            'cedula'   =>'nullable|string|max:255',
-            'telefono' =>'nullable|string|max:255',
+            'ciudad' => 'required|string|max:255',
+            'cedula' => 'nullable|string|max:255',
+            'telefono' => 'nullable|string|max:255',
 
         ]);
-        $user->nombre=$validateData['nombre'];
-        $user->apellido=$validateData['apellido'];
-        $user->ciudad=$validateData['ciudad'];
-        $user->cedula=$validateData['cedula'];
-        $user->telefono=$validateData['telefono'];
-       
+        $user->nombre = $validateData['nombre'];
+        $user->apellido = $validateData['apellido'];
+        $user->ciudad = $validateData['ciudad'];
+        $user->cedula = $validateData['cedula'];
+        $user->telefono = $validateData['telefono'];
+
         $user->save();
         return response()->json(['message' => 'Usuario actualizado'], 201);
     }
@@ -131,41 +131,38 @@ class UserController extends Controller
         //
     }
 
-    
 
 
-    
 
 
+    // * Registro
     public function register(Request $request)
     {
-      /*   return response()->json(['message' => $request], 200); */
+        // TODO Ver la validación de los max string
         $validateData = $request->validate([
-            'nombre'            => 'required|string|max:255',
-            'apellido'          => 'required|string|max:255',
-            'ciudad'            => 'required|string|max:255',
-            /* 'email'             => 'required|string|max:255', */
-            'email'             => 'required|string|email|max:255|unique:users',
-            'password'          => 'required|string|max:255',
-            'id_tipo_usuario'   => 'required',
-            'is_categoria_selec'=>'required',
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'ciudad' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
         ]);
         
-        $type=2;
+        // ? Usar este user para el login
         $user = User::create([
-            'nombre'            =>$validateData['nombre'],
-            'apellido'          =>$validateData['apellido'],
-            'ciudad'            =>$validateData['ciudad'],
-            'email'             =>$validateData['email'],
-            'password'          =>$validateData['password'],
-            'id_tipo_usuario'   =>$validateData['id_tipo_usuario'],
-            'is_categoria_selec'=>$validateData['is_categoria_selec'],
-            'estado'=>1,
-
-          
+            'nombre' => $validateData['nombre'],
+            'apellido' => $validateData['apellido'],
+            'ciudad' => $validateData['ciudad'],
+            'email' => $validateData['email'],
+            'password' => $validateData['password'],
+            'id_tipo_usuario' => 3,
+            'estado' => 1,
         ]);
-        
-        if ($validateData['is_categoria_selec']==1) {
+
+        return response()->json(['message' => 'Usuario registrado'], 200);
+
+
+        //! Categoria Usuario queda deshabilitado por ahora
+        /* if ($validateData['is_categoria_selec']==1) {
             $array = explode(",",$request->id_categoria_tienda);
 
             for ($i = 0; $i < count($array); $i++) {
@@ -183,35 +180,35 @@ class UserController extends Controller
                     ->json([
                     'message' => 'El is_categoria_selec no existe',
                      ], 400);
-        }
+        } */
 
-        return response()->json(['message' => 'Usuario registrado'], 200);
+
     }
 
 
- /*    public function updateUser(Request $request, $id_usuario)
-    {
-        $user = User::find($id_usuario);
-        if (is_null($id_usuario)) {
-            return response()->json(['message' => 'Usuario encontrado'], 404);
-        }
-        $validateData = $request->validate([
-            'nombre'   => 'required|string|max:255',
-            'apellido' => 'required|string|max:255',
-            'ciudad'   =>'required|string|max:255',
-            'cedula'   =>'required|string|max:255',
-            'telefono' =>'required|string|max:255',
-           // 'imagen'=>'required'
-        ]);
-        $user->nombre=$validateData['nombre'];
-        $user->apellido=$validateData['apellido'];
-        $user->ciudad=$validateData['ciudad'];
-        $user->cedula=$validateData['cedula'];
-        $user->telefono=$validateData['telefono'];
-       
-        $user->save();
-        return response()->json(['message' => 'Usuario actualizado'], 201);
-    } */
+    /*    public function updateUser(Request $request, $id_usuario)
+       {
+           $user = User::find($id_usuario);
+           if (is_null($id_usuario)) {
+               return response()->json(['message' => 'Usuario encontrado'], 404);
+           }
+           $validateData = $request->validate([
+               'nombre'   => 'required|string|max:255',
+               'apellido' => 'required|string|max:255',
+               'ciudad'   =>'required|string|max:255',
+               'cedula'   =>'required|string|max:255',
+               'telefono' =>'required|string|max:255',
+              // 'imagen'=>'required'
+           ]);
+           $user->nombre=$validateData['nombre'];
+           $user->apellido=$validateData['apellido'];
+           $user->ciudad=$validateData['ciudad'];
+           $user->cedula=$validateData['cedula'];
+           $user->telefono=$validateData['telefono'];
+          
+           $user->save();
+           return response()->json(['message' => 'Usuario actualizado'], 201);
+       } */
 
     public function updatUserEmail(Request $request, $id)
     {
@@ -230,7 +227,7 @@ class UserController extends Controller
     public function updateditPassword(Request $request, $id)
     {
         $user = User::find($id);
-        if(is_null($user)){
+        if (is_null($user)) {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
         $validateData = $request->validate([
@@ -243,27 +240,27 @@ class UserController extends Controller
     }
 
 
-/*     public function updatUserImage(Request $request, $id)
-    {
+    /*     public function updatUserImage(Request $request, $id)
+        {
 
-        $user = User::find($id);
-        if (is_null($user)) {
-            return response()->json(['message' => 'Imagen no encontrada.'], 404);
-        }
-        $validData = $request->validate([
-            'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg'
-        ]);
+            $user = User::find($id);
+            if (is_null($user)) {
+                return response()->json(['message' => 'Imagen no encontrada.'], 404);
+            }
+            $validData = $request->validate([
+                'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg'
+            ]);
 
-        $img=$request->file('imagen');
-        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
-        
-        $request->file('imagen')->storeAs("public/images/Usuario/{$user->id}", $validData['imagen']);
-                           
+            $img=$request->file('imagen');
+            $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+            
+            $request->file('imagen')->storeAs("public/images/Usuario/{$user->id}", $validData['imagen']);
+                               
 
-        $user->imagen = $validData['imagen'];
-        $user->save();
-        return response()->json(['message' => 'Imagen actualizada'], 201);
-    } */
+            $user->imagen = $validData['imagen'];
+            $user->save();
+            return response()->json(['message' => 'Imagen actualizada'], 201);
+        } */
 
     public function UpdatefotoUser(Request $request, $id)
     {
@@ -283,9 +280,10 @@ class UserController extends Controller
 
 
 
-    public function getUser($id){
+    public function getUser($id)
+    {
         $u = User::where('id', $id)->get();
         return response()->json($u, 200);
     }
-   
+
 }
