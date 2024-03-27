@@ -91,7 +91,7 @@ Route::get('/show/{id}', [TiendaController::class, 'show']); // trae una sola ti
 Route::post('/updatetienda/{id}', [TiendaController::class, 'updateTienda']);
 /* Route::get('/getcategotiatiendas/{id}', [TiendaController::class, 'getCategotiaTiendas']);
 Route::get('/getproductocategorias/{id}', [TiendaController::class, 'getProductoCategorias']); */
-Route::get('/showCateProducto', [TiendaController::class,'showCateProducto']);
+Route::get('v2/showCateProducto/{id}', [TiendaController::class,'showCateProducto']);
 
 //Categoria Productos
 

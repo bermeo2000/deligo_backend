@@ -70,9 +70,10 @@ class ProductoController extends Controller
 
         foreach ($categoria as $key => $value) {
             $productos = DB::table('productos')
-                ->select('productos.*')
+            ->join('tiendas','tiendas.id','=', 'productos.id_tienda')
+            ->select('productos.*', 'tiendas.nombre_tienda as nombreTienda')
                 ->where('id_categoria_productos', $value->id)
-                ->where('estado',1)
+                ->where('productos.estado',1)
                 ->get();
             
             $servicios = DB::table('producto_servicios')

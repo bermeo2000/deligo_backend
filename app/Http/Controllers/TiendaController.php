@@ -400,23 +400,37 @@ public function updateuser(Request $request, string $id_usuario)
 
     }
 
-    public function showCateProducto()
+    public function showCateProducto($id)
     {
 
         $data = array();
         $categoria = DB::table('categorias_productos')
             ->select('categorias_productos.*')
             ->where('categorias_productos.estado', 1)
+            ->where('categorias_productos.id_tienda',$id)
             ->get();
 
         foreach ($categoria as $key => $p) {
 
             $productos = DB::table('productos')
-                ->select('productos.*')
+            ->join('tiendas','tiendas.id','=', 'productos.id_tienda')
+                ->select('productos.*', 'tiendas.nombre_tienda as nombreTienda')
+
                 ->where('id_categoria_productos', $p->id)
+                ->where('productos.estado', 1)
+                ->get();
+            $promocion_productos = DB::table('promocion_productos')
+                ->join('productos', 'promocion_productos.id_producto', '=', 'productos.id')
+                ->join('tiendas','tiendas.id','=', 'productos.id_tienda')
+                ->select('promocion_productos.*', 
+                'productos.nombre as nombre_promo', 'productos.descripcion as descripcion', 'productos.precio as precio', 'productos.imagen', 'productos.is_topping','productos.puntuacion as puntuacion',
+                'tiendas.nombre_tienda as nombreTienda', )
+               // ->where('promocion_productos.estado', 1)
+                ->where('productos.estado', 1)
+                ->where('productos.id_categoria_productos', $p->id)
                 ->get();
 
-            array_push($data, ['categoria' => $p, 'data' => $productos]);
+            array_push($data, ['categoria' => $p, 'productos' => $productos, 'promociones'=>$promocion_productos]);
 
         }
         return response()->json($data, 200);
