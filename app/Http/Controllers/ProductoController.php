@@ -103,7 +103,8 @@ class ProductoController extends Controller
             //! Desactivada hasta que se pruebe con servidor
             /* 'imagen' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048', */
             'id_categoria_productos' => 'required',
-            'id_marca' => 'nullable',
+            //! Quitar
+            /* 'id_marca' => 'nullable', */
             'id_tipo_peso' => 'nullable',
             'id_tienda' => 'required',
             'descripcion' => 'nullable',

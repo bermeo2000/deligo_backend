@@ -58,6 +58,15 @@ Route::resource('tipo-usuario', TipoUsuarioController::class);
 //Codigo Pais
 Route::resource('codigo-pais', CodigoPaisController::class);
 
+//Tipo Pesos
+Route::resource('tipo-peso', TipoPesoController::class);
+
+//Categoria Productos
+
+Route::resource('categoria-producto', CategoriasProductosController::class);
+Route::get('/getCategoriaProductoByTienda/{id}', [CategoriasProductosController::class, 'getCategoriaProductoByTienda']);
+
+
 //Usuario
 Route::resource('usuario', UserController::class);
 Route::get('/user-index', [UserController::class, 'index']);
@@ -93,15 +102,9 @@ Route::post('/updatetienda/{id}', [TiendaController::class, 'updateTienda']);
 Route::get('/getproductocategorias/{id}', [TiendaController::class, 'getProductoCategorias']); */
 Route::get('/showCateProducto', [TiendaController::class,'showCateProducto']);
 
-//Categoria Productos
 
-Route::resource('categoria-producto', CategoriasProductosController::class);
-Route::get('/get-cat-prod-by-tienda/{id}', [CategoriasProductosController::class, 'getCatProducByTienda']);
-Route::get('/getCategProductTienda/{id}', [CategoriasProductosController::class, 'getCategProductTienda']);
 
-//Tipo Pesos
-Route::resource('tipo-peso', TipoPesoController::class);
-/* Route::get('/getTipoPesoTienda/{id}', [TipoPesoController::class, 'getTipoPesoTienda']); */
+
 
 //Marcas
 Route::resource('Marca', MarcaController::class);

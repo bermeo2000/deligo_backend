@@ -11,12 +11,9 @@ use Illuminate\Support\Facades\DB;
 
 class CategoriasProductosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //Esto es para admin creo XDD
+        // * Retorna todas las categorías sin diferenciar tienda
         $categorias_productos = CategoriasProductos::where('estado',1) ->get();
         if (count($categorias_productos)==0) {
             return response()-> json('no existen categoria producto',404);
@@ -25,19 +22,15 @@ class CategoriasProductosController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // * Guarda categorías que vienen en array 
     public function store(Request $request)
     {
+        // TODO Revisar esto con el nuevo frontend
         $idTienda=$request->id_tienda;
         $categoria_productos=json_decode($request->categoria_productos,true);
         $aux= count($categoria_productos);
@@ -48,15 +41,13 @@ class CategoriasProductosController extends Controller
                 'descripcion' => $aux2['descripcion'],
                 'id_tienda' => $idTienda,
                 'estado' => 1
-                ]);
+            ]);
         }       
 
-        return response()->json(['message'=>'Marca registrada'], 200);
+        return response()->json(['message'=>'Categoría registrada'], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // * Busca una categoría en especifico
     public function show($id)
     {
         $categoria_productos=CategoriasProductos::find($id);
@@ -66,17 +57,29 @@ class CategoriasProductosController extends Controller
         return response()->json($categoria_productos);
     }
 
-
-    public function getCategProductTienda($id){
-        $categoria_productos = CategoriasProductos::where('id_tienda',$id)
+    // * Filtra las categorias por tienda
+    public function getCategoriaProductoByTienda($id_tienda){
+        $categoria_productos = CategoriasProductos::where('id_tienda',$id_tienda)
         ->where('estado',1) 
         ->get();
-        if (count($categoria_productos)==0) {
-            return response()-> json('no existen categoria_productos',404);
+        if (count($categoria_productos) == 0) {
+            return response()->json(
+                [
+                    'message' => 'No existen categorías en esta tienda.'
+                ],
+                404
+            );
         }
         return response()->json($categoria_productos,200);
     }
 
+
+
+
+
+
+
+    // TODO Revisar todo de aquí para abajo
     /**
      * Show the form for editing the specified resource.
      */
@@ -155,16 +158,7 @@ class CategoriasProductosController extends Controller
         return response()->json("La categoria se elimino con exito", 200);
     }
 
-    public function getCatProducByTienda($id_tienda){
-
-        $data = DB::table('categorias_productos')
-        ->where('id_tienda', $id_tienda)
-        ->where('estado', 1)
-        ->get();
-
-        return response($data, 200);
-
-    }
+    
 
     
     
