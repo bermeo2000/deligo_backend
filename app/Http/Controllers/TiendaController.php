@@ -233,7 +233,7 @@ public function updateuser(Request $request, string $id_usuario)
             'hora_apertura' => 'nullable',
             'hora_cierre' => 'nullable',
         ]);
-
+        // TODO Test: cuando viene vacio genera un archivo vacio en s3
         $image_aux = $validateDataTienda['imagen_tienda']; // Base 64 encoded
         $image_aux = str_replace('data:image/png;base64,', '', $image_aux);
         $image_aux = str_replace(' ', '+', $image_aux);
