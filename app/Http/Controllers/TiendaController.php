@@ -8,6 +8,7 @@ use App\Models\Tienda;
 use App\Models\User;
 use App\Models\CategoriasUsuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
@@ -228,17 +229,26 @@ public function updateuser(Request $request, string $id_usuario)
             'cargo_delivery' => 'nullable',
             'tiempo_delivery_min' => 'nullable',
             'descripcion' => 'nullable',
-            /* 'imagen_tienda' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048', */
+            'imagen_tienda' => 'nullable',
             'hora_apertura' => 'nullable',
             'hora_cierre' => 'nullable',
         ]);
 
+        $image_aux = $validateDataTienda['imagen_tienda']; // Base 64 encoded
+        $image_aux = str_replace('data:image/png;base64,', '', $image_aux);
+        $image_aux = str_replace(' ', '+', $image_aux);
+        $validateDataTienda['imagen_tienda'] = base64_decode($image_aux);
+        $image_path = 'public/images/tienda/'.time().'.png';
+
         // * Guardado de imagen
-        /* if (isset($validateDataTienda['imagen_tienda'])) {
-            $validateDataTienda['imagen_tienda'] = $request->file('imagen_tienda')->storePublicly("public/images/tienda");
+        if (isset($validateDataTienda['imagen_tienda'])) {
+            Storage::disk('s3')->put($image_path, $validateDataTienda['imagen_tienda'], 'public');
+            $validateDataTienda['imagen_tienda'] = $image_path;
+
+            /* $validateDataTienda['imagen_tienda'] = $validateDataTienda['imagen_tienda']->storePublicly("public/images/tienda"); */
         } else {
             $validateDataTienda['imagen_tienda'] = null;
-        } */
+        }
 
         $tienda = Tienda::create([
             'nombre_tienda' => $validateDataTienda['nombre_tienda'],
@@ -253,7 +263,7 @@ public function updateuser(Request $request, string $id_usuario)
             'tiempo_delivery_min' => $validateDataTienda['tiempo_delivery_min'],
             'puntuacion' => 0,
             'descripcion' => $validateDataTienda['descripcion'],
-            /* 'imagen' => $validateDataTienda['imagen_tienda'], */
+            'imagen' => $validateDataTienda['imagen_tienda'],
             'hora_apertura' => $validateDataTienda['hora_apertura'],
             'hora_cierre' => $validateDataTienda['hora_cierre'],
             // TODO poner llegada previa en algun lado del dashboard cuando sea de tipo servicio
