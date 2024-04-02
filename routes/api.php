@@ -43,7 +43,7 @@ use App\Http\Controllers\ResenaServicioController;
 |
 */
 
-//Espacio de desarrollo
+// * Espacio de desarrollo
 
 // Test de imagenes y demas cosas
 Route::post('/save-img-bucket', [TestBucketController::class, 'store']);
@@ -62,9 +62,8 @@ Route::resource('codigo-pais', CodigoPaisController::class);
 Route::resource('tipo-peso', TipoPesoController::class);
 
 //Categoria Productos
-
 Route::resource('categoria-producto', CategoriasProductosController::class);
-Route::get('/getCategoriaProductoByTienda/{id}', [CategoriasProductosController::class, 'getCategoriaProductoByTienda']);
+Route::get('v2/getCategoriaProductoByTienda/{id}', [CategoriasProductosController::class, 'getCategoriaProductoByTienda']);
 
 
 //Usuario

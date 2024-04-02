@@ -7,57 +7,30 @@ use Illuminate\Http\Request;
 
 class TipoPesoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // * Obtiene todos los tipos de pesos
     public function index()
     {
-        //todos los tipos de pesos
-
         $data = TipoPeso::where('estado', 1)
         ->get();
 
         return response()->json($data, 200);
-
     }
 
-/*     public function getTipoPesoTienda($id){
-        $tipoPeso = TipoPeso::where('id_tienda',$id)
-        ->where('estado',1) 
-        ->get();
-        if (count($tipoPeso)==0) {
-            return response()-> json('no existen tipoPeso',404);
-        }
-        return response()->json($tipoPeso,200);
-    } */
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(TipoPeso $tipoPeso)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(TipoPeso $tipoPeso)
     {
         //
@@ -71,9 +44,6 @@ class TipoPesoController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(TipoPeso $tipoPeso)
     {
         //
