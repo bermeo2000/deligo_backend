@@ -93,7 +93,7 @@ Route::post('/usuario-update/{id}', [TiendaController::class, 'updateuser']);
 Route::post('/updateRedes/{id}', [TiendaController::class,'updateRedes']);
 Route::post('/updateDelivery/{id}', [TiendaController::class,'updateDelivery']);
 Route::get('/get-tienda-by-cat/{id}', [TiendaController::class, 'getAllTiendasCategoria']);
-Route::get('/get-tienda/{id}', [TiendaController::class, 'getTienda']);
+Route::get('v2/get-tienda/{id}', [TiendaController::class, 'getTienda']);
 Route::get('/show/{id}', [TiendaController::class, 'show']); // trae una sola tienda
 /* Route::get('/getshowTienda/{id}', [TiendaController::class, 'getshowTienda']); */
 Route::post('/updatetienda/{id}', [TiendaController::class, 'updateTienda']);

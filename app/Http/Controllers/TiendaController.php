@@ -348,8 +348,13 @@ public function updateuser(Request $request, string $id_usuario)
 
     public function getTienda($id)
     {
-        $u = Tienda::where('id', $id)->get();
-        return response()->json($u, 200);
+        $tienda = DB::table('tiendas')
+        ->join('categoria_tiendas', 'tiendas.id_categoria_tienda', '=', 'categoria_tiendas.id')
+        ->select('tiendas.*', 'tiendas.nombre_tienda as nombre','categoria_tiendas.nombre as categoria')
+        ->where('tiendas.id', $id)
+        ->where('tiendas.estado',1)
+        ->get();
+        return response()->json($tienda, 200);
     }
 
 
