@@ -33,41 +33,35 @@ class LoginController extends Controller
             }
 
             return response()
-                ->json([
-                    'accesToken' => $token,
-                    /* 'tokenType'=>'Bearer', */
-                    'typeUserId' => $user->id_tipo_usuario,
-                    'id' => $user->id,
-                    'userName' => $user->nombre . ' ' . $user->apellido,
-                    'email' => $user->email,
-                    //se quita porque en caso de un usuario normal no va a tener nunca
-                    /* 'codigo_referido'=>$user->codigo_referido, */
-                    'rol' => $query[0]->tipo,
-                    'codigo_referido_usuario' => $user->codigo_referido_usuario,
-                    'puntos_go' => $user->puntos_go,
-                    /* El usuario normal solo necesita la confirmación de cod ref */
-                    'is_cod_ref' => $user->is_cod_ref,
-                    'message' => "Credenciales válidas"
-
-                ], 200);
+            ->json([
+                'accesToken' => $token,
+                'typeUserId' => $user->id_tipo_usuario,
+                'id' => $user->id,
+                'userName' => $user->nombre . ' ' . $user->apellido,
+                'email' => $user->email,
+                'rol' => $query[0]->tipo,
+                'codigo_referido_usuario' => $user->codigo_referido_usuario,
+                'puntos_go' => $user->puntos_go,
+                'is_cod_ref' => $user->is_cod_ref,
+                'message' => "Credenciales válidas"
+            ], 200);
         }
 
-        //en este caso no es  un usuario normal 
-        // es un emprendedor o un admin
-
+        // * En caso de que sea emprendedor
+        // ! Si es admin puede funcionar regular
         $tiendas_emp = DB::table('tiendas')
-        ->select('tiendas.id as id_tienda', 'tiendas.nombre_tienda', 'tiendas.imagen', 'tiendas.id_categoria_tienda')
+        ->select('tiendas.id as id_tienda'/* , 'tiendas.nombre_tienda', 'tiendas.imagen', 'tiendas.id_categoria_tienda' */)
         ->where('tiendas.id_propietario', $user->id,)
         ->where('tiendas.estado', 1)
         ->get();
-        foreach ($tiendas_emp as $key => $value) {
+        /* foreach ($tiendas_emp as $key => $value) {
             $detalle_ventas=DB::table('detalle_ventas')
             ->select('detalle_ventas.id_tienda',DB::raw('SUM(detalle_ventas.precio) as suma_precio'))
             ->where('detalle_ventas.id_tienda', $value->id_tienda,)
             ->where('detalle_ventas.estado', 1)
             ->groupBy('detalle_ventas.id_tienda')
             ->get();
-        }
+        } */
       
         return response()
             ->json([
@@ -78,7 +72,7 @@ class LoginController extends Controller
                 'email' => $user->email,
                 'rol' => $query[0]->tipo,
                 'ventas'=>$user->ventas,
-                'ingresos'=>$detalle_ventas,
+                /* 'ingresos'=>$detalle_ventas, */
                 'id_tiendas' => $tiendas_emp,
                 'codigo_referido' => $user->codigo_referido,
                 'puntos_go' => $user->puntos_go,

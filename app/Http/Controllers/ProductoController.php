@@ -98,16 +98,14 @@ class ProductoController extends Controller
     {
         //probado con imagen y todo y funciona
         $validData = $request->validate([
+            'id_tienda' => 'required',
+            //TODO Arreglar la vuelta de la imagen
+            /* 'imagen' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048', */
             'nombre' => 'required|string|max:255',
             'precio' => 'required|string|max:255',
-            'peso' => 'nullable|string|max:255',
-            //! Desactivada hasta que se pruebe con servidor
-            /* 'imagen' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048', */
             'id_categoria_productos' => 'required',
-            //! Quitar
-            /* 'id_marca' => 'nullable', */
+            'peso' => 'nullable|string|max:255',
             'id_tipo_peso' => 'nullable',
-            'id_tienda' => 'required',
             'descripcion' => 'nullable',
             'is_topping' => 'required',
         ]);

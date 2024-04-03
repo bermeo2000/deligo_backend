@@ -70,7 +70,7 @@ class CategoriasProductosController extends Controller
                 404
             );
         }
-        return response()->json($categoria_productos,200);
+        return response()->json($categoria_productos, 200);
     }
 
 
