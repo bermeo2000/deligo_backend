@@ -19,7 +19,7 @@ class ToppingsController extends Controller
         //ver todos los toppings que tiene asi en general
     public function index()
     {
-        
+        // * No se usa
         $toppings = Toppings::where('estado',1) ->get();
         if (count($toppings)==0) {
             return response()-> json('no existen toppings',404);
@@ -51,22 +51,12 @@ class ToppingsController extends Controller
                 'precio' => $aux2['precio'],
                 'id_tienda' => $idTienda,
                 'estado' => 1
-                ]);
+            ]);
         }       
 
         return response()->json(['message'=>'toppings registrada'], 200);
     }
 
-
-    
-
-
-
-
-
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         $toppings=Toppings::find($id);
@@ -76,17 +66,11 @@ class ToppingsController extends Controller
         return response()->json($toppings);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Toppings $toppings)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $toppings = Toppings::find($id);
@@ -105,9 +89,6 @@ class ToppingsController extends Controller
         return response()->json(['message' => 'toppings actualizado'], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id_toppings)
     {
         $toppings=Toppings::find($id_toppings);
@@ -136,7 +117,7 @@ class ToppingsController extends Controller
     }
 
 
-    public function getToppingsTienda($id){
+    public function getToppingsByTienda($id){
         $toppings = Toppings::where('id_tienda',$id)
         ->where('estado',1) 
         ->get();

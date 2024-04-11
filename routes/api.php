@@ -65,6 +65,12 @@ Route::resource('tipo-peso', TipoPesoController::class);
 Route::resource('categoria-producto', CategoriasProductosController::class);
 Route::get('v2/getCategoriaProductoByTienda/{id}', [CategoriasProductosController::class, 'getCategoriaProductoByTienda']);
 
+//Toppings
+Route::resource('toppings', ToppingsController::class);
+Route::get('v2/getToppingsByTienda/{id}', [ToppingsController::class, 'getToppingsByTienda']);
+//Toppings Productos
+Route::resource('toppings-productos', ToppingsProductosController::class);
+
 
 //Usuario
 Route::resource('usuario', UserController::class);
@@ -130,11 +136,7 @@ Route::get('get-promo-by-tienda/{id}', [PromocionProductoController::class, 'get
 Route::get('get-promo-productos-by-tienda/{id}', [PromocionProductoController::class, 'getPromoProductoTienda']);
 Route::get('showPromocion/{id}',[PromocionProductoController::class,'getPromoProducto']);
 
-//Toppings
-Route::resource('toppings', ToppingsController::class);
-Route::get('get-topping-by-tienda/{id}', [ToppingsController::class, 'getToppingsTienda']);
-//Toppings Productos
-Route::resource('toppings-productos', ToppingsProductosController::class);
+
 
 //Tipo Pagos
 Route::resource('tipo-pago', TipoPagoController::class);

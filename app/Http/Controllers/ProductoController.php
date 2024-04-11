@@ -10,6 +10,7 @@ use App\Models\Toppings;
 use App\Models\ToppingsProductos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Storage;
 
 class ProductoController extends Controller
 {
@@ -99,8 +100,7 @@ class ProductoController extends Controller
         //probado con imagen y todo y funciona
         $validData = $request->validate([
             'id_tienda' => 'required',
-            //TODO Arreglar la vuelta de la imagen
-            /* 'imagen' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048', */
+            'imagen' => 'required',
             'nombre' => 'required|string|max:255',
             'precio' => 'required|string|max:255',
             'id_categoria_productos' => 'required',
@@ -113,7 +113,14 @@ class ProductoController extends Controller
         $tienda_guardar = Tienda::find($validData['id_tienda']);
 
         if (isset($validData['imagen'])) {
-            $validData['imagen'] = $request->file('imagen')->storePublicly("public/images/productos");
+            $image_aux = $validData['imagen']; //Base 64 encoded
+            $image_aux = str_replace('data:image/png;base64,', '', $image_aux);
+            $image_aux = str_replace(' ', '+', $image_aux);
+            $validData['imagen'] = base64_decode($image_aux);
+            $image_path = 'public/images/productos/'.time().'.png';
+            Storage::disk('s3')->put($image_path, $validData['imagen'], 'public');
+            $validData['imagen'] = $image_path;
+
         } else {
             $validData['imagen'] = null;
         }
@@ -122,12 +129,9 @@ class ProductoController extends Controller
             'nombre' => $validData['nombre'],
             'precio' => $validData['precio'],
             'peso' => $validData['peso'],
-            // ! Desactivada hasta que se pruebe con servidor
-            /* 'imagen' => $validData['imagen'], */
-            'imagen' => 'public/assets/category/comida.png',
+            'imagen' => $validData['imagen'],
             'estado' => 1,
             'id_categoria_productos' => $validData['id_categoria_productos'],
-            'id_marca' => $validData['id_marca'],
             'id_tipo_peso' => $validData['id_tipo_peso'],
             'id_tienda' => $validData['id_tienda'],
             'descripcion' => $validData['descripcion'],
@@ -148,7 +152,7 @@ class ProductoController extends Controller
 
     public function storeTopping($request, $idProducto, $idTienda)
     {
-        $toppings = json_decode($request->toppings);
+        $toppings = $request->toppings;
         $aux = count($toppings);
         for ($i = 0; $i < $aux; $i++) {
             $aux2 = $toppings[$i];
