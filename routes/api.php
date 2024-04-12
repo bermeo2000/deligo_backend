@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductoServicioController;
 use App\Http\Controllers\TestBucketController;
 use Illuminate\Http\Request;
@@ -68,9 +69,12 @@ Route::get('v2/getCategoriaProductoByTienda/{id}', [CategoriasProductosControlle
 //Toppings
 Route::resource('toppings', ToppingsController::class);
 Route::get('v2/getToppingsByTienda/{id}', [ToppingsController::class, 'getToppingsByTienda']);
+
 //Toppings Productos
 Route::resource('toppings-productos', ToppingsProductosController::class);
 
+// Dashboard Emprendedor
+Route::get('v2/getDashboard/{id}', [DashboardController::class, 'getDashboard']);
 
 //Usuario
 Route::resource('usuario', UserController::class);
