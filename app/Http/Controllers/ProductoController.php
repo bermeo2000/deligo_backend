@@ -39,14 +39,12 @@ class ProductoController extends Controller
     }
 
 
-    public function getProductoTienda($id)
+    public function getProductoByTienda($id)
     {
         $producto = Producto::where('id_tienda', $id)
             ->where('estado', 1)
             ->get();
-        if (count($producto) == 0) {
-            return response()->json('no existen Producto', 404);
-        }
+        
         return response()->json($producto, 200);
     }
 
@@ -377,20 +375,6 @@ class ProductoController extends Controller
         }
 
         return response()->json(['message' => 'No se puede eliminar porque está ligada a un muchas cosas jaja']);
-
-    }
-
-    public function getProductoByTienda($id_tienda)
-    {
-        //Busca todos los productos por la tienda
-
-        $data = DB::table('productos')
-            ->select('productos.*')
-            ->where('productos.id_tienda', $id_tienda)
-            ->where('productos.estado', 1)
-            ->get();
-
-        return response($data, 200);
 
     }
 
