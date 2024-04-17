@@ -65,6 +65,7 @@ Route::resource('tipo-peso', TipoPesoController::class);
 //Categoria Productos
 Route::resource('categoria-producto', CategoriasProductosController::class);
 Route::get('v2/getCategoriaProductoByTienda/{id}', [CategoriasProductosController::class, 'getCategoriaProductoByTienda']);
+Route::post('v2/saveCategoria', [CategoriasProductosController::class, 'saveCategoria']);
 
 //Toppings
 Route::resource('toppings', ToppingsController::class);
@@ -123,7 +124,8 @@ Route::get('get-marca-by-tienda/{id}', [MarcaController::class, 'getMarcaTienda'
 //Productos
 // * Las que estan arriba son las nuevas
 Route::resource('producto', ProductoController::class);
-Route::get('v2/getProductoByTienda/{id}', [ProductoController::class, 'getProductoByTienda']);
+Route::get('v2/getProductoByTienda/{id}', [ProductoController::class, 'getProductoByTienda']); // Obtiene productos por tienda
+
 
 
 Route::post('/edita-img-productos/{id}', [ProductoController::class, 'editImagenes']);

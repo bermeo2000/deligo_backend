@@ -27,6 +27,25 @@ class CategoriasProductosController extends Controller
         
     }
 
+    public function saveCategoria(Request $request){
+        $validData = $request->validate([
+            'descripcion' => 'required',
+            'id_tienda' => 'required'
+        ]);
+
+        $categoria = CategoriasProductos::create([
+            'descripcion' => $validData['descripcion'],
+            'id_tienda' => $validData['id_tienda'],
+            'estado' => 1
+        ]);
+
+        return response()->json([
+            'message' => 'Categoría creada con éxito.',
+            'data' => $categoria
+        ], 200);
+
+    }
+
     // * Guarda categorías que vienen en array 
     public function store(Request $request)
     {
