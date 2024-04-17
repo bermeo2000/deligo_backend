@@ -70,6 +70,7 @@ Route::post('v2/saveCategoria', [CategoriasProductosController::class, 'saveCate
 //Toppings
 Route::resource('toppings', ToppingsController::class);
 Route::get('v2/getToppingsByTienda/{id}', [ToppingsController::class, 'getToppingsByTienda']);
+Route::post('Adicional creado con éxito.', [ToppingsController::class, 'saveTopping']);
 
 //Toppings Productos
 Route::resource('toppings-productos', ToppingsProductosController::class);

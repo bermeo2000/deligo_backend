@@ -35,9 +35,28 @@ class ToppingsController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function saveTopping(Request $request){
+        $validData = $request->validate([
+            'descripcion' => 'required',
+            'id_tienda' => 'required'
+        ]);
+        // TODO agregar los demas
+        $topping = Toppings::create([
+            'descripcion' => $validData['descripcion'],
+            'id_tienda' => $validData['id_tienda'],
+            'imagen' => null,
+            'precio' => null,
+            'estado' => 1
+        ]);
+
+        return response()->json([
+            'message' => 'Adicional creado con éxito.',
+            'data' => $topping
+        ], 200);
+    }
+    
+    
+    // Guarda los que vienen en array
     public function store(Request $request)
     {
         $idTienda=$request->id_tienda;
