@@ -38,14 +38,15 @@ class ToppingsController extends Controller
     public function saveTopping(Request $request){
         $validData = $request->validate([
             'descripcion' => 'required',
-            'id_tienda' => 'required'
+            'id_tienda' => 'required',
+            'precio' => 'nullable'
         ]);
-        // TODO agregar los demas
+        
         $topping = Toppings::create([
             'descripcion' => $validData['descripcion'],
             'id_tienda' => $validData['id_tienda'],
             'imagen' => null,
-            'precio' => null,
+            'precio' => $validData['precio'],
             'estado' => 1
         ]);
 
