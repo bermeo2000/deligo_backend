@@ -95,7 +95,7 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //probado con imagen y todo y funciona
+        
         $validData = $request->validate([
             'id_tienda' => 'required',
             'imagen' => 'required',
@@ -134,6 +134,7 @@ class ProductoController extends Controller
             'id_tienda' => $validData['id_tienda'],
             'descripcion' => $validData['descripcion'],
             'is_topping' => $validData['is_topping'],
+            'puntuacion' => 0.00
         ]);
 
         if ($producto->is_topping == 1) {
@@ -142,8 +143,8 @@ class ProductoController extends Controller
 
         return response()
             ->json([
-                'message' => 'Producto de tu tienda registrado'
-                /*   ,'data' => $producto    */
+                'message' => 'Producto de tu tienda registrado',
+                'data' => $producto
             ], 200);
     }
 
